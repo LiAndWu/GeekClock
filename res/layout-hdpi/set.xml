@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <LinearLayout android:id="@+id/barLinearLayout" android:baselineAligned="false" android:background="@drawable/bar" android:layout_width="fill_parent" android:weightSum="1" android:layout_height="55dp">
+        <Button android:text="主页" android:layout_gravity="center_vertical" android:background="@drawable/button_short_background" android:layout_weight="0.06" android:layout_height="wrap_content" android:layout_margin="5dip" android:id="@+id/homepageButton" android:layout_width="90dip" android:textSize="18dp"></Button>
+        <TextView android:gravity="center" android:textAppearance="?android:attr/textAppearanceMedium" android:text="设置" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/neverCallTextView" android:textSize="30dip" android:layout_weight="0.32"></TextView>
+    </LinearLayout>
+    <Button android:layout_width="fill_parent" android:text="@string/feedback_frequency" android:background="@drawable/button_background" android:textStyle="bold" android:id="@+id/readFrequencyButton" android:layout_marginTop="5dip" android:layout_height="45dip"></Button>
+    <Button android:text="时间服务器" android:layout_width="fill_parent" android:background="@drawable/button_background" android:textStyle="bold" android:id="@+id/timeServerButton" android:layout_height="45dip"></Button>
+    <Button android:background="@drawable/button_background" android:layout_width="fill_parent" android:text="注册" android:textStyle="bold" android:id="@+id/registerButton" android:layout_height="45dip"></Button>
+    <Button android:layout_width="fill_parent" android:text="帮助" android:background="@drawable/button_background" android:id="@+id/helpButton" android:textStyle="bold" android:layout_height="45dip"></Button>
+    <Button android:background="@drawable/button_background" android:layout_width="fill_parent" android:text="鸣谢" android:textStyle="bold" android:id="@+id/thanksButton" android:layout_height="45dip"></Button>
+    <Button android:background="@drawable/button_background" android:layout_width="fill_parent" android:text="关于" android:textStyle="bold" android:id="@+id/aboutButton" android:layout_height="45dip"></Button>
+    
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:weightSum="1">
+    <LinearLayout android:background="@drawable/bar" android:layout_width="fill_parent" android:weightSum="1" android:baselineAligned="false" android:id="@+id/barLinearLayout" android:layout_height="45dp">
+        <Button android:text="上一步" android:layout_height="wrap_content" android:layout_margin="3dip" android:background="@drawable/button_short_background" android:layout_gravity="center_vertical" android:id="@+id/backButton" android:layout_weight="0.06" android:layout_width="80dip"></Button>
+        <TextView android:id="@+id/neverCallTextView" android:layout_width="wrap_content" android:layout_height="fill_parent" android:gravity="center" android:text="时间服务器" android:textAppearance="?android:attr/textAppearanceMedium" android:textSize="24dip" android:textStyle="bold" android:layout_weight="0.38"></TextView>
+    </LinearLayout>
+    <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="现在的时间服务器是：" android:layout_width="fill_parent" android:layout_weight="0.06" android:id="@+id/timeServerTextView" android:layout_marginTop="5dip"></TextView>
+    <Spinner android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/timeServerSpinner"></Spinner>
+    
+</LinearLayout>

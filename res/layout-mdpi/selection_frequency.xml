@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_height="fill_parent" android:layout_gravity="center" android:layout_width="wrap_content">
+    <LinearLayout android:layout_width="fill_parent" android:background="@drawable/bar" android:weightSum="1" android:baselineAligned="false" android:id="@+id/barLinearLayout" android:layout_height="45dp">
+        <Button android:layout_height="wrap_content" android:text="上一步" android:layout_weight="0.06" android:background="@drawable/button_short_background" android:layout_margin="3dip" android:layout_gravity="center_vertical" android:id="@+id/backButton" android:layout_width="80dip"></Button>
+        <TextView android:text="刷新频率" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_height="fill_parent" android:gravity="center" android:textStyle="bold" android:textSize="24dip" android:id="@+id/neverCallTextView" android:layout_weight="0.36"></TextView>
+    </LinearLayout>
+    <TextView android:text="现在的的刷新频率是：每10分钟一次" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8dip" android:id="@+id/readFrequencytextView" android:layout_gravity="left" android:textSize="17dip"></TextView>
+    <Button android:text="5分钟" android:layout_width="fill_parent" android:background="@drawable/button_background" android:id="@+id/fiveMinutesButton" android:layout_height="40dip"></Button>
+    <Button android:text="10分钟" android:layout_width="fill_parent" android:background="@drawable/button_background" android:id="@+id/tenMinutesButton" android:layout_height="40dip"></Button>
+    <Button android:text="30分钟" android:layout_width="fill_parent" android:background="@drawable/button_background" android:id="@+id/halfHourButton" android:layout_height="40dip"></Button>
+    <Button android:text="1个小时" android:background="@drawable/button_background" android:layout_width="fill_parent" android:id="@+id/oneHourButton" android:layout_height="40dip"></Button>
+    <Button android:background="@drawable/button_background" android:layout_width="fill_parent" android:text="自定义" android:id="@+id/customButton" android:layout_height="40dip"></Button>
+    
+</LinearLayout>

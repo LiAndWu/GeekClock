@@ -29,7 +29,8 @@ public class AboutActivity extends Activity {
 		if (dm.heightPixels > 600) {
 			m_AboutActivityText
 					.setText("\n\t\t\t\t    Geek Clock  Version 2.3\n"
-							+ "\t\t\t\t   Released at 19 Oct 2011 \n\n\n"
+							+ "\t\t\t\t   Released at 19 Oct 2011 \n"
+							+ "\t\t\t\t   Updated  at 06 Mar 2012 \n\n\n"
 							+ "\t\t\t 作者：\n"
 							+ "\t\t\t 李伟:\n\t\t\t\t\thttp://mindlee.net\n"
 							+ "\t\t\t\t\tchinawelon@gmail.com\n"
@@ -38,8 +39,9 @@ public class AboutActivity extends Activity {
 							+ "\t\t\t\t\tCrabium & Mabbage Workshop\n\t\t\t\t\t\t\t\tLiWei and WuXudong\n\t\t\t\t\t\t\t\t\t\tCopyleft 2011.");
 		} else {
 			m_AboutActivityText
-					.setText("\n\n\t\t\t    Geek Clock  Version 2.1\n"
-							+ "\t\t\t   Released at 19 Oct 2011 \n\n\n"
+					.setText("\n\n\t\t\t    Geek Clock  Version 2.3\n"
+							+ "\t\t\t   Released at 19 Oct 2011 \n"
+							+ "\t\t\t   Updated  at 06 Mar 2012 \n\n\n"
 							+ "\t\t\t 作者：\n"
 							+ "\t\t\t 李伟:\n\t\t\t\t\thttp://mindlee.net\n"
 							+ "\t\t\t\t\tchinawelon@gmail.com\n"

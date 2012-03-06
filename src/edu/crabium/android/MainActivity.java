@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +31,7 @@ public class MainActivity extends TabActivity {
     public TabWidget tw;
     @Override
 	public void onCreate(Bundle savedInstanceState) {
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         TabHost mTabHost = this.getTabHost();
@@ -37,7 +39,8 @@ public class MainActivity extends TabActivity {
         
         if(initialized == false){
         	initialized = true; 
-        	int tmp;
+        	@SuppressWarnings("unused")
+			int tmp;
         try 
         {
 			FileInputStream fileInputStream = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");

@@ -11,18 +11,18 @@ import org.geonames.WebService;
 
 public class TimeProvider{
 	static private double CurrentTimezone=8.0;
-	static private double latitude = 30.31900699227783;
-	static private double longitude = 120.33820867538452;
+	static private double latitude =   30.3190069922;
+	static private double longitude = 120.3382086753;
 	
 	private double UTC;
 	static boolean Synchronized = false;
 	static private long TimeOffset = 0;
-	public static String GeoNamesUserName  = "tikiet";
+	static public String GeoNamesUserName  = "tikiet";
 	static private boolean TimezoneError = true;
 	static private boolean UTCError = true;
 	Date date = new Date();
 	
-	public static String placeName;
+	public static String placeName = "China";
 	private static String ServerAddress;
 	private static String ServerName;
 	static public void Reset(){

@@ -18,6 +18,7 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,7 +33,9 @@ public class TimeServerListActivity extends Activity {
 	private Spinner					m_TimeServerSpinner;
 	private ArrayAdapter<String>	adapter;
 	
+	@SuppressWarnings("unused")
 	private static boolean firstSet = true;
+	@SuppressWarnings("unused")
 	private static int previousArg = 0;
 	
 	String []ServerNameList = null;
@@ -40,8 +43,10 @@ public class TimeServerListActivity extends Activity {
 	
 	private int ServerSelectedTimes = 0;  
 	
+	@SuppressWarnings("unused")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.time_server_list);
 		
@@ -57,10 +62,12 @@ public class TimeServerListActivity extends Activity {
 			Element NTPServer = root.getChild("NTPServer");
 			
 			//获得选中服务器的信息 
-		    List servers = NTPServer.getChildren("Server"); 
+		    @SuppressWarnings("rawtypes")
+			List servers = NTPServer.getChildren("Server"); 
 		    ServerNameList = new String[servers.size()];
 		    ServerAddressList = new String[servers.size()];
-		    Iterator<Element> iterator = servers.iterator();
+		    @SuppressWarnings("unchecked")
+			Iterator<Element> iterator = servers.iterator();
 		    int i = 0;
 		    while(iterator.hasNext())
 		    {
@@ -86,13 +93,8 @@ public class TimeServerListActivity extends Activity {
 		m_BackButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// 新建一个Intent对象 
-				Intent intent = new Intent();
-				// 指定intent要启动的类 
-				intent.setClass(TimeServerListActivity.this, SetActivity.class);
-				// 启动一个新的Activity 
+				Intent intent = new Intent(TimeServerListActivity.this, SetActivity.class);
 				startActivity(intent);
-				// 关闭当前的Activity 
 				TimeServerListActivity.this.finish();
 			}
 		});

@@ -4,10 +4,50 @@
   android:orientation="vertical"
   android:layout_width="fill_parent"
   android:weightSum="1" android:id="@+id/LinearLayout" android:gravity="center_horizontal" android:layout_height="fill_parent">
-    <LinearLayout android:background="@drawable/bar" android:layout_width="fill_parent" android:weightSum="1" android:baselineAligned="false" android:id="@+id/barLinearLayout" android:layout_height="55dp">
-        <Button android:text="上一步" android:layout_height="wrap_content" android:layout_margin="3dip" android:background="@drawable/button_short_background" android:layout_gravity="center_vertical" android:id="@+id/backButton" android:layout_weight="0.06" android:layout_width="90dip" android:textSize="18dip"></Button>
-        <TextView android:id="@+id/neverCallTextView" android:layout_width="wrap_content" android:layout_height="fill_parent" android:gravity="center" android:text="关于" android:textAppearance="?android:attr/textAppearanceMedium" android:textStyle="bold" android:layout_weight="0.34" android:textSize="30dip"></TextView>
+    <LinearLayout android:background="@drawable/bar" android:layout_width="fill_parent" android:weightSum="1" android:baselineAligned="false" android:id="@+id/barLinearLayout" android:layout_height="51dip">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="82dip"
+            android:layout_height="41dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="3dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginTop="3dip"
+            android:layout_weight="0.06"
+            android:background="@drawable/button_short_background"
+            android:text="上一步"
+            android:textStyle="bold" >
+</Button>
+
+        <TextView
+            android:id="@+id/neverCallTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.55"
+            android:gravity="center"
+            android:text="关于"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="28dip"
+            android:textStyle="bold" >
+
+</TextView>
     </LinearLayout>
-    <TextView android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:textStyle="bold" android:background="@drawable/help_blackground" android:gravity="center_vertical|clip_horizontal" android:layout_marginTop="7dip" android:autoLink="web|email" android:id="@+id/aboutText" android:layout_width="310dp" android:layout_height="415dp" android:textSize="16dp"></TextView>
+
+    <TextView
+        android:id="@+id/aboutText"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="5dip"
+        android:layout_weight="1.05"
+        android:autoLink="web|email"
+        android:background="@drawable/help_blackground"
+        android:gravity="center_vertical|clip_horizontal"
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="16dp"
+        android:textStyle="bold" >
+
+</TextView>
     
 </LinearLayout>

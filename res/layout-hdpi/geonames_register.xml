@@ -4,20 +4,89 @@
   android:orientation="vertical"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:weightSum="1">
-    <LinearLayout android:background="@drawable/bar" android:layout_width="fill_parent" android:weightSum="1" android:baselineAligned="false" android:id="@+id/barLinearLayout" android:layout_height="55dp">
-        <Button android:text="上一步" android:layout_margin="3dip" android:background="@drawable/button_short_background" android:layout_gravity="center_vertical" android:id="@+id/backButton" android:layout_weight="0.06" android:layout_height="wrap_content" android:layout_width="90dip" android:textSize="18dip"></Button>
-        <TextView android:id="@+id/neverCallTextView" android:layout_width="wrap_content" android:layout_height="fill_parent" android:gravity="center" android:text="账号" android:textAppearance="?android:attr/textAppearanceMedium" android:textStyle="bold" android:layout_weight="0.43" android:textSize="30dip"></TextView>
+    <LinearLayout android:background="@drawable/bar" android:layout_width="fill_parent" android:weightSum="1" android:baselineAligned="false" android:id="@+id/barLinearLayout" android:layout_height="51dip">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="82dip"
+            android:layout_height="41dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="3dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginTop="3dip"
+            android:layout_weight="0.06"
+            android:background="@drawable/button_short_background"
+            android:text="上一步"
+            android:textStyle="bold" >
+</Button>
+
+        <TextView
+            android:id="@+id/neverCallTextView"
+            android:layout_width="145dip"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="账号"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="28dip"
+            android:textStyle="bold" >
+</TextView>
+
+        <Button
+            android:id="@+id/confirmButton"
+            android:layout_width="82dip"
+            android:layout_height="41dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="3dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="3dip"
+            android:layout_weight="0.06"
+            android:background="@drawable/button_short_background"
+            android:text="确定"
+            android:textStyle="bold" >
+</Button>
     </LinearLayout>
-    <TextView android:text="正在使用的账户是：" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="fill_parent" android:layout_height="wrap_content" android:lines = "2" android:textStyle="bold" android:id="@+id/showUsernameTextView" android:layout_marginLeft="7dip" android:layout_marginRight="7dip" android:layout_marginTop="2dip" android:layout_marginBottom="2dip" android:textSize="18dip"></TextView>
-    <TextView android:id="@+id/textView3" android:layout_height="wrap_content" android:text="如果您已经拥有账户,直接输入用户名即可:" android:textAppearance="?android:attr/textAppearanceLarge" android:textStyle="bold" android:layout_margin="8dip" android:textSize="15dip" android:layout_width="wrap_content"></TextView>
-    <EditText android:id="@+id/usernameEditText" android:layout_gravity="left" android:layout_width="278dp" android:layout_marginLeft="5dip" android:maxLength="25" android:layout_height="wrap_content">
-        <requestFocus></requestFocus>
+
+    <TextView
+        android:id="@+id/showUsernameTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dip"
+        android:layout_marginRight="7dip"
+        android:layout_marginTop="15dip"
+        android:lines="2"
+        android:text="正在使用的账户是："
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="17dip"
+        android:textStyle="bold" >
+</TextView>
+
+    <EditText
+        android:id="@+id/usernameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="10dip"
+        android:maxLength="25" >
+
     </EditText>
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:weightSum="1">
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="没有检测到输入，请输入用户名。" android:id="@+id/hintTextView" android:layout_gravity="center_horizontal" android:layout_height="wrap_content" android:layout_marginLeft="7dip" android:layout_weight="0.50" android:layout_width="210dip" android:textSize="14dip"></TextView>
-        <Button android:background="@drawable/button_short_background" android:text="确定" android:id="@+id/confirmButton" android:layout_gravity="right" android:layout_width="90dip" android:layout_height="45dip" android:layout_marginTop="20dip"></Button>
+        
     </LinearLayout>
-    <TextView android:layout_height="wrap_content" android:id="@+id/textView2" android:text="如果尚未注册，点击下方注册：" android:layout_width="296dp" android:textAppearance="?android:attr/textAppearanceLarge" android:textSize="15dip" android:textStyle="bold" android:layout_marginLeft="9dip" android:layout_marginRight="9dip" android:layout_marginTop="9dip"></TextView>
-    <ImageView android:src="@drawable/register" android:id="@+id/registerImageView" android:clickable="true" android:layout_width="fill_parent" android:layout_weight="0.07" android:layout_height="200dp" android:layout_gravity="bottom"></ImageView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="296dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="9dip"
+        android:layout_marginRight="9dip"
+        android:layout_marginTop="45dip"
+        android:text="没有用户名？ 点击下方注册："
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="17dip"
+        android:textStyle="bold" >
+</TextView>
+    <ImageView android:src="@drawable/register" android:id="@+id/registerImageView" android:clickable="true" android:layout_width="fill_parent" android:layout_marginTop="3dip" android:layout_height="200dip"></ImageView>
     
 </LinearLayout>

@@ -12,8 +12,8 @@ import org.jdom.output.XMLOutputter;
 
 import android.app.Activity;
 import android.view.KeyEvent;
+import android.view.Window;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -21,17 +21,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GeonamesRegisterActivity extends Activity {
 	
 	private Button m_BackButton, m_ConfirmButton;
 	private EditText m_UsernameExitText;
-	private TextView m_ShowUsernameTextView, m_HintTextView;
+	private TextView m_ShowUsernameTextView;
 	private ImageView m_RegisterImageView;
 	private String m_InputRecord;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.geonames_register);
 		
@@ -39,13 +41,9 @@ public class GeonamesRegisterActivity extends Activity {
 		m_BackButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/* 新建一个Intent对象 */
 				Intent intent = new Intent();
-				/* 指定intent要启动的类 */
 				intent.setClass(GeonamesRegisterActivity.this, SetActivity.class);
-				/* 启动一个新的Activity */
 				startActivity(intent);
-				/* 关闭当前的Activity */
 				GeonamesRegisterActivity.this.finish();
 			}
 		});
@@ -59,32 +57,30 @@ public class GeonamesRegisterActivity extends Activity {
 		
 		
 		m_UsernameExitText = (EditText)findViewById(R.id.usernameEditText);
-		m_UsernameExitText.setHint("输入用户名");
+		m_UsernameExitText.setHint("输入用户名：");
 		m_UsernameExitText.setOnKeyListener(new EditText.OnKeyListener() {
 			@Override
 			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 				m_InputRecord = m_UsernameExitText.getText().toString();
 				if(m_InputRecord.length() >= 25) {
-					m_HintTextView.setText("用户名输入过长！！");
+					DisplayToast("用户名输入过长！！");
 				} else {
-					m_HintTextView.setText(m_InputRecord);
+					DisplayToast("用户名是:\n" + m_InputRecord);
 				}
 				return false;
 			}
 		});
 		
-		m_HintTextView = (TextView) findViewById(R.id.hintTextView);
-		m_HintTextView.setTextColor(Color.GRAY);
 		
 		m_ConfirmButton = (Button)findViewById(R.id.confirmButton);
 		m_ConfirmButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (m_InputRecord == null) {
-					m_HintTextView.setText("骚年，请正确输入！！");
+					DisplayToast("骚年，请正确输入！！");
 				} else {			
 					TimeProvider.GeoNamesUserName = m_InputRecord;
-					m_HintTextView.setText("输入成功！！");
+					DisplayToast("输入成功！！");
 					m_ShowUsernameTextView.setText("正在使用的账户是:：\n" + TimeProvider.GeoNamesUserName);
 					m_UsernameExitText.setFocusable(false);
 					m_UsernameExitText.setFocusableInTouchMode(false);
@@ -128,5 +124,9 @@ public class GeonamesRegisterActivity extends Activity {
 	               startActivity(intent);
 	           }
 	       });  
+	}
+	
+	public void DisplayToast(String str) {
+		Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
 	}
 }

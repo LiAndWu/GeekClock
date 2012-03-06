@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ public class ReadFrequencyActivity extends Activity{
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.selection_frequency);
 		
@@ -54,13 +56,8 @@ public class ReadFrequencyActivity extends Activity{
 		m_BackButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/* 新建一个Intent对象 */
-				Intent intent = new Intent();
-				/* 指定intent要启动的类 */
-				intent.setClass(ReadFrequencyActivity.this, SetActivity.class);
-				/* 启动一个新的Activity */
+				Intent intent = new Intent(ReadFrequencyActivity.this, SetActivity.class);
 				startActivity(intent);
-				/* 关闭当前的Activity */
 				ReadFrequencyActivity.this.finish();
 			}
 		});
@@ -196,19 +193,11 @@ public class ReadFrequencyActivity extends Activity{
 		m_CustomButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/* 新建一个Intent对象 */
-				Intent intent = new Intent();
-				/* 指定intent要启动的类 */
-				intent.setClass(ReadFrequencyActivity.this, TurntableActivity.class);
-				/* 启动一个新的Activity */
+				Intent intent = new Intent(ReadFrequencyActivity.this, TurntableActivity.class);
 				startActivity(intent);
-				/* 关闭当前的Activity */
 				ReadFrequencyActivity.this.finish();
 			}
 		});
-		
-
-
 	}
 }
 		

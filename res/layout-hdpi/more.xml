@@ -3,29 +3,118 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:weightSum="1" android:orientation="vertical">
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LinearLayout04" android:layout_marginTop="21dip">
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="经度" android:layout_width="130dp" android:id="@+id/longitudeView" android:gravity="center" android:layout_height="fill_parent" android:textStyle="bold" android:textSize="21dip" android:layout_marginTop="21dip"></TextView>
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="显示经度" android:layout_height="55dp" android:gravity="center" android:id="@+id/showLongitude" android:textSize="18dip" android:textStyle="bold" android:layout_marginTop="21dip" android:layout_width="fill_parent"></TextView>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout04"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip" >
+
+        <TextView
+            android:id="@+id/longitudeView"
+            android:layout_width="126dip"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="15dip"
+            android:gravity="center"
+            android:text="经度"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="21dip"
+            android:textStyle="bold" >
+</TextView>
+
+        <TextView
+            android:id="@+id/showLongitude"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_marginRight="13dip"
+            android:layout_marginTop="15dip"
+            android:gravity="center"
+            android:text="显示经度"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="17dip"
+            android:textStyle="bold" >
+
+</TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LinearLayout03">
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="纬度" android:layout_width="130dp" android:layout_height="fill_parent" android:gravity="center" android:id="@+id/latitudeView" android:textSize="21dip" android:enabled="true" android:fitsSystemWindows="true" android:textStyle="bold"> </TextView>
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="显示纬度" android:gravity="center" android:layout_width="fill_parent" android:layout_height="55dp" android:id="@+id/showLatitude" android:textStyle="bold" android:textSize="18dip"></TextView>
+        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="纬度" android:layout_width="126dip" android:layout_height="fill_parent" android:gravity="center" android:id="@+id/latitudeView" android:textSize="21dip" android:enabled="true" android:fitsSystemWindows="true" android:textStyle="bold"> </TextView>
+
+        <TextView
+            android:id="@+id/showLatitude"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_marginRight="13dip"
+            android:gravity="center"
+            android:text="显示纬度"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="17dip"
+            android:textStyle="bold" >
+
+</TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LinearLayout02">
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="时区" android:layout_width="130dp" android:layout_height="fill_parent" android:gravity="center" android:id="@+id/timeZoneView" android:textSize="21dip" android:textStyle="bold"></TextView>
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="显示时区" android:gravity="center" android:layout_width="fill_parent" android:layout_height="55dp" android:id="@+id/showTimeZone" android:textStyle="bold" android:textSize="18dip"></TextView>
+        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="时区" android:layout_width="126dip" android:layout_height="fill_parent" android:gravity="center" android:id="@+id/timeZoneView" android:textSize="21dip" android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/showTimeZone"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_marginRight="13dip"
+            android:gravity="center"
+            android:text="显示时区"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="18dip"
+            android:textStyle="bold" >
+
+</TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LinearLayout01">
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="城市" android:layout_width="130dp" android:layout_height="fill_parent" android:gravity="center" android:textSize="21dip" android:textStyle="bold" android:id="@+id/cityView"></TextView>
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="显示城市" android:gravity="center" android:layout_width="fill_parent" android:layout_height="55dp" android:textSize="18dip" android:textStyle="bold" android:id="@+id/showCity"></TextView>
+        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="城市" android:layout_width="126dip" android:layout_height="fill_parent" android:gravity="center" android:textSize="21dip" android:textStyle="bold" android:id="@+id/cityView"></TextView>
+
+        <TextView
+            android:id="@+id/showCity"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_marginRight="13dip"
+            android:gravity="center"
+            android:text="显示城市"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="18dip"
+            android:textStyle="bold" >
+
+</TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LinearLayout05">
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="星期" android:gravity="center" android:layout_width="130dp" android:layout_height="fill_parent" android:id="@+id/weekView" android:textSize="21dip" android:textStyle="bold"></TextView>
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="显示星期几" android:gravity="center" android:layout_width="fill_parent" android:layout_height="55dp" android:id="@+id/showWeek" android:textSize="18dip" android:textStyle="bold"></TextView>
+        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="星期" android:gravity="center" android:layout_width="126dip" android:layout_height="fill_parent" android:id="@+id/weekView" android:textSize="21dip" android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/showWeek"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_marginRight="13dip"
+            android:gravity="center"
+            android:text="显示星期几"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="18dip"
+            android:textStyle="bold" >
+
+</TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout1">
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="时光机" android:gravity="center" android:layout_width="130dp" android:layout_height="fill_parent" android:textSize="21dip" android:textStyle="bold" android:id="@+id/yearDayView"></TextView>
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="显示已过天数" android:gravity="center" android:layout_width="fill_parent" android:layout_height="55dp" android:id="@+id/ShowYearDay" android:textSize="18dip" android:textStyle="bold"></TextView>
+        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="时光机" android:gravity="center" android:layout_width="126dip" android:layout_height="fill_parent" android:textSize="21dip" android:textStyle="bold" android:id="@+id/yearDayView"></TextView>
+
+        <TextView
+            android:id="@+id/ShowYearDay"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_marginRight="13dip"
+            android:gravity="center"
+            android:text="显示已过天数"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="18dip"
+            android:textStyle="bold" >
+
+</TextView>
     </LinearLayout>
     
 </LinearLayout>

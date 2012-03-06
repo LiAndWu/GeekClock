@@ -30,7 +30,7 @@ public class ArrayWheelAdapter<T> implements WheelAdapter {
 	private int length;
 
 	/**
-	 * Constructor
+	 * Constructor 
 	 * @param items the items
 	 * @param length the max items length
 	 */

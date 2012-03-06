@@ -18,7 +18,7 @@
 			android:layout_height="fill_parent" android:textSize="24dip"
 			android:id="@+id/neverCallTextView" android:layout_weight="0.41"></TextView>
 	</LinearLayout>
-
+
 	<LinearLayout
 	    xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/readFrequencyButton"
@@ -26,7 +26,7 @@
 	    android:layout_height="47dip"
 	    android:layout_marginLeft="3dip"
 	    android:layout_marginRight="3dip"
-	    android:layout_marginTop="3dip"
+	    android:layout_marginTop="6dip"
 	    android:background="@drawable/button_background"
 	    android:baselineAligned="false"
 	    android:clickable="true"

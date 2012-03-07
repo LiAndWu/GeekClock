@@ -12,7 +12,6 @@
     </issue>
     <issue id="DisableBaselineAlignment">
         <ignore path="res\layout-hdpi\thanks.xml" />
-        <ignore path="res\layout-mdpi\thanks.xml" />
     </issue>
     <issue id="DuplicateIds">
         <ignore path="res\layout-hdpi\set.xml" />
@@ -31,31 +30,26 @@
         <ignore path="res\layout-hdpi\turntable.xml" />
         <ignore path="res\layout-mdpi\about.xml" />
         <ignore path="res\layout-mdpi\geonames_register.xml" />
-        <ignore path="res\layout-mdpi\help.xml" />
-        <ignore path="res\layout-mdpi\more.xml" />
-        <ignore path="res\layout-mdpi\selection_frequency.xml" />
         <ignore path="res\layout-mdpi\set.xml" />
         <ignore path="res\layout-mdpi\showclock.xml" />
         <ignore path="res\layout-mdpi\thanks.xml" />
         <ignore path="res\layout-mdpi\time_server_list.xml" />
         <ignore path="res\layout-mdpi\turntable.xml" />
+        <ignore path="res\layout-mdpi\turntable.xml" />
     </issue>
     <issue id="InefficientWeight">
-        <ignore path="res\layout-hdpi\about.xml" />
         <ignore path="res\layout-hdpi\main.xml" />
         <ignore path="res\layout-hdpi\set.xml" />
         <ignore path="res\layout-hdpi\showclock.xml" />
         <ignore path="res\layout-hdpi\thanks.xml" />
         <ignore path="res\layout-hdpi\time_server_list.xml" />
         <ignore path="res\layout-hdpi\turntable.xml" />
-        <ignore path="res\layout-mdpi\main.xml" />
         <ignore path="res\layout-mdpi\set.xml" />
         <ignore path="res\layout-mdpi\showclock.xml" />
         <ignore path="res\layout-mdpi\thanks.xml" />
         <ignore path="res\layout-mdpi\time_server_list.xml" />
     </issue>
     <issue id="NestedWeights">
-        <ignore path="res\layout-hdpi\about.xml" />
         <ignore path="res\layout-hdpi\thanks.xml" />
         <ignore path="res\layout-hdpi\time_server_list.xml" />
         <ignore path="res\layout-hdpi\turntable.xml" />

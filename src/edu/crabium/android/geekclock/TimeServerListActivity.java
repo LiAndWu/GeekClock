@@ -55,7 +55,7 @@ public class TimeServerListActivity extends Activity {
         SAXBuilder saxBuilder = new SAXBuilder();
         try 
         {
-        	FileInputStream fileInputStream  = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
+        	FileInputStream fileInputStream  = new FileInputStream("/data/data/edu.crabium.android.geekclock/files/geekclock.xml");
 			Document document = saxBuilder.build(fileInputStream);
 			fileInputStream.close();
 			
@@ -127,7 +127,7 @@ public class TimeServerListActivity extends Activity {
 			        SAXBuilder saxBuilder = new SAXBuilder();
 			        try 
 			        {
-			        	FileInputStream fileInputStream  = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
+			        	FileInputStream fileInputStream  = new FileInputStream("/data/data/edu.crabium.android.geekclock/files/geekclock.xml");
 						Document document = saxBuilder.build(fileInputStream);
 						fileInputStream.close();
 						
@@ -142,7 +142,7 @@ public class TimeServerListActivity extends Activity {
 						
 						
 						XMLOutputter out = new XMLOutputter();
-						FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android/files/geekclock.xml");
+						FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android.geekclock/files/geekclock.xml");
 						out.output(document,fileOutputStream);
 						fileOutputStream.flush();
 						fileOutputStream.close();

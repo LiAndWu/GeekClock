@@ -5,12 +5,14 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.TextView;
 
 public class MoreActivity extends Activity {
 	
 	static TextView m_ShowTimeZone,m_ShowLongitude, m_ShowLatitude;
 	TextView  m_ShowCity, m_ShowWeek, m_ShowYearDay;
+	@SuppressWarnings("unused")
 	private static final int TimeMessageNum2 = 2;
 	public static int tm;
 	public static int ReadFrequencyHour = 0;
@@ -21,6 +23,7 @@ public class MoreActivity extends Activity {
 	
     @Override
 	public void onCreate(Bundle savedInstanceState) {
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.more);
    

@@ -17,7 +17,7 @@ import java.util.Date;
  * format).
  *  
  * However, the contructor NtpMessage(byte[]) and the method toByteArray()
- * allow the import and export of the raw NTP message format.
+ * allow the import and export of the raw NTP message format. 
  * 
  * 
  * Usage example

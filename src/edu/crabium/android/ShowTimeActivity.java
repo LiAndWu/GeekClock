@@ -21,6 +21,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class ShowTimeActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.showclock);
         
@@ -165,8 +167,7 @@ public class ShowTimeActivity extends Activity {
     			sysDate = m_DateFormat.format(new Date(timeprovider.GetTimeSeconds() * 1000));
     		    m_ShowTime.setText(sysTime);  
     		    m_ShowDate.setText(sysDate);
-    		    
-    		    
+    		    	    
     		    ClockDrawer clockdrawer = new ClockDrawer(ShowTimeActivity.this);
     		    clockdrawer.Draw(imageview, timeprovider.GetTimeSeconds());
     		    

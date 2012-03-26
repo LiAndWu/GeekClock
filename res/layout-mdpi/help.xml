@@ -5,9 +5,37 @@
   android:layout_width="fill_parent"
   android:weightSum="1" android:id="@+id/LinearLayout" android:gravity="center_horizontal" android:layout_height="fill_parent">
     <LinearLayout android:background="@drawable/bar" android:layout_width="fill_parent" android:weightSum="1" android:baselineAligned="false" android:id="@+id/barLinearLayout" android:layout_height="45dp">
-        <Button android:text="上一步" android:layout_height="wrap_content" android:layout_margin="3dip" android:background="@drawable/button_short_background" android:layout_gravity="center_vertical" android:id="@+id/backButton" android:layout_weight="0.06" android:layout_width="80dip"></Button>
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="70dip"
+            android:layout_height="35dip"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dip"
+            android:layout_weight="0.06"
+            android:background="@drawable/button_short_background"
+            android:text="上一步"
+            android:textStyle="bold" >
+</Button>
         <TextView android:id="@+id/neverCallTextView" android:layout_width="wrap_content" android:layout_height="fill_parent" android:gravity="center" android:text="帮助" android:textAppearance="?android:attr/textAppearanceMedium" android:textSize="24dip" android:textStyle="bold" android:layout_weight="0.46"></TextView>
     </LinearLayout>
-    <TextView android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/helpText" android:textStyle="bold" android:textSize="14dp" android:background="@drawable/help_blackground" android:layout_width="315dp" android:gravity="center_vertical|clip_horizontal" android:layout_marginTop="7dip" android:layout_height="379dp" android:autoLink="web|email"></TextView>
+
+    <TextView
+        android:id="@+id/helpText"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="3dip"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="5dip"
+        android:autoLink="web|email"
+        android:background="@drawable/help_blackground"
+        android:gravity="center_vertical|clip_horizontal"
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="14dp"
+        android:textStyle="bold" >
+
+</TextView>
     
 </LinearLayout>

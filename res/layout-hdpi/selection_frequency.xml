@@ -3,15 +3,99 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
   android:layout_height="fill_parent" android:layout_gravity="center" android:layout_width="wrap_content">
-    <LinearLayout android:background="@drawable/bar" android:weightSum="1" android:baselineAligned="false" android:id="@+id/barLinearLayout" android:layout_width="wrap_content" android:layout_height="55dp">
-        <Button android:layout_height="wrap_content" android:text="上一步" android:layout_weight="0.06" android:background="@drawable/button_short_background" android:layout_margin="3dip" android:layout_gravity="center_vertical" android:id="@+id/backButton" android:layout_width="90dip" android:textSize="18dp"></Button>
-        <TextView android:text="刷新频率" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_height="fill_parent" android:gravity="center" android:textStyle="bold" android:id="@+id/neverCallTextView" android:textSize="30dip" android:layout_weight="0.18"></TextView>
+    <LinearLayout android:background="@drawable/bar" android:weightSum="1" android:baselineAligned="false" android:id="@+id/barLinearLayout" android:layout_width="wrap_content" android:layout_height="51dip">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="82dip"
+            android:layout_height="41dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="3dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginTop="3dip"
+            android:layout_weight="0.06"
+            android:background="@drawable/button_short_background"
+            android:text="上一步"
+            android:textStyle="bold" >
+</Button>
+
+        <TextView
+            android:id="@+id/neverCallTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.34"
+            android:gravity="center"
+            android:text="刷新频率"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="26dip"
+            android:textStyle="bold" >
+</TextView>
     </LinearLayout>
     <TextView android:text="现在的的刷新频率是：每10分钟一次" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8dip" android:id="@+id/readFrequencytextView" android:layout_gravity="left" android:textSize="16dip"></TextView>
-    <Button android:text="5分钟" android:background="@drawable/button_background" android:id="@+id/fiveMinutesButton" android:layout_width="fill_parent" android:layout_height="45dip"></Button>
-    <Button android:text="10分钟" android:layout_width="fill_parent" android:background="@drawable/button_background" android:id="@+id/tenMinutesButton" android:layout_height="45dip"></Button>
-    <Button android:text="30分钟" android:layout_width="fill_parent" android:background="@drawable/button_background" android:id="@+id/halfHourButton" android:layout_height="45dip"></Button>
-    <Button android:text="1个小时" android:background="@drawable/button_background" android:layout_width="fill_parent" android:id="@+id/oneHourButton" android:layout_height="45dip"></Button>
-    <Button android:background="@drawable/button_background" android:layout_width="fill_parent" android:text="自定义" android:id="@+id/customButton" android:layout_height="45dip"></Button>
+
+    <Button
+        android:id="@+id/fiveMinutesButton"
+        android:layout_width="fill_parent"
+        android:layout_height="47dip"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="3dip"
+        android:background="@drawable/button_background"
+        android:text="5分钟"
+        android:textStyle="bold" >
+
+</Button>
+
+    <Button
+        android:id="@+id/tenMinutesButton"
+        android:layout_width="fill_parent"
+        android:layout_height="47dip"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="3dip"
+        android:background="@drawable/button_background"
+        android:text="10分钟"
+        android:textStyle="bold" >
+
+</Button>
+
+    <Button
+        android:id="@+id/halfHourButton"
+        android:layout_width="fill_parent"
+        android:layout_height="47dip"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="3dip"
+        android:background="@drawable/button_background"
+        android:text="30分钟"
+        android:textStyle="bold" >
+
+</Button>
+
+    <Button
+        android:id="@+id/oneHourButton"
+        android:layout_width="fill_parent"
+        android:layout_height="47dip"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="3dip"
+        android:background="@drawable/button_background"
+        android:text="1个小时"
+        android:textStyle="bold" >
+
+</Button>
+
+    <Button
+        android:id="@+id/customButton"
+        android:layout_width="fill_parent"
+        android:layout_height="47dip"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="3dip"
+        android:background="@drawable/button_background"
+        android:text="自定义"
+        android:textStyle="bold" >
+
+</Button>
     
 </LinearLayout>

@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/我的坚果铺子/Eclipse/GeekClock/geonames-source-1.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/我的坚果铺子/Eclipse/GeekClock/jdom-1.0.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="lib" path="F:/My DBank/Projects/GeekClock/geonames-source-1.1.2.jar"/>
+	<classpathentry kind="lib" path="F:/My DBank/Projects/GeekClock/jdom-1.0.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

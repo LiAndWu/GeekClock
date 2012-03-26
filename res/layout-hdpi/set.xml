@@ -1,18 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-    <LinearLayout android:id="@+id/barLinearLayout" android:baselineAligned="false" android:background="@drawable/bar" android:layout_width="fill_parent" android:weightSum="1" android:layout_height="55dp">
-        <Button android:text="主页" android:layout_gravity="center_vertical" android:background="@drawable/button_short_background" android:layout_weight="0.06" android:layout_height="wrap_content" android:layout_margin="5dip" android:id="@+id/homepageButton" android:layout_width="90dip" android:textSize="18dp"></Button>
-        <TextView android:gravity="center" android:textAppearance="?android:attr/textAppearanceMedium" android:text="设置" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/neverCallTextView" android:textSize="30dip" android:layout_weight="0.32"></TextView>
-    </LinearLayout>
-    <Button android:layout_width="fill_parent" android:text="@string/feedback_frequency" android:background="@drawable/button_background" android:textStyle="bold" android:id="@+id/readFrequencyButton" android:layout_marginTop="5dip" android:layout_height="45dip"></Button>
-    <Button android:text="时间服务器" android:layout_width="fill_parent" android:background="@drawable/button_background" android:textStyle="bold" android:id="@+id/timeServerButton" android:layout_height="45dip"></Button>
-    <Button android:background="@drawable/button_background" android:layout_width="fill_parent" android:text="注册" android:textStyle="bold" android:id="@+id/registerButton" android:layout_height="45dip"></Button>
-    <Button android:layout_width="fill_parent" android:text="帮助" android:background="@drawable/button_background" android:id="@+id/helpButton" android:textStyle="bold" android:layout_height="45dip"></Button>
-    <Button android:background="@drawable/button_background" android:layout_width="fill_parent" android:text="鸣谢" android:textStyle="bold" android:id="@+id/thanksButton" android:layout_height="45dip"></Button>
-    <Button android:background="@drawable/button_background" android:layout_width="fill_parent" android:text="关于" android:textStyle="bold" android:id="@+id/aboutButton" android:layout_height="45dip"></Button>
-    
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<LinearLayout android:id="@+id/barLinearLayout"
+		android:baselineAligned="false" android:background="@drawable/bar"
+		android:layout_width="fill_parent" android:weightSum="1"
+		android:layout_height="51dip">
+
+		<Button
+		    android:id="@+id/homepageButton"
+		    android:layout_width="82dip"
+		    android:layout_height="41dip"
+		    android:layout_gravity="center_vertical"
+		    android:layout_marginBottom="3dip"
+		    android:layout_marginLeft="5dip"
+		    android:layout_marginTop="3dip"
+		    android:layout_weight="0.06"
+		    android:background="@drawable/button_short_background"
+		    android:text="主页" android:textStyle="bold">
+
+</Button>
+		<TextView android:gravity="center"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:text="设置" android:textStyle="bold" android:layout_width="wrap_content"
+			android:layout_height="fill_parent" android:textSize="28dip"
+			android:id="@+id/neverCallTextView" android:layout_weight="0.41"></TextView>
+	</LinearLayout>
+
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/readFrequencyButton"
+	    android:layout_width="fill_parent"
+	    android:layout_height="47dip"
+	    android:layout_marginLeft="3dip"
+	    android:layout_marginRight="3dip"
+	    android:layout_marginTop="8dip"
+	    android:background="@drawable/button_background"
+	    android:baselineAligned="false"
+	    android:clickable="true"
+	    android:orientation="horizontal"
+	    android:weightSum="1" >
+
+		<TextView android:text="反馈频率" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_gravity="center_vertical" android:textColor="#000000"
+			android:textStyle="bold" android:layout_height="wrap_content"
+			android:layout_marginLeft="14dip" android:id="@+id/title_of_widget"
+			android:layout_width="100dip" android:layout_weight="0.9"
+			android:textSize="17dip">
+		</TextView>
+
+		<ImageView android:id="@+id/iv" android:src="@drawable/black_chevron"
+			android:layout_height="fill_parent" android:layout_width="wrap_content"
+			android:layout_gravity="right" android:layout_marginRight="2dip">
+		</ImageView>
+	</LinearLayout>
+
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/timeServerButton"
+	    android:layout_width="fill_parent"
+	    android:layout_height="47dip"
+	    android:layout_marginLeft="3dip"
+	    android:layout_marginRight="3dip"
+	    android:layout_marginTop="3dip"
+	    android:background="@drawable/button_background"
+	    android:baselineAligned="false"
+	    android:clickable="true"
+	    android:orientation="horizontal"
+	    android:weightSum="1" >
+
+		<TextView android:text="时间服务器" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_gravity="center_vertical" android:textColor="#000000"
+			android:textStyle="bold" android:layout_height="wrap_content"
+			android:layout_marginLeft="14dip" android:id="@+id/title_of_widget"
+			android:layout_width="100dip" android:layout_weight="0.9"
+			android:textSize="17dip">
+		</TextView>
+
+		<ImageView android:id="@+id/iv" android:src="@drawable/black_chevron"
+			android:layout_height="fill_parent" android:layout_width="wrap_content"
+			android:layout_gravity="right" android:layout_marginRight="2dip">
+		</ImageView>
+	</LinearLayout>
+
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/registerButton"
+	    android:layout_width="fill_parent"
+	    android:layout_height="47dip"
+	    android:layout_marginLeft="3dip"
+	    android:layout_marginRight="3dip"
+	    android:layout_marginTop="3dip"
+	    android:background="@drawable/button_background"
+	    android:baselineAligned="false"
+	    android:clickable="true"
+	    android:orientation="horizontal"
+	    android:weightSum="1" >
+
+		<TextView android:text="注册" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_gravity="center_vertical" android:textColor="#000000"
+			android:textStyle="bold" android:layout_height="wrap_content"
+			android:layout_marginLeft="14dip" android:id="@+id/title_of_widget"
+			android:layout_width="100dip" android:layout_weight="0.9"
+			android:textSize="17dip">
+		</TextView>
+
+		<ImageView android:id="@+id/iv" android:src="@drawable/black_chevron"
+			android:layout_height="fill_parent" android:layout_width="wrap_content"
+			android:layout_gravity="right" android:layout_marginRight="2dip">
+		</ImageView>
+	</LinearLayout>
+
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/helpButton"
+	    android:layout_width="fill_parent"
+	    android:layout_height="47dip"
+	    android:layout_marginLeft="3dip"
+	    android:layout_marginRight="3dip"
+	    android:layout_marginTop="3dip"
+	    android:background="@drawable/button_background"
+	    android:baselineAligned="false"
+	    android:clickable="true"
+	    android:orientation="horizontal"
+	    android:weightSum="1" >
+
+		<TextView android:text="帮助" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_gravity="center_vertical" android:textColor="#000000"
+			android:textStyle="bold" android:layout_height="wrap_content"
+			android:layout_marginLeft="14dip" android:id="@+id/title_of_widget"
+			android:layout_width="100dip" android:layout_weight="0.9"
+			android:textSize="17dip">
+		</TextView>
+
+		<ImageView android:id="@+id/iv" android:src="@drawable/black_chevron"
+			android:layout_height="fill_parent" android:layout_width="wrap_content"
+			android:layout_gravity="right" android:layout_marginRight="2dip">
+		</ImageView>
+	</LinearLayout>
+
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/thanksButton"
+	    android:layout_width="fill_parent"
+	    android:layout_height="47dip"
+	    android:layout_marginLeft="3dip"
+	    android:layout_marginRight="3dip"
+	    android:layout_marginTop="3dip"
+	    android:background="@drawable/button_background"
+	    android:baselineAligned="false"
+	    android:clickable="true"
+	    android:orientation="horizontal"
+	    android:weightSum="1" >
+
+		<TextView android:text="鸣谢" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_gravity="center_vertical" android:textColor="#000000"
+			android:textStyle="bold" android:layout_height="wrap_content"
+			android:layout_marginLeft="14dip" android:id="@+id/title_of_widget"
+			android:layout_width="100dip" android:layout_weight="0.9"
+			android:textSize="17dip">
+		</TextView>
+
+		<ImageView android:id="@+id/iv" android:src="@drawable/black_chevron"
+			android:layout_height="fill_parent" android:layout_width="wrap_content"
+			android:layout_gravity="right" android:layout_marginRight="2dip">
+		</ImageView>
+	</LinearLayout>
+
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/aboutButton"
+	    android:layout_width="fill_parent"
+	    android:layout_height="47dip"
+	    android:layout_marginLeft="3dip"
+	    android:layout_marginRight="3dip"
+	    android:layout_marginTop="3dip"
+	    android:background="@drawable/button_background"
+	    android:baselineAligned="false"
+	    android:clickable="true"
+	    android:orientation="horizontal"
+	    android:weightSum="1" >
+
+		<TextView android:text="关于" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_gravity="center_vertical" android:textColor="#000000"
+			android:textStyle="bold" android:layout_height="wrap_content"
+			android:layout_marginLeft="14dip" android:id="@+id/title_of_widget"
+			android:layout_width="100dip" android:layout_weight="0.9"
+			android:textSize="17dip">
+		</TextView>
+
+		<ImageView android:id="@+id/iv" android:src="@drawable/black_chevron"
+			android:layout_height="fill_parent" android:layout_width="wrap_content"
+			android:layout_gravity="right" android:layout_marginRight="2dip">
+		</ImageView>
+	</LinearLayout>
+
 </LinearLayout>

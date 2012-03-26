@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 public class ThanksActivity extends Activity {
@@ -12,6 +13,7 @@ public class ThanksActivity extends Activity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.thanks);
 		
@@ -19,13 +21,8 @@ public class ThanksActivity extends Activity {
 		m_BackButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/* 新建一个Intent对象 */
-				Intent intent = new Intent();
-				/* 指定intent要启动的类 */
-				intent.setClass(ThanksActivity.this, SetActivity.class);
-				/* 启动一个新的Activity */
+				Intent intent = new Intent(ThanksActivity.this, SetActivity.class);
 				startActivity(intent);
-				/* 关闭当前的Activity */
 				ThanksActivity.this.finish();
 			}
 		});

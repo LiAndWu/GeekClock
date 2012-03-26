@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class TurntableActivity extends Activity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) { 
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.turntable);
 		
@@ -51,13 +53,8 @@ public class TurntableActivity extends Activity {
 		m_BackButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/* 新建一个Intent对象 */
-				Intent intent = new Intent();
-				/* 指定intent要启动的类 */
-				intent.setClass(TurntableActivity.this, ReadFrequencyActivity.class);
-				/* 启动一个新的Activity */
+				Intent intent = new Intent(TurntableActivity.this, ReadFrequencyActivity.class);
 				startActivity(intent);
-				/* 关闭当前的Activity */
 				TurntableActivity.this.finish();
 			}
 		});
@@ -91,13 +88,8 @@ public class TurntableActivity extends Activity {
 					e.printStackTrace();
 				}
 		        
-				/* 新建一个Intent对象 */
-				Intent intent = new Intent();
-				/* 指定intent要启动的类 */
-				intent.setClass(TurntableActivity.this, ReadFrequencyActivity.class);
-				/* 启动一个新的Activity */
+				Intent intent = new Intent(TurntableActivity.this, ReadFrequencyActivity.class);
 				startActivity(intent);
-				/* 关闭当前的Activity */
 				TurntableActivity.this.finish();
 			}
 		});

@@ -37,12 +37,9 @@ public class MainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         TabHost mTabHost = this.getTabHost();
-       // mTabHost.setBackgroundColor(Color.argb(0, 83, 74, 70));
         
         if(initialized == false){
         	initialized = true; 
-        	@SuppressWarnings("unused")
-			int tmp;
         try 
         {
 			FileInputStream fileInputStream = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");

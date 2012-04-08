@@ -46,11 +46,8 @@ public class ShowTimeActivity extends Activity {
 	    TimeProvider.SetServerAddress(sp.getSetting(SettingProvider.CHOSEN_SREVER_ADDRESS));
 	    
 	    int freq = Integer.valueOf(sp.getSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS));
-	    MoreActivity.ReadFrequencyHour = freq/3600;
-	    MoreActivity.ReadFrequencyMinute = freq%3600/60;
 	    
 	    WebService.setUserName(sp.getSetting(SettingProvider.GEONAMES_USER_NAME));
-	    TimeProvider.GeoNamesUserName = sp.getSetting(SettingProvider.GEONAMES_USER_NAME);
         
         //显示时钟
         imageview = (ImageView) findViewById(R.id.imageView);

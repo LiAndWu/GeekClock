@@ -17,7 +17,6 @@ public class TimeProvider{
 	private double UTC;
 	static boolean Synchronized = false;
 	static private long TimeOffset = 0;
-	static public String GeoNamesUserName  = "tikiet";
 	static private boolean TimezoneError = true;
 	static private boolean UTCError = true;
 	Date date = new Date();
@@ -87,7 +86,9 @@ public class TimeProvider{
 	@SuppressWarnings("deprecation")
 	public static int GetTimezone(double latitude, double longitude){
 		try {
-    		WebService.setUserName(GeoNamesUserName);
+			SettingProvider sp = SettingProvider.getInstance();
+			
+    		WebService.setUserName(sp.getSetting(SettingProvider.GEONAMES_USER_NAME));
 			Timezone tmz = WebService.timezone(latitude, longitude);
 			placeName = WebService.findNearbyPlaceName(latitude, longitude).iterator().next().getName();
 			CurrentTimezone =  tmz.getGmtOffset();

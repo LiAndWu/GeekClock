@@ -28,17 +28,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class TimeServerListActivity extends Activity {
-	
 	private Button m_BackButton;
-
 	private TextView				m_TimeServerTextView;
 	private Spinner					m_TimeServerSpinner;
 	private ArrayAdapter<String>	adapter;
-	
-	@SuppressWarnings("unused")
-	private static boolean firstSet = true;
-	@SuppressWarnings("unused")
-	private static int previousArg = 0;
 	
 	String []ServerNameList = null;
 	String []ServerAddressList = null;

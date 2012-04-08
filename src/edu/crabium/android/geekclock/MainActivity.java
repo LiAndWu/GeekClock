@@ -1,17 +1,9 @@
 package edu.crabium.android.geekclock;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import edu.crabium.android.geekclock.R;
 
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -26,7 +18,6 @@ import android.widget.TextView;
 
 public class MainActivity extends TabActivity {
     /** Called when the activity is first created. */
-    private static boolean initialized = false;
     
     public TabWidget tw;
     @Override
@@ -37,7 +28,6 @@ public class MainActivity extends TabActivity {
         TabHost mTabHost = this.getTabHost();
         
         SettingProvider.SetContext(this);
-        SettingProvider sp = SettingProvider.getInstance();
         
         mTabHost.addTab(mTabHost.newTabSpec("tab1")
         		//.setIndicator("更多信息",getResources().getDrawable(R.drawable.clock))

@@ -1,15 +1,5 @@
 package edu.crabium.android.geekclock;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
-
 import edu.crabium.android.geekclock.R;
 
 import android.app.Activity;
@@ -51,10 +41,12 @@ public class GeonamesRegisterActivity extends Activity {
 		});
 		
 		m_ShowUsernameTextView = (TextView)findViewById(R.id.showUsernameTextView);
-		if(TimeProvider.GeoNamesUserName == "tikiet") {
+		SettingProvider sp = SettingProvider.getInstance();
+		String geoNamesUserName = sp.getSetting(SettingProvider.GEONAMES_USER_NAME);
+		if(geoNamesUserName == "tikiet") {
 			m_ShowUsernameTextView.setText("\t现在使用的账户是公用账户, 查询次数有限, 建议注册私人账号.");
 		} else {
-			m_ShowUsernameTextView.setText("正在使用的账户是:\n" + TimeProvider.GeoNamesUserName);
+			m_ShowUsernameTextView.setText("正在使用的账户是:\n" + geoNamesUserName);
 		}
 		
 		
@@ -64,11 +56,7 @@ public class GeonamesRegisterActivity extends Activity {
 			@Override
 			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 				m_InputRecord = m_UsernameExitText.getText().toString();
-				if(m_InputRecord.length() >= 25) {
-					DisplayToast("用户名输入过长！！");
-				} else {
-					DisplayToast("用户名是:\n" + m_InputRecord);
-				}
+				DisplayToast( m_InputRecord.length() >= 25 ? "用户名输入过长！！" : "用户名是:\n" + m_InputRecord);
 				return false;
 			}
 		});
@@ -82,14 +70,13 @@ public class GeonamesRegisterActivity extends Activity {
 				if (m_InputRecord == null || m_InputRecord.trim().equals("")) {
 					DisplayToast("骚年，请正确输入！！");
 				} else {			
-					TimeProvider.GeoNamesUserName = m_InputRecord;
 					DisplayToast("输入成功！！");
-					m_ShowUsernameTextView.setText("正在使用的账户是:：\n" + TimeProvider.GeoNamesUserName);
+					m_ShowUsernameTextView.setText("正在使用的账户是:：\n" + m_InputRecord);
 					m_UsernameExitText.setFocusable(false);
 					m_UsernameExitText.setFocusableInTouchMode(false);
 
 					SettingProvider sp = SettingProvider.getInstance();
-					sp.addSetting(SettingProvider.GEONAMES_USER_NAME, TimeProvider.GeoNamesUserName);
+					sp.addSetting(SettingProvider.GEONAMES_USER_NAME, m_InputRecord);
 				}
 			}
 		});

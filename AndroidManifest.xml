@@ -46,7 +46,10 @@
    		<activity android:name="TimeServerListActivity"
 				  android:screenOrientation="portrait"
 				  android:configChanges="orientation|keyboardHidden" > </activity>
-   		<activity android:name=".AboutActivity"
+   		<activity android:name="AboutActivity"
+				  android:screenOrientation="portrait"
+				  android:configChanges="orientation|keyboardHidden" > </activity>
+   		<activity android:name=".wheel.WheelView"
 				  android:screenOrientation="portrait"
 				  android:configChanges="orientation|keyboardHidden" > </activity>
  

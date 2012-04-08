@@ -78,7 +78,8 @@ public class GeonamesRegisterActivity extends Activity {
 		m_ConfirmButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (m_InputRecord == null) {
+				m_InputRecord = m_UsernameExitText.getText().toString();
+				if (m_InputRecord == null || m_InputRecord.trim().equals("")) {
 					DisplayToast("骚年，请正确输入！！");
 				} else {			
 					TimeProvider.GeoNamesUserName = m_InputRecord;
@@ -86,31 +87,9 @@ public class GeonamesRegisterActivity extends Activity {
 					m_ShowUsernameTextView.setText("正在使用的账户是:：\n" + TimeProvider.GeoNamesUserName);
 					m_UsernameExitText.setFocusable(false);
 					m_UsernameExitText.setFocusableInTouchMode(false);
-					
-					
-					//写入设置
-			        SAXBuilder saxBuilder = new SAXBuilder();
-			        try 
-			        {
-			        	FileInputStream fileInputStream  = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-						Document document = saxBuilder.build(fileInputStream);
-						fileInputStream.close();
-						
-						Element root = document.getRootElement();
-						Element GeoNamesConfig = root.getChild("GeoNames");
-						Element GeoNamesUserName = GeoNamesConfig.getChild("UserName");
-						GeoNamesUserName.setText(TimeProvider.GeoNamesUserName);
-						XMLOutputter out = new XMLOutputter();
-						FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-						out.output(document,fileOutputStream);  
-						
-						fileOutputStream.flush();
-						fileOutputStream.close();
-						
-					} catch(IOException e){
-					} catch (JDOMException e){
-						e.printStackTrace();
-					}
+
+					SettingProvider sp = SettingProvider.getInstance();
+					sp.addSetting(SettingProvider.GEONAMES_USER_NAME, TimeProvider.GeoNamesUserName);
 				}
 			}
 		});

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -44,51 +45,22 @@ public class TimeServerListActivity extends Activity {
 	
 	private int ServerSelectedTimes = 0;  
 	
-	@SuppressWarnings("unused")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.time_server_list);
 		
-		AssetManager assets = getAssets();
-        SAXBuilder saxBuilder = new SAXBuilder();
-        try 
-        {
-        	FileInputStream fileInputStream  = new FileInputStream("/data/data/edu.crabium.android.geekclock/files/geekclock.xml");
-			Document document = saxBuilder.build(fileInputStream);
-			fileInputStream.close();
-			
-			Element root = document.getRootElement();
-			Element NTPServer = root.getChild("NTPServer");
-			
-			//获得选中服务器的信息 
-		    @SuppressWarnings("rawtypes")
-			List servers = NTPServer.getChildren("Server"); 
-		    ServerNameList = new String[servers.size()];
-		    ServerAddressList = new String[servers.size()];
-		    @SuppressWarnings("unchecked")
-			Iterator<Element> iterator = servers.iterator();
-		    int i = 0;
-		    while(iterator.hasNext())
-		    {
-		    	Element server = iterator.next();
-
-		      ServerNameList[i] = server.getChild("Name").getValue();
-		        ServerAddressList[i] = server.getChild("Address").getValue();
-		        i++;
-		   }
-		} 
-        
-        catch (IOException e1) 
-		{
-			e1.printStackTrace();
-		} 
-        catch (JDOMException e) 
-		{
-			e.printStackTrace();
+		SettingProvider sp = SettingProvider.getInstance();
+		Map<String, String> map = sp.getServers();
+		ServerNameList = new String[map.keySet().size()];
+		ServerAddressList = new String[map.keySet().size()];
+		int i = 0;
+		for(String key : map.keySet()){
+			ServerNameList[i] = key;
+			ServerAddressList[i] = map.get(key);
+			i++;
 		}
-        
         
 		m_BackButton = (Button)findViewById(R.id.backButton);
 		m_BackButton.setOnClickListener(new Button.OnClickListener() {
@@ -104,6 +76,7 @@ public class TimeServerListActivity extends Activity {
 		m_TimeServerTextView = (TextView) findViewById(R.id.timeServerTextView);
 		m_TimeServerSpinner = (Spinner) findViewById(R.id.timeServerSpinner);
 
+		m_TimeServerTextView.setText("现在的时间服务器是：\n" + TimeProvider.GetServerName());
 		//将可选内容与ArrayAdapter连接
 		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ServerNameList);
 
@@ -115,60 +88,26 @@ public class TimeServerListActivity extends Activity {
 
 		//添加Spinner事件监听
 		m_TimeServerSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				
 				ServerSelectedTimes++;
-				
-				if(ServerSelectedTimes > 1)
-				{
-					//写入设置
-			        SAXBuilder saxBuilder = new SAXBuilder();
-			        try 
-			        {
-			        	FileInputStream fileInputStream  = new FileInputStream("/data/data/edu.crabium.android.geekclock/files/geekclock.xml");
-						Document document = saxBuilder.build(fileInputStream);
-						fileInputStream.close();
+				if(ServerSelectedTimes > 1){
+					SettingProvider sp = SettingProvider.getInstance();
+					sp.addSetting(SettingProvider.CHOSEN_SERVER_NAME, ServerNameList[arg2]);
+					sp.addSetting(SettingProvider.CHOSEN_SREVER_ADDRESS, ServerAddressList[arg2]);
+					TimeProvider.SetServerName(ServerNameList[arg2]);
+					TimeProvider.SetServerAddress(ServerAddressList[arg2]);
 						
-						Element root = document.getRootElement();
-						Element NTPServer = root.getChild("NTPServer");
-						Element Chosen = NTPServer.getChild("Chosen");
-						Chosen.getChild("Name").setText(ServerNameList[arg2]);
-						Chosen.getChild("Address").setText(ServerAddressList[arg2]);
-						
-						TimeProvider.SetServerName(ServerNameList[arg2]);
-						TimeProvider.SetServerAddress(ServerAddressList[arg2]);
-						
-						
-						XMLOutputter out = new XMLOutputter();
-						FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android.geekclock/files/geekclock.xml");
-						out.output(document,fileOutputStream);
-						fileOutputStream.flush();
-						fileOutputStream.close();
-						
-					} catch(IOException e)
-					{
-						
-					} catch (JDOMException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} else {
-					
+					m_TimeServerTextView.setText("现在的时间服务器是：\n" + TimeProvider.GetServerName());
+					//设置显示当前选择的项
+					arg0.setVisibility(View.VISIBLE);
 				}
-				m_TimeServerTextView.setText("现在的时间服务器是：\n" + TimeProvider.GetServerName());
-				//设置显示当前选择的项
-				arg0.setVisibility(View.VISIBLE);
-				
-				Log.d(String.valueOf(ServerSelectedTimes),"func");
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
 			}
-
 		});
 	}
 }

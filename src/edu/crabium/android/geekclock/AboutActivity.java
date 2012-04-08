@@ -54,8 +54,7 @@ public class AboutActivity extends Activity {
 		m_BackButton = (Button) findViewById(R.id.backButton);
 		m_BackButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(AboutActivity.this,
-						SetActivity.class);
+				Intent intent = new Intent(AboutActivity.this,SetActivity.class);
 				startActivity(intent);
 				AboutActivity.this.finish();
 			}

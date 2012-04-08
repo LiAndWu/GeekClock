@@ -40,44 +40,17 @@ public class ShowTimeActivity extends Activity {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.showclock);
-        
-      //载入初始化信息
-        SAXBuilder saxBuilder = new SAXBuilder();
-        try 
-        {
-        	FileInputStream fileInputStream  = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-			Document document = saxBuilder.build(fileInputStream);
-		    fileInputStream.close();
-			Element root = document.getRootElement();
-			Element NTPServer = root.getChild("NTPServer");
-			
-			//获得选中服务器的信息
-			Element server = NTPServer.getChild("Chosen");
-			TimeProvider.SetServerName(server.getChild("Name").getValue());
-		    TimeProvider.SetServerAddress(server.getChild("Address").getValue());
-		    
-		    //获得刷新时间
-		    Element GPSConfig = root.getChild("GPSConfig");
-		    Element RefreshFrequency = GPSConfig.getChild("RefreshFrequency");
-		    MoreActivity.ReadFrequencyHour = Integer.valueOf(RefreshFrequency.getChild("Hour").getValue());
-		    MoreActivity.ReadFrequencyMinute = Integer.valueOf(RefreshFrequency.getChild("Minute").getValue());	
-		    
-		    //获得Geonames用户名
-		    Element ele_GeoNamesConfig = root.getChild("GeoNames");
-		    Element ele_GeoNamesUserName = ele_GeoNamesConfig.getChild("UserName");
-		    WebService.setUserName(ele_GeoNamesUserName.getValue());
-		    TimeProvider.GeoNamesUserName = ele_GeoNamesUserName.getValue();
-
-		} 
-        
-        catch (IOException e1) 
-		{
-			e1.printStackTrace();
-		} 
-        catch (JDOMException e) 
-		{
-			e.printStackTrace();
-		}
+        SettingProvider sp = SettingProvider.getInstance();
+		
+		TimeProvider.SetServerName(sp.getSetting(SettingProvider.CHOSEN_SERVER_NAME));
+	    TimeProvider.SetServerAddress(sp.getSetting(SettingProvider.CHOSEN_SREVER_ADDRESS));
+	    
+	    int freq = Integer.valueOf(sp.getSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS));
+	    MoreActivity.ReadFrequencyHour = freq/3600;
+	    MoreActivity.ReadFrequencyMinute = freq%3600/60;
+	    
+	    WebService.setUserName(sp.getSetting(SettingProvider.GEONAMES_USER_NAME));
+	    TimeProvider.GeoNamesUserName = sp.getSetting(SettingProvider.GEONAMES_USER_NAME);
         
         //显示时钟
         imageview = (ImageView) findViewById(R.id.imageView);

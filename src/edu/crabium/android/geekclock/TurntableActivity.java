@@ -1,16 +1,5 @@
 package edu.crabium.android.geekclock;
 
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
-import edu.crabium.android.geekclock.R;
 import edu.crabium.android.geekclock.wheel.NumericWheelAdapter;
 import edu.crabium.android.geekclock.wheel.OnWheelChangedListener;
 import edu.crabium.android.geekclock.wheel.OnWheelScrollListener;
@@ -64,30 +53,12 @@ public class TurntableActivity extends Activity {
 		m_ConfirmButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				//写入设置
-		        SAXBuilder saxBuilder = new SAXBuilder();
-		        try 
-		        {
-		        	FileInputStream fileInputStream = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					Document document = saxBuilder.build(fileInputStream);
-					fileInputStream.close();
-					
-					Element root = document.getRootElement();
-					Element GPSConfig = root.getChild("GPSConfig");
-					Element RefreshFrequency = GPSConfig.getChild("RefreshFrequency");
-					RefreshFrequency.getChild("Hour").setText(String.valueOf(MoreActivity.ReadFrequencyHour));
-					RefreshFrequency.getChild("Minute").setText(String.valueOf(MoreActivity.ReadFrequencyMinute));
-					XMLOutputter out = new XMLOutputter();
-					FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					out.output(document,fileOutputStream);
-					fileOutputStream.flush();
-					fileOutputStream.close();
-				} catch(IOException e){
-				} catch (JDOMException e){
-					e.printStackTrace();
-				}
-		        
+				SettingProvider sp = SettingProvider.getInstance();
+				int hour = Integer.valueOf(MoreActivity.ReadFrequencyHour);
+				int minute = Integer.valueOf(MoreActivity.ReadFrequencyMinute);
+				int seconds = hour*3600 + minute * 60;
+				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(seconds));
+
 				Intent intent = new Intent(TurntableActivity.this, ReadFrequencyActivity.class);
 				startActivity(intent);
 				TurntableActivity.this.finish();

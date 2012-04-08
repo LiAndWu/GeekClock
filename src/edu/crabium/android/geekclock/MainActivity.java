@@ -36,40 +36,8 @@ public class MainActivity extends TabActivity {
         setContentView(R.layout.main);
         TabHost mTabHost = this.getTabHost();
         
-        if(initialized == false){
-        	initialized = true; 
-        try 
-        {
-			FileInputStream fileInputStream = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-			fileInputStream.close();
-		} 
-        catch (FileNotFoundException e) 
-		{
-        	AssetManager assets = getAssets();
-        	try 
-        	{
-				FileOutputStream fileOutputStream =this.openFileOutput("geekclock.xml",Context.MODE_PRIVATE);
-				InputStream fileInputStream = assets.open("geekclock.xml");
-
-				byte[] buffer = new byte[1024];
-				int length = -1;
-				while((length = fileInputStream.read(buffer)) != -1 )
-				{
-				    fileOutputStream.write(buffer, 0, length);
-				}
-
-				fileOutputStream.flush();
-				fileOutputStream.close();
-			} 
-        	catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}    			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        }
+        SettingProvider.SetContext(this);
+        SettingProvider sp = SettingProvider.getInstance();
         
         mTabHost.addTab(mTabHost.newTabSpec("tab1")
         		//.setIndicator("更多信息",getResources().getDrawable(R.drawable.clock))

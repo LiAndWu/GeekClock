@@ -1,27 +1,59 @@
 package edu.crabium.android.geekclock;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class SettingProvider {
 	private static final String MISC_TABLE_NAME = "misc";
 	private static final String SERVER_TABLE_NAME = "server";
+	private static Context context;
 	
-	private SettingProvider(){
-		File database = new File("/data/data/edu.crabium.android.geekclock/geekclock.sqlite3");
-		if(!database.exists()){
-			//TODO move default database from assets/ to geek clock folder
-		}
-	}
+	public static final String GEONAMES_USER_NAME = "geonames_user_name";
+	public static final String REFRESH_FREQUENCY_SECONDS = "refresh_frequency_seconds";
+	public static final String CHOSEN_SERVER_NAME = "chosen_server_name";
+	public static final String CHOSEN_SREVER_ADDRESS = "chosen_server_address";
+	
+	private SettingProvider(){}
 	
 	private static final SettingProvider INSTANCE = new SettingProvider();
-	public SettingProvider getInstance(){
+	
+	public static void SetContext(Context context){
+		SettingProvider.context = context;
+	}
+	public static SettingProvider getInstance(){
+		File database = new File("/data/data/edu.crabium.android.geekclock/geekclock.sqlite3");
+		if(!database.exists()){
+			AssetManager assets = context.getAssets();
+        	try{
+				FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android.geekclock/geekclock.sqlite3");
+				InputStream fileInputStream = assets.open("geekclock.sqlite3");
+
+				byte[] buffer = new byte[1024];
+				int length = -1;
+				while((length = fileInputStream.read(buffer)) != -1 ){
+				    fileOutputStream.write(buffer, 0, length);
+				}
+				fileOutputStream.flush();
+				fileOutputStream.close();
+			} 
+        	catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}    			
+		}
 		return INSTANCE;
 	}
 

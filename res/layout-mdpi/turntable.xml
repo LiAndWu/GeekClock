@@ -1,17 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent" android:background="@drawable/turntable" android:orientation="vertical" android:weightSum="1">
-    <LinearLayout android:baselineAligned="false" android:background="@drawable/bar" android:id="@+id/barLinearLayout" android:weightSum="1" android:layout_width="fill_parent" android:layout_height="45dp">
-        <Button android:text="上一步" android:layout_margin="5dip" android:layout_weight="0.06" android:layout_gravity="center_vertical" android:background="@drawable/button_short_background" android:layout_height="35dip" android:id="@+id/backButton" android:layout_width="70dip"></Button>
-        <TextView android:layout_width="wrap_content" android:textStyle="bold" android:text="设置频率" android:textAppearance="?android:attr/textAppearanceMedium" android:textSize="23dip" android:layout_height="fill_parent" android:id="@+id/neverCallTextView" android:gravity="center" android:layout_weight="0.38"></TextView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/turntable"
+    android:orientation="vertical"
+    android:weightSum="1" >
+
+    <LinearLayout
+        android:id="@+id/barLinearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/bar"
+        android:baselineAligned="false"
+        android:weightSum="1" >
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="70dip"
+            android:layout_height="35dip"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dip"
+            android:layout_weight="0.06"
+            android:background="@drawable/button_short_background"
+            android:text="上一步" >
+        </Button>
+
+        <TextView
+            android:id="@+id/neverCallTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.38"
+            android:gravity="center"
+            android:text="设置频率"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="23dip"
+            android:textStyle="bold" >
+        </TextView>
     </LinearLayout>
-    <LinearLayout android:layout_gravity="center_horizontal" android:paddingTop="10dp" android:paddingLeft="12dp" android:paddingRight="12dp" android:weightSum="1" android:layout_height="wrap_content" android:layout_width="276dp">
-        <edu.crabium.android.wheel.WheelView android:layout_width="116dp" android:id="@+id/hour" android:layout_height="fill_parent" android:layout_gravity="fill_horizontal" android:layout_weight="0.46"></edu.crabium.android.wheel.WheelView>
-        <edu.crabium.android.wheel.WheelView android:layout_width="120dp" android:layout_gravity="fill_horizontal" android:layout_height="fill_parent" android:id="@+id/mins" android:layout_weight="0.56"></edu.crabium.android.wheel.WheelView>
+
+    <LinearLayout
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="10dp"
+        android:weightSum="1" >
+
+        <edu.crabium.android.geekclock.wheel.WheelView
+            android:id="@+id/hour"
+            android:layout_width="116dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="fill_horizontal"
+            android:layout_weight="0.46" >
+        </edu.crabium.android.geekclock.wheel.WheelView>
+
+        <edu.crabium.android.geekclock.wheel.WheelView
+            android:id="@+id/mins"
+            android:layout_width="120dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="fill_horizontal"
+            android:layout_weight="0.56" >
+        </edu.crabium.android.geekclock.wheel.WheelView>
     </LinearLayout>
-
+
     <TextView
         android:id="@+id/showFrequencyTextView"
         android:layout_width="284dp"
@@ -20,8 +72,16 @@
         android:layout_marginTop="60dip"
         android:text="现在的刷新频率是：每0小时00分钟一次"
         android:textSize="16dip" >
+    </TextView>
 
-</TextView>
-    <Button android:text="确定" android:layout_gravity="center_horizontal" android:id="@+id/confirmButton" android:background="@drawable/button_blackground_normal_green" android:layout_width="299dp" android:layout_height="49dp" android:layout_marginTop="26dip"></Button>
-    
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="299dp"
+        android:layout_height="49dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="26dip"
+        android:background="@drawable/button_blackground_normal_green"
+        android:text="确定" >
+    </Button>
+
 </LinearLayout>

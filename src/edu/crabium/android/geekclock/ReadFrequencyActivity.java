@@ -1,16 +1,6 @@
 package edu.crabium.android.geekclock;
 
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
-
 import edu.crabium.android.geekclock.R;
 
 import android.app.Activity;
@@ -70,29 +60,12 @@ public class ReadFrequencyActivity extends Activity{
 				MoreActivity.ReadFrequencyHour = 0;
 				MoreActivity.ReadFrequencyMinute = 5;
 				m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每5分钟一次");	
-				
-				//写入设置
-		        SAXBuilder saxBuilder = new SAXBuilder();
-		        try 
-		        {
-		        	FileInputStream fileInputStream = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					Document document = saxBuilder.build(fileInputStream);
-					fileInputStream.close();
-					
-					Element root = document.getRootElement();
-					Element GPSConfig = root.getChild("GPSConfig");
-					Element RefreshFrequency = GPSConfig.getChild("RefreshFrequency");
-					RefreshFrequency.getChild("Hour").setText(String.valueOf(MoreActivity.ReadFrequencyHour));
-					RefreshFrequency.getChild("Minute").setText(String.valueOf(MoreActivity.ReadFrequencyMinute));
-					XMLOutputter out = new XMLOutputter();
-					FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					out.output(document, fileOutputStream);
-					fileOutputStream.flush();
-					fileOutputStream.close();
-				} catch(IOException e){
-				} catch (JDOMException e){
-					e.printStackTrace();
-				}
+
+				SettingProvider sp = SettingProvider.getInstance();
+				int hour = Integer.valueOf(MoreActivity.ReadFrequencyHour);
+				int minute = Integer.valueOf(MoreActivity.ReadFrequencyMinute);
+				int seconds = hour*3600 + minute * 60;
+				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(seconds));
 			}
 		});
 		
@@ -103,28 +76,11 @@ public class ReadFrequencyActivity extends Activity{
 				MoreActivity.ReadFrequencyMinute = 10;
 				m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每10分钟一次");	
 				
-				//写入设置
-		        SAXBuilder saxBuilder = new SAXBuilder();
-		        try 
-		        {
-		        	FileInputStream fileInputStream = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					Document document = saxBuilder.build(fileInputStream);
-					fileInputStream.close();
-					
-					Element root = document.getRootElement();
-					Element GPSConfig = root.getChild("GPSConfig");
-					Element RefreshFrequency = GPSConfig.getChild("RefreshFrequency");
-					RefreshFrequency.getChild("Hour").setText(String.valueOf(MoreActivity.ReadFrequencyHour));
-					RefreshFrequency.getChild("Minute").setText(String.valueOf(MoreActivity.ReadFrequencyMinute));
-					XMLOutputter out = new XMLOutputter();
-					FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					out.output(document, fileOutputStream);
-					fileOutputStream.flush();
-					fileOutputStream.close();
-				} catch(IOException e){
-				} catch (JDOMException e){
-					e.printStackTrace();
-				}
+				SettingProvider sp = SettingProvider.getInstance();
+				int hour = Integer.valueOf(MoreActivity.ReadFrequencyHour);
+				int minute = Integer.valueOf(MoreActivity.ReadFrequencyMinute);
+				int seconds = hour*3600 + minute * 60;
+				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(seconds));
 			}
 		});
 		
@@ -134,31 +90,14 @@ public class ReadFrequencyActivity extends Activity{
 				MoreActivity.ReadFrequencyHour = 0;
 				MoreActivity.ReadFrequencyMinute = 30;
 				m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每30分钟一次");	
-				
-				//写入设置
-		        SAXBuilder saxBuilder = new SAXBuilder();
-		        try 
-		        {
-		        	FileInputStream fileInputStream = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					Document document = saxBuilder.build(fileInputStream);
-					fileInputStream.close();
-					
-					Element root = document.getRootElement();
-					Element GPSConfig = root.getChild("GPSConfig");
-					Element RefreshFrequency = GPSConfig.getChild("RefreshFrequency");
-					RefreshFrequency.getChild("Hour").setText(String.valueOf(MoreActivity.ReadFrequencyHour));
-					RefreshFrequency.getChild("Minute").setText(String.valueOf(MoreActivity.ReadFrequencyMinute));
-					XMLOutputter out = new XMLOutputter();
-					FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					out.output(document, fileOutputStream);
-					fileOutputStream.flush();
-					fileOutputStream.close();
-				} catch(IOException e){
-				} catch (JDOMException e){
-					e.printStackTrace();
-				}
+
+				SettingProvider sp = SettingProvider.getInstance();
+				int hour = Integer.valueOf(MoreActivity.ReadFrequencyHour);
+				int minute = Integer.valueOf(MoreActivity.ReadFrequencyMinute);
+				int seconds = hour*3600 + minute * 60;
+				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(seconds));
 			}
-		});
+		}); 
 		
 		m_OneHourButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
@@ -166,29 +105,12 @@ public class ReadFrequencyActivity extends Activity{
 				MoreActivity.ReadFrequencyHour = 1;
 				MoreActivity.ReadFrequencyMinute = 0;
 				m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每1小时一次");	
-				
-				//写入设置
-		        SAXBuilder saxBuilder = new SAXBuilder();
-		        try 
-		        {
-		        	FileInputStream fileInputStream = new FileInputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					Document document = saxBuilder.build(fileInputStream);
-					fileInputStream.close();
-					
-					Element root = document.getRootElement();
-					Element GPSConfig = root.getChild("GPSConfig");
-					Element RefreshFrequency = GPSConfig.getChild("RefreshFrequency");
-					RefreshFrequency.getChild("Hour").setText(String.valueOf(MoreActivity.ReadFrequencyHour));
-					RefreshFrequency.getChild("Minute").setText(String.valueOf(MoreActivity.ReadFrequencyMinute));
-					XMLOutputter out = new XMLOutputter();
-					FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android/files/geekclock.xml");
-					out.output(document, fileOutputStream);
-					fileOutputStream.flush();
-					fileOutputStream.close();
-				} catch(IOException e){
-				} catch (JDOMException e){
-					e.printStackTrace();
-				}
+
+				SettingProvider sp = SettingProvider.getInstance();
+				int hour = Integer.valueOf(MoreActivity.ReadFrequencyHour);
+				int minute = Integer.valueOf(MoreActivity.ReadFrequencyMinute);
+				int seconds = hour*3600 + minute * 60;
+				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(seconds));
 			}
 		});
 		

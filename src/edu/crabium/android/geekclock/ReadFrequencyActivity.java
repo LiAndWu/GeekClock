@@ -45,7 +45,6 @@ public class ReadFrequencyActivity extends Activity{
 											+ frequency%3600/60 + "分钟一次");
 		}
 		
-		
 		m_BackButton = (Button)findViewById(R.id.backButton);
 		m_BackButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
@@ -59,36 +58,28 @@ public class ReadFrequencyActivity extends Activity{
 		m_FiveMinutesButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每5分钟一次");	
-				SettingProvider sp = SettingProvider.getInstance();
-				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(5*60));
+				writeFrequencyAndSetText(5);
 			}
 		});
 		
 		m_TenMinutesButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每10分钟一次");
-				SettingProvider sp = SettingProvider.getInstance();
-				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(10*60));
+				writeFrequencyAndSetText(10);
 			}
 		});
 		
 		m_HalfHourButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每30分钟一次");	
-				SettingProvider sp = SettingProvider.getInstance();
-				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(30*60));
+				writeFrequencyAndSetText(30);
 			}
 		}); 
 		
 		m_OneHourButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每1小时一次");	
-				SettingProvider sp = SettingProvider.getInstance();
-				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(60*60));
+				writeFrequencyAndSetText(60);
 			}
 		});
 		
@@ -100,6 +91,12 @@ public class ReadFrequencyActivity extends Activity{
 				ReadFrequencyActivity.this.finish();
 			}
 		});
+	}
+	
+	private void writeFrequencyAndSetText(int minute){
+		m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每" + minute + "分钟一次");	
+		SettingProvider sp = SettingProvider.getInstance();
+		sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(minute*60));
 	}
 }
 		

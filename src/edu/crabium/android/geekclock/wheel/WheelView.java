@@ -17,7 +17,7 @@
  *  limitations under the License.
  */
 
-package edu.crabium.android.wheel;
+package edu.crabium.android.geekclock.wheel;
 
 import java.util.LinkedList;
 import java.util.List;

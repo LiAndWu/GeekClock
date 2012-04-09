@@ -2,6 +2,7 @@ package edu.crabium.android.geekclock;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import edu.crabium.android.geekclock.R;
 import edu.crabium.android.geekclock.TimeService.TimeServiceBinder;
@@ -61,7 +62,8 @@ public class MoreActivity extends Activity {
         SimpleDateFormat weekFormat = new SimpleDateFormat("E");
         SimpleDateFormat yearDayFormat = new SimpleDateFormat("今年第D天");
         
-        int _timeZone = (int)timeService.getTimeZone();
+        //TODO
+        int _timeZone = 8;//(int)timeService.getTimeZone();
         timeZone = "UTC" + ((_timeZone > 0) ? "+" : "") + _timeZone;
 
         long timeSeconds = timeService.getTimeSeconds();
@@ -80,14 +82,33 @@ public class MoreActivity extends Activity {
     protected void onStart(){
     	super.onStart();
     	Intent intent = new Intent(this, TimeService.class);
-    	bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
+    	this.getApplicationContext().bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
+    	
+    	new Thread(new Runnable(){
+			public void run(){
+				int times = 10;
+				while(times -- > 0)
+					if(!timeServiceBound)
+						try {
+							TimeUnit.MILLISECONDS.sleep(200);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					else
+						runOnUiThread(new Runnable(){
+							public void run(){
+    							showInfo();
+							}
+						});
+						return;
+			}}).start();
     }
     
     @Override
     protected void onStop(){
     	super.onStop();
     	if(timeServiceBound){
-    		unbindService(timeServiceConnection);
+    		this.getApplicationContext().unbindService(timeServiceConnection);
     		timeServiceBound = false;
     	}
     }

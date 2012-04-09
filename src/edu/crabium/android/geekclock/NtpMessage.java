@@ -1,5 +1,6 @@
 package edu.crabium.android.geekclock;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,9 +16,9 @@ import java.util.Date;
  * the NTP-specified data formats.  For example, timestamps are
  * stored as doubles (as opposed to the NTP unsigned 64-bit fixed point
  * format).
- *  
+ * 
  * However, the contructor NtpMessage(byte[]) and the method toByteArray()
- * allow the import and export of the raw NTP message format. 
+ * allow the import and export of the raw NTP message format.
  * 
  * 
  * Usage example
@@ -281,8 +282,8 @@ public class NtpMessage
 
 		p[0] = (byte) (leapIndicator << 6 | version << 3 | mode);
 		p[1] = (byte) stratum;
-		p[2] = pollInterval;
-		p[3] = precision;
+		p[2] = (byte) pollInterval;
+		p[3] = (byte) precision;
 		
 		// root delay is a signed 16.16-bit FP, in Java an int is 32-bits
 		int l = (int) (rootDelay * 65536.0);
@@ -317,22 +318,27 @@ public class NtpMessage
 	/**
 	 * Returns a string representation of a NtpMessage
 	 */
-	@Override
 	public String toString()
 	{
-		return "Transmit timestamp:  " + timestampToString(transmitTimestamp);
+		String precisionStr =
+			new DecimalFormat("0.#E0").format(Math.pow(2, precision));
+			
+		return "Leap indicator: " + leapIndicator + "\n" +
+			"Version: " + version + "\n" +
+			"Mode: " + mode + "\n" +
+			"Stratum: " + stratum + "\n" +
+			"Poll: " + pollInterval + "\n" +
+			"Precision: " + precision + " (" + precisionStr + " seconds)\n" + 
+			"Root delay: " + new DecimalFormat("0.00").format(rootDelay*1000) + " ms\n" +
+			"Root dispersion: " + new DecimalFormat("0.00").format(rootDispersion*1000) + " ms\n" + 
+			"Reference identifier: " + referenceIdentifierToString(referenceIdentifier, stratum, version) + "\n" +
+			"Reference timestamp: " + timestampToString(referenceTimestamp) + "\n" +
+			"Originate timestamp: " + timestampToString(originateTimestamp) + "\n" +
+			"Receive timestamp:   " + timestampToString(receiveTimestamp) + "\n" +
+			"Transmit timestamp:  " + timestampToString(transmitTimestamp);
 	}
 	
 	
-	public double[] toDoubleArray()
-	{
-		return timestampToDoubleArray(transmitTimestamp);
-	}
-	
-	public double toUTC()
-	{
-		return timestampToUTC(transmitTimestamp);
-	}
 	
 	/**
 	 * Converts an unsigned byte to a short.  By default, Java assumes that
@@ -341,7 +347,7 @@ public class NtpMessage
 	public static short unsignedByteToShort(byte b)
 	{
 		if((b & 0x80)==0x80) return (short) (128 + (b & 0x7f));
-		else return b;
+		else return (short) b;
 	}
 	
 	
@@ -380,7 +386,7 @@ public class NtpMessage
 			array[pointer+i] = (byte) (timestamp / base);
 
 			// Subtract captured value from remaining total
-			timestamp = timestamp - (unsignedByteToShort(array[pointer+i]) * base);
+			timestamp = timestamp - (double) (unsignedByteToShort(array[pointer+i]) * base);
 		}
 		
 		// From RFC 2030: It is advisable to fill the non-significant
@@ -410,36 +416,14 @@ public class NtpMessage
 		// date/time
 		String date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").format(new Date(ms));
 		
+		// fraction
+		double fraction = timestamp - ((long) timestamp);
+		String fractionSting = new DecimalFormat(".000000").format(fraction);
 		
-		return date;
+		return date + fractionSting;
 	}
 	
-	public static double[] timestampToDoubleArray(double timestamp)
-	{
-		final double[] timeArray = new double[6];
-		double utc = timestamp - (2208988800.0);
-		long ms = (long) (utc * 1000.0);
-		
-		String year = new SimpleDateFormat("yyyy").format(new Date(ms));
-		String month = new SimpleDateFormat("MM").format(new Date(ms));
-		String day = new SimpleDateFormat("dd").format(new Date(ms));
-		String hour = new SimpleDateFormat("kk").format(new Date(ms));
-		String minute = new SimpleDateFormat("mm").format(new Date(ms));
-		String second = new SimpleDateFormat("ss").format(new Date(ms));
-		
-		timeArray[0] = Double.parseDouble(year);
-		timeArray[1] = Double.parseDouble(month);
-		timeArray[2] = Double.parseDouble(day);
-		timeArray[3] = Double.parseDouble(hour);
-		timeArray[4] = Double.parseDouble(minute);
-		timeArray[5] = Double.parseDouble(second);
-		
-		return timeArray;
-	}
 	
-	public double timestampToUTC(double timestamp){
-		return timestamp - (2208988800.0);
-	}
 	
 	/**
 	 * Returns a string representation of a reference identifier according

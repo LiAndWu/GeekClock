@@ -16,12 +16,12 @@ import android.os.Message;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ShowTimeActivity extends Activity { 
     private TextView showTime;
     private TextView showDate;
 	private static final int TimeMessageNum1 = 1; 
-
 	ImageView imageView = null;
 	private TimeService timeService;
 	private boolean timeServiceBound = false;
@@ -49,14 +49,13 @@ public class ShowTimeActivity extends Activity {
     	super.onStart();
     	Intent intent = new Intent(this, TimeService.class);
     	this.getApplicationContext().bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
-    	System.out.println("trying bind");
     }
     
     @Override
     protected void onStop(){
     	super.onStop();
     	if(timeServiceBound){
-    		unbindService(timeServiceConnection);
+    		this.getApplicationContext().unbindService(timeServiceConnection);
     		timeServiceBound = false;
     	}
     }
@@ -64,7 +63,6 @@ public class ShowTimeActivity extends Activity {
     private ServiceConnection timeServiceConnection = new ServiceConnection(){
     	@Override
     	public void onServiceConnected(ComponentName className, IBinder service){
-    		System.out.println("connected");
     		TimeServiceBinder binder = (TimeServiceBinder) service;
     		timeService = binder.getService();
     		timeServiceBound = true;
@@ -103,34 +101,49 @@ public class ShowTimeActivity extends Activity {
     	}//run
     }//Thread
     
+    private static boolean synchronizeInfoNotified = false;
     private Handler TimeHandler = new Handler() {
+		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年M月d日");
+		String sysTime, sysDate;
 		@Override
 		public void handleMessage(Message msg) {
-			SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年M月d日");
-			String sysTime, sysDate;
     		super.handleMessage(msg); 
     		
     		switch(msg.what) {
     		case TimeMessageNum1:
-    			if(timeServiceBound && timeService.isSynchronized()){
-    				System.out.println("in");
+    			if(timeServiceBound && timeService.timeSynchronized()){
     				long timeSeconds = timeService.getTimeSeconds();
-    				sysTime = timeFormat.format(new Date(timeSeconds * 1000));
-    				System.out.println("time: " + sysTime);
-        			sysDate = dateFormat.format(new Date(timeSeconds * 1000));
-        		    showTime.setText(sysTime);  
-        		    showDate.setText(sysDate);
-        		    	    
-        		    ClockDrawer clockdrawer = new ClockDrawer(ShowTimeActivity.this);
-        		    clockdrawer.Draw(imageView, timeSeconds);
+    				draw(timeSeconds);
+    				if(!synchronizeInfoNotified){
+    					DisplayToast("时间已同步");
+    					synchronizeInfoNotified = true;
+    				}
+    			}
+    			else{
+    				Date date = new Date();
+    				long timeSeconds = date.getTime()/1000;
+    				draw(timeSeconds);
     			}
     			break;
     		default:
     			break;
     		}
     	}
+		
+		private void draw(long timeSeconds){
+			sysTime = timeFormat.format(new Date(timeSeconds * 1000));
+			sysDate = dateFormat.format(new Date(timeSeconds * 1000));
+		    showTime.setText(sysTime);  
+		    showDate.setText(sysDate);
+		    	    
+		    ClockDrawer clockdrawer = new ClockDrawer(ShowTimeActivity.this);
+		    clockdrawer.Draw(imageView, timeSeconds);
+		}
     };
-    
+
+	public void DisplayToast(String str) {
+		Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+	}
     
 }

@@ -101,13 +101,6 @@ public class ShowTimeActivity extends Activity {
 		public void onLocationChanged(Location location) {
         	if(location != null){
             	TimeProvider.SetLocation(location.getLatitude(), location.getLongitude());
-
-            	// Make it thread-safe!!!!
-                MoreActivity.m_ShowLongitude.setText(Double.toString(TimeProvider.GetLongitude()));
-                MoreActivity.m_ShowLatitude.setText(Double.toString(TimeProvider.GetLatitude()));
-                MoreActivity.m_ShowTimeZone.setText("UTC"+ (TimeProvider.GetTimezone() > 0?
-        		"+" + Integer.toString(TimeProvider.GetTimezone())
-        		:Integer.toString(TimeProvider.GetTimezone())));
         	}
         }
         @Override

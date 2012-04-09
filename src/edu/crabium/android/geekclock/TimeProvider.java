@@ -32,16 +32,6 @@ public class TimeProvider{
 	static public int RefreshData(){
 		return GetTimezone(latitude,longitude);
 	}
-
-	//TODO: delete
-	static public double GetLatitude(){
-		return latitude;
-	}
-
-	//TODO: delete
-	static public double GetLongitude(){
-		return longitude;
-	}
 	
 	public boolean isTimezoneError(){
 		return TimezoneError;
@@ -82,10 +72,6 @@ public class TimeProvider{
     		CurrentTimezone = 8.0;
     		return -1;
     	}
-	}
-	
-	public static int GetTimezone(){
-		return (int) CurrentTimezone;
 	}
 	
 	public int GetUTC(){

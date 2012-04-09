@@ -89,6 +89,7 @@ public class MoreActivity extends Activity {
     	
     	@Override
     	public void onServiceDisconnected(ComponentName arg0){
+    		timeServiceBound = false;
     	}
     };
 }

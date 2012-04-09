@@ -93,6 +93,7 @@ public class ShowTimeActivity extends Activity {
     	
     	@Override
     	public void onServiceDisconnected(ComponentName arg0){
+    		timeServiceBound = false;
     	}
     };
     

@@ -1,6 +1,11 @@
 package edu.crabium.android.geekclock;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.Date;
+import org.geonames.Timezone;
+import org.geonames.WebService;
 
 import android.app.Service;
 import android.content.Context;
@@ -11,11 +16,14 @@ import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 public class TimeService extends Service {
 	private boolean isSynchronized = false;
 	private double latitude;
 	private double longitude;
+	private String placeName;
+	private double utc;
 	private final IBinder timeServiceBinder = new TimeServiceBinder();
 
 	@Override
@@ -79,8 +87,42 @@ public class TimeService extends Service {
 		return 0;
 	}
 
-	public int getTimeZone() {
-		return 0;
+	public void syncTime(){
+		try{
+	        DatagramSocket socket = new DatagramSocket();
+	        SettingProvider sp = SettingProvider.getInstance();
+	        InetAddress address = InetAddress.getByName(sp.getSetting(SettingProvider.CHOSEN_SREVER_ADDRESS));
+	        byte[] buf = new NtpMessage().toByteArray();
+	        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 123);
+	        socket.send(packet);
+	         
+	        // Get response
+	        socket.receive(packet);
+			NtpMessage msg = new NtpMessage(packet.getData());
+	        
+			utc = msg.toUTC();
+        }
+        catch(Exception e){
+        	Date date = new Date();
+        	utc = date.getTime()/1000;
+        }        
+	}
+	@SuppressWarnings("deprecation")
+	public double getTimeZone() {
+		try {
+			SettingProvider sp = SettingProvider.getInstance();
+			
+			WebService.setUserName(sp.getSetting(SettingProvider.GEONAMES_USER_NAME));
+			//TODO: change timezone to java.util.TimeZone
+			Timezone tmz = WebService.timezone(latitude, longitude);
+			placeName = WebService.findNearbyPlaceName(latitude, longitude).iterator().next().getName();
+			return tmz.getGmtOffset();
+		}
+		catch (Exception e) {
+			Log.d("GeekClock", "Error: unexpected exception");
+			e.printStackTrace();
+			return 8.0;
+		}
 	}
 
 	public String getPlaceName() {

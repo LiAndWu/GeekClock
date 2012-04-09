@@ -10,7 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class SetActivity extends Activity{
+public class PreferencesActivity extends Activity{
 	private Button homepageButton;
 	private LinearLayout  readFrequencyButton, timeServerButton, registerButton, 
 		helpButton, thanksButton, aboutButton;
@@ -25,9 +25,9 @@ public class SetActivity extends Activity{
 		homepageButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SetActivity.this, MainActivity.class);
+				Intent intent = new Intent(PreferencesActivity.this, MainActivity.class);
 				startActivity(intent);
-				SetActivity.this.finish();
+				PreferencesActivity.this.finish();
 			}
 		});	
 		
@@ -35,9 +35,9 @@ public class SetActivity extends Activity{
 		readFrequencyButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SetActivity.this, ReadFrequencyActivity.class);
+				Intent intent = new Intent(PreferencesActivity.this, RefreshFrequencyActivity.class);
 				startActivity(intent);
-				SetActivity.this.finish();
+				PreferencesActivity.this.finish();
 			}
 		});
 
@@ -45,9 +45,9 @@ public class SetActivity extends Activity{
 		timeServerButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SetActivity.this, TimeServerListActivity.class);
+				Intent intent = new Intent(PreferencesActivity.this, TimeServerListActivity.class);
 				startActivity(intent);
-				SetActivity.this.finish();
+				PreferencesActivity.this.finish();
 			}
 		});
 		
@@ -55,9 +55,9 @@ public class SetActivity extends Activity{
 		registerButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SetActivity.this, GeonamesRegisterActivity.class);
+				Intent intent = new Intent(PreferencesActivity.this, GeonamesRegisterActivity.class);
 				startActivity(intent);
-				SetActivity.this.finish();
+				PreferencesActivity.this.finish();
 			}
 		});
 		
@@ -66,9 +66,9 @@ public class SetActivity extends Activity{
 		helpButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SetActivity.this, HelpActivity.class);
+				Intent intent = new Intent(PreferencesActivity.this, HelpActivity.class);
 				startActivity(intent);
-				SetActivity.this.finish();
+				PreferencesActivity.this.finish();
 			}
 		});
 		
@@ -76,9 +76,9 @@ public class SetActivity extends Activity{
 		thanksButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SetActivity.this, ThanksActivity.class);
+				Intent intent = new Intent(PreferencesActivity.this, ThanksActivity.class);
 				startActivity(intent);
-				SetActivity.this.finish();
+				PreferencesActivity.this.finish();
 			}
 		});	
 
@@ -86,9 +86,9 @@ public class SetActivity extends Activity{
 		aboutButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SetActivity.this, AboutActivity.class);
+				Intent intent = new Intent(PreferencesActivity.this, AboutActivity.class);
 				startActivity(intent);
-				SetActivity.this.finish();
+				PreferencesActivity.this.finish();
 			}
 		});	
 	}

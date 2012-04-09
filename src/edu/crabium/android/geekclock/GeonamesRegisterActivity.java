@@ -16,12 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class GeonamesRegisterActivity extends Activity {
-	
-	private Button m_BackButton, m_ConfirmButton;
-	private EditText m_UsernameExitText;
-	private TextView m_ShowUsernameTextView;
-	private ImageView m_RegisterImageView;
-	private String m_InputRecord;
+	private Button backButton;
+	private Button confirmButton;
+	private EditText usernameExitText;
+	private TextView showUsernameTextView;
+	private ImageView registerImageView;
+	private String inputRecord;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,60 +29,60 @@ public class GeonamesRegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.geonames_register);
 		
-		m_BackButton = (Button)findViewById(R.id.backButton);
-		m_BackButton.setOnClickListener(new Button.OnClickListener() {
+		backButton = (Button)findViewById(R.id.backButton);
+		backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setClass(GeonamesRegisterActivity.this, SetActivity.class);
+				intent.setClass(GeonamesRegisterActivity.this, PreferencesActivity.class);
 				startActivity(intent);
 				GeonamesRegisterActivity.this.finish();
 			}
 		});
 		
-		m_ShowUsernameTextView = (TextView)findViewById(R.id.showUsernameTextView);
+		showUsernameTextView = (TextView)findViewById(R.id.showUsernameTextView);
 		SettingProvider sp = SettingProvider.getInstance();
 		String geoNamesUserName = sp.getSetting(SettingProvider.GEONAMES_USER_NAME);
 		if(geoNamesUserName == "tikiet") {
-			m_ShowUsernameTextView.setText("\t现在使用的账户是公用账户, 查询次数有限, 建议注册私人账号.");
+			showUsernameTextView.setText("\t现在使用的账户是公用账户, 查询次数有限, 建议注册私人账号.");
 		} else {
-			m_ShowUsernameTextView.setText("正在使用的账户是:\n" + geoNamesUserName);
+			showUsernameTextView.setText("正在使用的账户是:\n" + geoNamesUserName);
 		}
 		
 		
-		m_UsernameExitText = (EditText)findViewById(R.id.usernameEditText);
-		m_UsernameExitText.setHint("输入用户名：");
-		m_UsernameExitText.setOnKeyListener(new EditText.OnKeyListener() {
+		usernameExitText = (EditText)findViewById(R.id.usernameEditText);
+		usernameExitText.setHint("输入用户名：");
+		usernameExitText.setOnKeyListener(new EditText.OnKeyListener() {
 			@Override
 			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
-				m_InputRecord = m_UsernameExitText.getText().toString();
-				DisplayToast( m_InputRecord.length() >= 25 ? "用户名输入过长！！" : "用户名是:\n" + m_InputRecord);
+				inputRecord = usernameExitText.getText().toString();
+				DisplayToast( inputRecord.length() >= 25 ? "用户名输入过长！！" : "用户名是:\n" + inputRecord);
 				return false;
 			}
 		});
 		
 		
-		m_ConfirmButton = (Button)findViewById(R.id.confirmButton);
-		m_ConfirmButton.setOnClickListener(new Button.OnClickListener() {
+		confirmButton = (Button)findViewById(R.id.confirmButton);
+		confirmButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				m_InputRecord = m_UsernameExitText.getText().toString();
-				if (m_InputRecord == null || m_InputRecord.trim().equals("")) {
+				inputRecord = usernameExitText.getText().toString();
+				if (inputRecord == null || inputRecord.trim().equals("")) {
 					DisplayToast("骚年，请正确输入！！");
 				} else {			
 					DisplayToast("输入成功！！");
-					m_ShowUsernameTextView.setText("正在使用的账户是:：\n" + m_InputRecord);
-					m_UsernameExitText.setFocusable(false);
-					m_UsernameExitText.setFocusableInTouchMode(false);
+					showUsernameTextView.setText("正在使用的账户是:：\n" + inputRecord);
+					usernameExitText.setFocusable(false);
+					usernameExitText.setFocusableInTouchMode(false);
 
 					SettingProvider sp = SettingProvider.getInstance();
-					sp.addSetting(SettingProvider.GEONAMES_USER_NAME, m_InputRecord);
+					sp.addSetting(SettingProvider.GEONAMES_USER_NAME, inputRecord);
 				}
 			}
 		});
 		
-		m_RegisterImageView = (ImageView)findViewById(R.id.registerImageView);
-		m_RegisterImageView.setOnClickListener(new View.OnClickListener(){
+		registerImageView = (ImageView)findViewById(R.id.registerImageView);
+		registerImageView.setOnClickListener(new View.OnClickListener(){
 	           @Override
 			public void onClick(View v){
 	               Intent intent = new Intent();

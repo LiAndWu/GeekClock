@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class AboutActivity extends Activity {
-	private TextView m_AboutActivityText;
-	private Button m_BackButton;
+	private TextView aboutActivityText;
+	private Button backButton;
 	private LinearLayout layout;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -24,11 +24,11 @@ public class AboutActivity extends Activity {
 		layout = (LinearLayout) findViewById(R.id.LinearLayout);
 		layout.setBackgroundColor(Color.BLACK);
 
-		m_AboutActivityText = (TextView) findViewById(R.id.aboutText);
+		aboutActivityText = (TextView) findViewById(R.id.aboutText);
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		if (dm.heightPixels > 600) {
-			m_AboutActivityText
+			aboutActivityText
 					.setText("\n\t\t\t\t    Geek Clock  Version 2.3\n"
 							+ "\t\t\t\t   Released at 19 Oct 2011 \n"
 							+ "\t\t\t\t   Updated  at 06 Mar 2012 \n\n\n"
@@ -39,7 +39,7 @@ public class AboutActivity extends Activity {
 							+ "\t\t\t\t\twuxd@me.com\n\n\n"
 							+ "\t\t\t\t\tCrabium & Mabbage Workshop\n\t\t\t\t\t\t\t\tLiWei and WuXudong\n\t\t\t\t\t\t\t\t\t\tCopyleft 2011.");
 		} else {
-			m_AboutActivityText
+			aboutActivityText
 					.setText("\n\n\t\t\t    Geek Clock  Version 2.3\n"
 							+ "\t\t\t   Released at 19 Oct 2011 \n"
 							+ "\t\t\t   Updated  at 06 Mar 2012 \n\n\n"
@@ -51,10 +51,10 @@ public class AboutActivity extends Activity {
 							+ "\t\t\tCrabium & Mabbage Workshop\n\t\t\t\t  LiWei and WuXudong\n\t\t\t\t\t\tCopyleft 2011.");
 		}
 
-		m_BackButton = (Button) findViewById(R.id.backButton);
-		m_BackButton.setOnClickListener(new Button.OnClickListener() {
+		backButton = (Button) findViewById(R.id.backButton);
+		backButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(AboutActivity.this,SetActivity.class);
+				Intent intent = new Intent(AboutActivity.this,PreferencesActivity.class);
 				startActivity(intent);
 				AboutActivity.this.finish();
 			}

@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class HelpActivity extends Activity {
-	private TextView m_HelpActivityText;
-	private Button m_BackButton;
+	private TextView helpActivityText;
+	private Button backButton;
 	private LinearLayout layout;
 
 	
@@ -27,11 +27,11 @@ public class HelpActivity extends Activity {
 		layout = (LinearLayout) findViewById(R.id.LinearLayout);
 		layout.setBackgroundColor(Color.BLACK);
 		
-		m_HelpActivityText = (TextView) findViewById(R.id.helpText);      
+		helpActivityText = (TextView) findViewById(R.id.helpText);      
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		if (dm.heightPixels > 600) {
-	        m_HelpActivityText.setText(
+	        helpActivityText.setText(
 	   
 	        		  "\n\t应用说明：\n" +
 	        		  "\t1)\t标准时间：显示UTC(世界标准时间), 与网\n\t\t\t络同步,再也不用担心手机时间不准了,亲.\n" +
@@ -48,7 +48,7 @@ public class HelpActivity extends Activity {
 	        		  "\tGoogle.com :\t\t各种资源\n\n"
 	      );   
 		} else {
-	        m_HelpActivityText.setText(
+	        helpActivityText.setText(
 	        		  "\n\t应用说明：\n" +
 	        		  "\t1)\t标准时间：显示UTC(世界标准时间), 与网\n\t\t络同步,再也不用担心手机时间不准了,亲.\n" +
 	        		  "\t2)\t更多信息：查看当前经度,纬度,星期等信息.\n" +
@@ -65,11 +65,11 @@ public class HelpActivity extends Activity {
 	      );   	
 		}
         
-        m_BackButton = (Button)findViewById(R.id.backButton);
-        m_BackButton.setOnClickListener(new Button.OnClickListener() {
+        backButton = (Button)findViewById(R.id.backButton);
+        backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(HelpActivity.this, SetActivity.class);
+				Intent intent = new Intent(HelpActivity.this, PreferencesActivity.class);
 				startActivity(intent);
 				HelpActivity.this.finish();
 			}

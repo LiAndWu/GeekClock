@@ -22,7 +22,7 @@ public class ThanksActivity extends Activity {
 		backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(ThanksActivity.this, SetActivity.class);
+				Intent intent = new Intent(ThanksActivity.this, PreferencesActivity.class);
 				startActivity(intent);
 				ThanksActivity.this.finish();
 			}

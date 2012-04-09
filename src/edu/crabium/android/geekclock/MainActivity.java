@@ -12,34 +12,30 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
-import android.widget.TabWidget;
 import android.widget.TextView;
 
 
 public class MainActivity extends TabActivity {
-    /** Called when the activity is first created. */
-    public TabWidget tw;
     @Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
-        TabHost mTabHost = this.getTabHost();
         
+        TabHost tabHost = this.getTabHost();
         SettingProvider.SetContext(this);
         
-        mTabHost.addTab(mTabHost.newTabSpec("tab1")
-        		//.setIndicator("更多信息",getResources().getDrawable(R.drawable.clock))
+        tabHost.addTab(tabHost.newTabSpec("tab1")
         		.setIndicator(composeLayout("标准时间", R.drawable.clock))
         		.setContent(new Intent(this,  ShowTimeActivity.class)));
        
-        mTabHost.addTab(mTabHost.newTabSpec("tab2")
+        tabHost.addTab(tabHost.newTabSpec("tab2")
         		.setIndicator(composeLayout("更多信息", R.drawable.more))
         		.setContent(new Intent(this,  MoreActivity.class)));
         
-        mTabHost.addTab(mTabHost.newTabSpec("tab3")
+        tabHost.addTab(tabHost.newTabSpec("tab3")
         		.setIndicator(composeLayout("设置", R.drawable.thanks))
-        		.setContent(new Intent(this,  SetActivity.class)));   
+        		.setContent(new Intent(this,  PreferencesActivity.class)));   
         
         Intent intent = new Intent(this, TimeService.class);
         startService(intent);

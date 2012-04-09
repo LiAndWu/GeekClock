@@ -113,7 +113,7 @@ public class ShowTimeActivity extends Activity {
     		
     		switch(msg.what) {
     		case TimeMessageNum1:
-    			if(timeServiceBound && timeService.isSynchronized()){
+    			if(timeServiceBound && timeService.utcTimeSynchronized()){
     				long timeSeconds = timeService.getTimeSeconds();
     				sysTime = timeFormat.format(new Date(timeSeconds * 1000));
         			sysDate = dateFormat.format(new Date(timeSeconds * 1000));

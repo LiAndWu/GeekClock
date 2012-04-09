@@ -19,12 +19,13 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class TimeService extends Service {
-	private boolean isSynchronized = false;
+	private boolean utcTimeSynchronized = false;
+	private boolean localTimeZoneSynchronized = false;
 	private String placeName;
-	private double utc;
 	private double latitude;
 	private double longitude;
 	private long timeOffset;
+	private double timeZone;
 	private final IBinder timeServiceBinder = new TimeServiceBinder();
 
 	@Override
@@ -45,10 +46,11 @@ public class TimeService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		System.out.println("in service");
-		isSynchronized = false;
+		utcTimeSynchronized = false;
 		longitude = 120.33820867538452;
 		latitude = 30.31900699227783;
-
+		timeOffset = 0;
+		
 		LocationManager locationManager;
 		String serviceName = Context.LOCATION_SERVICE;
 		locationManager = (LocationManager) getSystemService(serviceName);
@@ -64,7 +66,12 @@ public class TimeService extends Service {
 		
 		new Thread(new Runnable(){
 			public void run(){
-				syncTime();
+				synchronizeTime();
+			}}).start();
+		
+		new Thread(new Runnable(){
+			public void run(){
+				synchronizeTimeZone();
 			}}).start();
 		
 		return 0;
@@ -99,48 +106,58 @@ public class TimeService extends Service {
 		return longitude;
 	}
 
-	public void syncTime(){
+	public void synchronizeTime(){
+		double utc;
+		Date date = new Date();
+		long localTimezone = date.getTimezoneOffset()*60;
 		try{
 	        DatagramSocket socket = new DatagramSocket();
 	        SettingProvider sp = SettingProvider.getInstance();
-	        String name = sp.getSetting(SettingProvider.CHOSEN_SREVER_ADDRESS);
-	        System.out.println("name = " + name);
-	        InetAddress address = InetAddress.getByName(name);
+	        String ntpServerName = sp.getSetting(SettingProvider.CHOSEN_SREVER_ADDRESS);
+	        Log.d("GeekClock", "NTP server: " + ntpServerName);
+	        InetAddress address = InetAddress.getByName(ntpServerName);
 	        byte[] buf = new NtpMessage().toByteArray();
 	        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 123);
+	        //TODO: move this hard-coded timeout limit to database
+	        socket.setSoTimeout(4*1000);
 	        socket.send(packet);
-	        System.out.println("sent");
+	        Log.d("GeekClock", "NTP request sent.");
+	        
 	        // Get response
 	        socket.receive(packet);
-	        System.out.println("received");
+	        Log.d("GeekClock", "NTP answer received.");
 			NtpMessage msg = new NtpMessage(packet.getData());
 	        
 			utc = msg.toUTC();
-			isSynchronized = true;
-			Date date = new Date();
-			long localTimezone = date.getTimezoneOffset()*60;
-			timeOffset = ((long) utc + localTimezone + (long) 8 * 60 * 60) - date.getTime() / 1000;
+			
+			timeOffset = ((long) utc + localTimezone + (long) timeZone * 60 * 60) - date.getTime() / 1000;
+			utcTimeSynchronized = true;
         }
         catch(Exception e){
-        	Date date = new Date();
-        	utc = date.getTime()/1000;
+        	timeOffset = 0;
         }        
 	}
 	@SuppressWarnings("deprecation")
-	public double getTimeZone() {
+	public void synchronizeTimeZone() {
 		try {
 			SettingProvider sp = SettingProvider.getInstance();
 			
 			WebService.setUserName(sp.getSetting(SettingProvider.GEONAMES_USER_NAME));
+			//TODO: move this limit to database;
+			WebService.setConnectTimeOut(5*1000);
 			//TODO: change timezone to java.util.TimeZone
+
+	        Log.d("GeekClock", "GeoNames timezone request sent");
 			Timezone tmz = WebService.timezone(latitude, longitude);
 			placeName = WebService.findNearbyPlaceName(latitude, longitude).iterator().next().getName();
-			return tmz.getGmtOffset();
+	        Log.d("GeekClock", "GeoNames timezone answer received");
+			timeZone =  tmz.getGmtOffset();
+			localTimeZoneSynchronized = true;
 		}
 		catch (Exception e) {
 			Log.d("GeekClock", "Error: unexpected exception");
 			e.printStackTrace();
-			return 8.0;
+			timeZone =  8.0;
 		}
 	}
 
@@ -150,17 +167,13 @@ public class TimeService extends Service {
 
 	public long getTimeSeconds() {
 		Date date = new Date();
-		long localTimezone = date.getTimezoneOffset()*60;
-		
-		if (isSynchronized) {
-			return date.getTime() / 1000 + timeOffset;
-		} else {
-			
-			return date.getTime() / 1000;
-		}
+		return utcTimeSynchronized ? date.getTime() / 1000 + timeOffset : date.getTime() / 1000;
 	}
 
-	public boolean isSynchronized() {
-		return this.isSynchronized;
+	public boolean localTimeZoneSynchronized(){
+		return this.localTimeZoneSynchronized;
+	}
+	public boolean utcTimeSynchronized() {
+		return this.utcTimeSynchronized;
 	}
 }

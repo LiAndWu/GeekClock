@@ -1,5 +1,7 @@
 package edu.crabium.android.geekclock;
 
+import java.util.Date;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -7,6 +9,8 @@ import android.os.IBinder;
 
 public class TimeService extends Service {
 	private boolean isSynchronized = false;
+	private double latitude;
+	private double longitude;
 	private final IBinder timeServiceBinder = new TimeServiceBinder();
 	
 	@Override
@@ -19,9 +23,12 @@ public class TimeService extends Service {
 			return TimeService.this;
 		}
 	}
+	
 	@Override
 	public void onCreate(){
 		isSynchronized = false;
+		longitude = 120.33820867538452;
+		latitude = 30.31900699227783;
 	}
 
 	public double getLatitude(){
@@ -30,5 +37,27 @@ public class TimeService extends Service {
 	
 	public double getLongitude(){
 		return 0;
+	}
+	
+	public int getTimeZone(){
+		return 0;
+	}
+	
+	public String getPlaceName(){
+		return "";
+	}
+	
+	public long getTimeSeconds(){
+		if(isSynchronized){
+			return 0;
+		}
+		else{
+			Date date = new Date();
+			return date.getTime()/ 1000;
+		}
+	}
+	
+	public boolean isSynchronized(){
+		return this.isSynchronized;
 	}
 }

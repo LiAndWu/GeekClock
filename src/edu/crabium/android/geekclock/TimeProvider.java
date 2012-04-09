@@ -67,24 +67,6 @@ public class TimeProvider{
 		TimeProvider.longitude = longitude;
 	}
 	
-	public long GetTimeSeconds(){
-		long LocalTimezone;
-		LocalTimezone = date.getTimezoneOffset()*60;
-			
-		if(Synchronized == true){
-			return date.getTime()/1000 + TimeOffset;
-		}
-		else{
-			if(GetTimezone(latitude,longitude) == -1) TimezoneError = true; else TimezoneError = false;	
-			if(GetUTC() == -1) UTCError = true; else UTCError = false;
-			
-			Synchronized = true;
-			TimeOffset = ((long)UTC + LocalTimezone + (long)CurrentTimezone*60*60) - date.getTime()/1000;
-			
-			return date.getTime()/1000 + TimeOffset;
-		}		
-	}
-	
 	@SuppressWarnings("deprecation")
 	public static int GetTimezone(double latitude, double longitude){
 		try {

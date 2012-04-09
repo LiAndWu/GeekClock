@@ -22,8 +22,8 @@ public class MainActivity extends TabActivity {
     public TabWidget tw;
     @Override
 	public void onCreate(Bundle savedInstanceState) {
-    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
         TabHost mTabHost = this.getTabHost();
         
@@ -41,6 +41,16 @@ public class MainActivity extends TabActivity {
         mTabHost.addTab(mTabHost.newTabSpec("tab3")
         		.setIndicator(composeLayout("设置", R.drawable.thanks))
         		.setContent(new Intent(this,  SetActivity.class)));   
+        
+        Intent intent = new Intent(this, TimeService.class);
+        startService(intent);
+    }
+    
+    @Override
+    public void onDestroy(){
+    	super.onDestroy();
+        Intent intent = new Intent(this, TimeService.class);
+        stopService(intent);
     }
     
     public View composeLayout(String s, int i){
@@ -58,4 +68,5 @@ public class MainActivity extends TabActivity {
         layout.addView(iv, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         return layout;
     }
+    
 }

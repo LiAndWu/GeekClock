@@ -13,40 +13,40 @@ import android.widget.TextView;
 
 
 public class ReadFrequencyActivity extends Activity{
-	private Button m_BackButton;
-	private Button m_FiveMinutesButton, m_TenMinutesButton,
-	m_HalfHourButton, m_OneHourButton, m_CustomButton;
-	private static TextView m_ReadFrequencyTextView;
+	private Button backButton;
+	private Button fiveMinutesButton, tenMinutesButton,
+	halfHourButton, oneHourButton, customButton;
+	private static TextView readFrequencyTextView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.selection_frequency);
 		
-		m_BackButton = (Button)findViewById(R.id.backButton);
-		m_FiveMinutesButton = (Button)findViewById(R.id.fiveMinutesButton);
-		m_TenMinutesButton = (Button)findViewById(R.id.tenMinutesButton);
-		m_HalfHourButton = (Button)findViewById(R.id.halfHourButton);
-		m_OneHourButton = (Button)findViewById(R.id.oneHourButton);
-		m_CustomButton = (Button)findViewById(R.id.customButton);
-		m_ReadFrequencyTextView = (TextView)findViewById(R.id.readFrequencytextView);
+		backButton = (Button)findViewById(R.id.backButton);
+		fiveMinutesButton = (Button)findViewById(R.id.fiveMinutesButton);
+		tenMinutesButton = (Button)findViewById(R.id.tenMinutesButton);
+		halfHourButton = (Button)findViewById(R.id.halfHourButton);
+		oneHourButton = (Button)findViewById(R.id.oneHourButton);
+		customButton = (Button)findViewById(R.id.customButton);
+		readFrequencyTextView = (TextView)findViewById(R.id.readFrequencytextView);
 		
-		m_ReadFrequencyTextView.setTextSize(18);
+		readFrequencyTextView.setTextSize(18);
 		SettingProvider sp = SettingProvider.getInstance();
 		int frequency = Integer.valueOf(sp.getSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS));
 		if (frequency < 60*60) {
-			m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每" + frequency/60 + "分钟一次");
+			readFrequencyTextView.setText("现在的刷新频率是：\n每" + frequency/60 + "分钟一次");
 		} else if (frequency % 60  == 0) {
-			m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每" + frequency/3600 + "小时一次");
+			readFrequencyTextView.setText("现在的刷新频率是：\n每" + frequency/3600 + "小时一次");
 		} else {
-			m_ReadFrequencyTextView.setTextSize(17);
-			m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每" + frequency/3600 + "小时" 
+			readFrequencyTextView.setTextSize(17);
+			readFrequencyTextView.setText("现在的刷新频率是：\n每" + frequency/3600 + "小时" 
 											+ frequency%3600/60 + "分钟一次");
 		}
 		
-		m_BackButton = (Button)findViewById(R.id.backButton);
-		m_BackButton.setOnClickListener(new Button.OnClickListener() {
+		backButton = (Button)findViewById(R.id.backButton);
+		backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(ReadFrequencyActivity.this, SetActivity.class);
@@ -55,35 +55,35 @@ public class ReadFrequencyActivity extends Activity{
 			}
 		});
 		
-		m_FiveMinutesButton.setOnClickListener(new Button.OnClickListener() {
+		fiveMinutesButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				writeFrequencyAndSetText(5);
 			}
 		});
 		
-		m_TenMinutesButton.setOnClickListener(new Button.OnClickListener() {
+		tenMinutesButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				writeFrequencyAndSetText(10);
 			}
 		});
 		
-		m_HalfHourButton.setOnClickListener(new Button.OnClickListener() {
+		halfHourButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				writeFrequencyAndSetText(30);
 			}
 		}); 
 		
-		m_OneHourButton.setOnClickListener(new Button.OnClickListener() {
+		oneHourButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				writeFrequencyAndSetText(60);
 			}
 		});
 		
-		m_CustomButton.setOnClickListener(new Button.OnClickListener() {
+		customButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(ReadFrequencyActivity.this, TurntableActivity.class);
@@ -94,7 +94,7 @@ public class ReadFrequencyActivity extends Activity{
 	}
 	
 	private void writeFrequencyAndSetText(int minute){
-		m_ReadFrequencyTextView.setText("现在的刷新频率是：\n每" + minute + "分钟一次");	
+		readFrequencyTextView.setText("现在的刷新频率是：\n每" + minute + "分钟一次");	
 		SettingProvider sp = SettingProvider.getInstance();
 		sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(minute*60));
 	}

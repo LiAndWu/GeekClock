@@ -32,7 +32,7 @@ public class ShowTimeActivity extends Activity {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.showclock);
-	    
+
         //显示时钟
         imageView = (ImageView) findViewById(R.id.imageView);
         
@@ -48,7 +48,8 @@ public class ShowTimeActivity extends Activity {
     protected void onStart(){
     	super.onStart();
     	Intent intent = new Intent(this, TimeService.class);
-    	bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
+    	this.getApplicationContext().bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
+    	System.out.println("trying bind");
     }
     
     @Override
@@ -63,6 +64,7 @@ public class ShowTimeActivity extends Activity {
     private ServiceConnection timeServiceConnection = new ServiceConnection(){
     	@Override
     	public void onServiceConnected(ComponentName className, IBinder service){
+    		System.out.println("connected");
     		TimeServiceBinder binder = (TimeServiceBinder) service;
     		timeService = binder.getService();
     		timeServiceBound = true;
@@ -112,8 +114,10 @@ public class ShowTimeActivity extends Activity {
     		switch(msg.what) {
     		case TimeMessageNum1:
     			if(timeServiceBound && timeService.isSynchronized()){
+    				System.out.println("in");
     				long timeSeconds = timeService.getTimeSeconds();
     				sysTime = timeFormat.format(new Date(timeSeconds * 1000));
+    				System.out.println("time: " + sysTime);
         			sysDate = dateFormat.format(new Date(timeSeconds * 1000));
         		    showTime.setText(sysTime);  
         		    showDate.setText(sysDate);

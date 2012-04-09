@@ -43,6 +43,20 @@ public class MoreActivity extends Activity {
 
     @Override
     protected void onResume(){
+    	super.onResume();
+    	if(timeServiceBound){
+    		showInfo();
+    	}else{
+    		showTimeZone.setText(R.string.time_synchronizing);
+            showCity.setText(R.string.time_synchronizing);
+            showWeek.setText(R.string.time_synchronizing);
+            showYearDay.setText(R.string.time_synchronizing);
+            showLongitude.setText(R.string.time_synchronizing);
+            showLatitude.setText(R.string.time_synchronizing);
+    	}
+    }
+    
+    private void showInfo(){
         String timeZone, week, yearDay; 
         SimpleDateFormat weekFormat = new SimpleDateFormat("E");
         SimpleDateFormat yearDayFormat = new SimpleDateFormat("今年第D天");
@@ -60,8 +74,8 @@ public class MoreActivity extends Activity {
         showYearDay.setText(yearDay);
         showLongitude.setText(Double.toString(timeService.getLongitude()));
         showLatitude.setText(Double.toString(timeService.getLatitude()));
+    	
     }
-    
     @Override
     protected void onStart(){
     	super.onStart();

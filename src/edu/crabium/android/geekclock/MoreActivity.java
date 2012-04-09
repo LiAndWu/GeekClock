@@ -83,33 +83,24 @@ public class MoreActivity extends Activity {
     	Intent intent = new Intent(this, TimeService.class);
     	this.getApplicationContext().bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
     	
-    	new Thread(
-    			new Runnable(){
-    				public void run(){
-    					int times = 10;
-    					while(times -- > 0){
-    						if(!timeServiceBound){
-    							try {
-									TimeUnit.MILLISECONDS.sleep(200);
-									System.out.println("trying");
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-    						}
-    						else{
-    							runOnUiThread(new Runnable(){
-    								public void run(){
-    	    							showInfo();
-    									System.out.println("gocha");
-    								}
-    							});
-    							return;
-    						}
-    					}
-    				}
-    			}
-    			).start();
+    	new Thread(new Runnable(){
+			public void run(){
+				int times = 10;
+				while(times -- > 0)
+					if(!timeServiceBound)
+						try {
+							TimeUnit.MILLISECONDS.sleep(200);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					else
+						runOnUiThread(new Runnable(){
+							public void run(){
+    							showInfo();
+							}
+						});
+						return;
+			}}).start();
     }
     
     @Override

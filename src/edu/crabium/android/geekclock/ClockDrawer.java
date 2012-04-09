@@ -17,7 +17,7 @@ import android.os.Handler;
 import android.widget.ImageView;
 
 public class ClockDrawer {
-	Context context;
+	private Context context;
 	
 	public ClockDrawer(Context context){
 		this.context = context;
@@ -26,7 +26,6 @@ public class ClockDrawer {
 	}
 	
 	public void Draw(ImageView imageView, long SecSinceEpoch){
-		
 		int HeightOffSet = 5;
 		
 		int width = imageView.getLayoutParams().width;

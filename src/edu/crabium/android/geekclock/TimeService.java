@@ -3,8 +3,6 @@ package edu.crabium.android.geekclock;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -44,14 +42,10 @@ public class TimeService extends Service {
 			return TimeService.this;
 		}
 	}
-
-	@Override
-	public void onCreate() {
-	}
-
+	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
-		System.out.println("in service");
+		Log.d("GeekClock", "Service stared");
 		utcTimeSynchronized = false;
 		longitude = 120.33820867538452;
 		latitude = 30.31900699227783;
@@ -77,13 +71,12 @@ public class TimeService extends Service {
 					synchronizeTime();
 					if(utcTimeSynchronized)
 						break;
-					else{
+					else
 						try {
 							TimeUnit.MILLISECONDS.sleep(1000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
 				}
 			}}).start();
 		
@@ -94,20 +87,19 @@ public class TimeService extends Service {
 					synchronizeTimeZone();
 					if(localTimeZoneSynchronized)
 						break;
-					else{
+					else
 						try{
 							TimeUnit.MILLISECONDS.sleep(1000);
 						}catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
 				}
 			}}).start();
 		
 		new Thread(new Runnable(){
 			public void run(){
 				int times = 20;
-				while(times-- > 0){
+				while(times-- > 0)
 					if(localTimeZoneSynchronized && utcTimeSynchronized){
 						Date date = new Date();
 						long currentTimezone = date.getTimezoneOffset()*60;
@@ -117,16 +109,14 @@ public class TimeService extends Service {
 						timeSynchronized  = true;
 						break;
 					}
-					else{
+					else
 						try {
 							TimeUnit.MILLISECONDS.sleep(1000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
-				}
-			}
-		}).start();
+			}}).start();
+		
 		return 0;
 	}
 	private final LocationListener locationListener = new LocationListener() {
@@ -139,15 +129,17 @@ public class TimeService extends Service {
 		}
 
 		@Override
-		public void onProviderDisabled(String provider) {
-		}
-
-		@Override
 		public void onProviderEnabled(String provider) {
 		}
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+			// TODO Auto-generated method stub
+			
 		}
 	};
 
@@ -220,15 +212,12 @@ public class TimeService extends Service {
 		Date date = new Date();
 		return timeSynchronized ? (date.getTime() / 1000 + timeOffset ):( date.getTime() / 1000);
 	}
-
-	public boolean localTimeZoneSynchronized(){
-		return this.localTimeZoneSynchronized;
-	}
-	public boolean utcTimeSynchronized() {
-		return this.utcTimeSynchronized;
-	}
 	
 	public boolean timeSynchronized(){
 		return this.timeSynchronized;
+	}
+
+	public int getTimeZone() {
+		return (int)timeZone;
 	}
 }

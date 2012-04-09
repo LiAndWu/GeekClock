@@ -20,8 +20,8 @@ public class TimeServerListActivity extends Activity {
 	private Spinner	timeServerSpinner;
 	private ArrayAdapter<String>	adapter;
 	
-	String[] serverNameList = null;
-	String[] serverAddressList = null;
+	private String[] serverNameList = null;
+	private String[] serverAddressList = null;
 	private int serverSelectedTimes = 0;  
 	
 	@Override
@@ -45,7 +45,7 @@ public class TimeServerListActivity extends Activity {
 		backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(TimeServerListActivity.this, SetActivity.class);
+				Intent intent = new Intent(TimeServerListActivity.this, PreferencesActivity.class);
 				startActivity(intent);
 				TimeServerListActivity.this.finish();
 			}

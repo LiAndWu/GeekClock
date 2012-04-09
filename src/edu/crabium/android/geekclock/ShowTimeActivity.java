@@ -23,8 +23,8 @@ public class ShowTimeActivity extends Activity {
     private TextView showDate;
 	private static final int TimeMessageNum1 = 1; 
 	ImageView imageView = null;
-	private TimeService timeService;
-	private boolean timeServiceBound = false;
+	private static TimeService timeService;
+	private static boolean timeServiceBound = false;
 	
     /** Called when the activity is first created. */
     @Override
@@ -101,7 +101,7 @@ public class ShowTimeActivity extends Activity {
     	}//run
     }//Thread
     
-    private static boolean synchronizeInfoNotified = false;
+    private boolean synchronizeInfoNotified = false;
     private Handler TimeHandler = new Handler() {
 		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年M月d日");

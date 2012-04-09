@@ -62,8 +62,7 @@ public class MoreActivity extends Activity {
         SimpleDateFormat weekFormat = new SimpleDateFormat("E");
         SimpleDateFormat yearDayFormat = new SimpleDateFormat("今年第D天");
         
-        //TODO
-        int _timeZone = 8;//(int)timeService.getTimeZone();
+        int _timeZone = (int)timeService.getTimeZone();
         timeZone = "UTC" + ((_timeZone > 0) ? "+" : "") + _timeZone;
 
         long timeSeconds = timeService.getTimeSeconds();
@@ -94,13 +93,14 @@ public class MoreActivity extends Activity {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					else
+					else{
 						runOnUiThread(new Runnable(){
 							public void run(){
     							showInfo();
 							}
 						});
 						return;
+					}
 			}}).start();
     }
     

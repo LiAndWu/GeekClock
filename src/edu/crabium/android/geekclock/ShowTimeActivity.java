@@ -49,7 +49,6 @@ public class ShowTimeActivity extends Activity {
     	super.onStart();
     	Intent intent = new Intent(this, TimeService.class);
     	this.getApplicationContext().bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
-    	System.out.println("trying bind");
     }
     
     @Override
@@ -64,7 +63,6 @@ public class ShowTimeActivity extends Activity {
     private ServiceConnection timeServiceConnection = new ServiceConnection(){
     	@Override
     	public void onServiceConnected(ComponentName className, IBinder service){
-    		System.out.println("connected");
     		TimeServiceBinder binder = (TimeServiceBinder) service;
     		timeService = binder.getService();
     		timeServiceBound = true;
@@ -114,7 +112,7 @@ public class ShowTimeActivity extends Activity {
     		
     		switch(msg.what) {
     		case TimeMessageNum1:
-    			if(timeServiceBound && timeService.utcTimeSynchronized()){
+    			if(timeServiceBound && timeService.timeSynchronized()){
     				long timeSeconds = timeService.getTimeSeconds();
     				draw(timeSeconds);
     				if(!synchronizeInfoNotified){

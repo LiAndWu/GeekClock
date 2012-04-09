@@ -3,7 +3,11 @@ package edu.crabium.android.geekclock;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.geonames.Timezone;
 import org.geonames.WebService;
 
@@ -21,11 +25,13 @@ import android.util.Log;
 public class TimeService extends Service {
 	private boolean utcTimeSynchronized = false;
 	private boolean localTimeZoneSynchronized = false;
+	private boolean timeSynchronized = false;
 	private String placeName;
 	private double latitude;
 	private double longitude;
 	private long timeOffset;
 	private double timeZone;
+	private double utc;
 	private final IBinder timeServiceBinder = new TimeServiceBinder();
 
 	@Override
@@ -66,14 +72,61 @@ public class TimeService extends Service {
 		
 		new Thread(new Runnable(){
 			public void run(){
-				synchronizeTime();
+				int times = 10;
+				while(times -- > 0){
+					synchronizeTime();
+					if(utcTimeSynchronized)
+						break;
+					else{
+						try {
+							TimeUnit.MILLISECONDS.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
 			}}).start();
 		
 		new Thread(new Runnable(){
 			public void run(){
-				synchronizeTimeZone();
+				int times = 10;
+				while(times -- > 0){
+					synchronizeTimeZone();
+					if(localTimeZoneSynchronized)
+						break;
+					else{
+						try{
+							TimeUnit.MILLISECONDS.sleep(1000);
+						}catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
 			}}).start();
 		
+		new Thread(new Runnable(){
+			public void run(){
+				int times = 20;
+				while(times-- > 0){
+					if(localTimeZoneSynchronized && utcTimeSynchronized){
+						Date date = new Date();
+						long currentTimezone = date.getTimezoneOffset()*60;
+						
+						//TODO: weird!!! 
+						timeOffset = ((long) utc + currentTimezone +  (long) timeZone * 60 * 60) - (date.getTime() / 1000);
+						timeSynchronized  = true;
+						break;
+					}
+					else{
+						try {
+							TimeUnit.MILLISECONDS.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}).start();
 		return 0;
 	}
 	private final LocationListener locationListener = new LocationListener() {
@@ -107,9 +160,6 @@ public class TimeService extends Service {
 	}
 
 	public void synchronizeTime(){
-		double utc;
-		Date date = new Date();
-		long localTimezone = date.getTimezoneOffset()*60;
 		try{
 	        DatagramSocket socket = new DatagramSocket();
 	        SettingProvider sp = SettingProvider.getInstance();
@@ -124,13 +174,12 @@ public class TimeService extends Service {
 	        Log.d("GeekClock", "NTP request sent.");
 	        
 	        // Get response
+	        packet = new DatagramPacket(buf, buf.length);
 	        socket.receive(packet);
+			
 	        Log.d("GeekClock", "NTP answer received.");
 			NtpMessage msg = new NtpMessage(packet.getData());
-	        
-			utc = msg.toUTC();
-			
-			timeOffset = ((long) utc + localTimezone + (long) timeZone * 60 * 60) - date.getTime() / 1000;
+	        utc = msg.transmitTimestamp - 2208988800.0;
 			utcTimeSynchronized = true;
         }
         catch(Exception e){
@@ -152,12 +201,14 @@ public class TimeService extends Service {
 			placeName = WebService.findNearbyPlaceName(latitude, longitude).iterator().next().getName();
 	        Log.d("GeekClock", "GeoNames timezone answer received");
 			timeZone =  tmz.getGmtOffset();
+	        Log.d("GeekClock", "Timezone set to " + timeZone);
+	        
 			localTimeZoneSynchronized = true;
 		}
 		catch (Exception e) {
 			Log.d("GeekClock", "Error: unexpected exception");
 			e.printStackTrace();
-			timeZone =  8.0;
+			timeZone =  0;
 		}
 	}
 
@@ -167,7 +218,7 @@ public class TimeService extends Service {
 
 	public long getTimeSeconds() {
 		Date date = new Date();
-		return utcTimeSynchronized ? date.getTime() / 1000 + timeOffset : date.getTime() / 1000;
+		return timeSynchronized ? (date.getTime() / 1000 + timeOffset ):( date.getTime() / 1000);
 	}
 
 	public boolean localTimeZoneSynchronized(){
@@ -175,5 +226,9 @@ public class TimeService extends Service {
 	}
 	public boolean utcTimeSynchronized() {
 		return this.utcTimeSynchronized;
+	}
+	
+	public boolean timeSynchronized(){
+		return this.timeSynchronized;
 	}
 }

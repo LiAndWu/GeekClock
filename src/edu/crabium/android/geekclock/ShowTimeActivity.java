@@ -56,7 +56,7 @@ public class ShowTimeActivity extends Activity {
     protected void onStop(){
     	super.onStop();
     	if(timeServiceBound){
-    		unbindService(timeServiceConnection);
+    		this.getApplicationContext().unbindService(timeServiceConnection);
     		timeServiceBound = false;
     	}
     }
@@ -114,10 +114,8 @@ public class ShowTimeActivity extends Activity {
     		switch(msg.what) {
     		case TimeMessageNum1:
     			if(timeServiceBound && timeService.isSynchronized()){
-    				System.out.println("in");
     				long timeSeconds = timeService.getTimeSeconds();
     				sysTime = timeFormat.format(new Date(timeSeconds * 1000));
-    				System.out.println("time: " + sysTime);
         			sysDate = dateFormat.format(new Date(timeSeconds * 1000));
         		    showTime.setText(sysTime);  
         		    showDate.setText(sysDate);

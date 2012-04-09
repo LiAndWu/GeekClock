@@ -80,14 +80,14 @@ public class MoreActivity extends Activity {
     protected void onStart(){
     	super.onStart();
     	Intent intent = new Intent(this, TimeService.class);
-    	bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
+    	this.getApplicationContext().bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
     }
     
     @Override
     protected void onStop(){
     	super.onStop();
     	if(timeServiceBound){
-    		unbindService(timeServiceConnection);
+    		this.getApplicationContext().unbindService(timeServiceConnection);
     		timeServiceBound = false;
     	}
     }

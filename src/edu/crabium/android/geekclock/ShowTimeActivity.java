@@ -1,23 +1,14 @@
 package edu.crabium.android.geekclock;
 
 import java.text.SimpleDateFormat;
-
-import java.util.Calendar;
 import java.util.Date;
-
-import org.geonames.WebService;
-
 import edu.crabium.android.geekclock.R;
 import edu.crabium.android.geekclock.TimeService.TimeServiceBinder;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -51,20 +42,6 @@ public class ShowTimeActivity extends Activity {
         new TimeThread().start();	
         //显示日期
         showDate = (TextView) findViewById(R.id.showDate);    
-
-        LocationManager locationManager;
-        String serviceName = Context.LOCATION_SERVICE;
-        locationManager = (LocationManager)getSystemService(serviceName);
-        String provider = LocationManager.GPS_PROVIDER;
-        
-        Location location = locationManager.getLastKnownLocation(provider);
-        if(location != null)
-        	TimeProvider.SetLocation(location.getLatitude(), location.getLongitude());
-        else
-        	TimeProvider.ResetLocation();
-        
-        locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
-
     }
     
     @Override
@@ -96,24 +73,7 @@ public class ShowTimeActivity extends Activity {
     		timeServiceBound = false;
     	}
     };
-    
-    private final LocationListener locationListener = new LocationListener() {
-        @Override
-		public void onLocationChanged(Location location) {
-        	if(location != null){
-            	TimeProvider.SetLocation(location.getLatitude(), location.getLongitude());
-        	}
-        }
-        @Override
-		public void onProviderDisabled(String provider){
-        }
-        @Override
-		public void onProviderEnabled(String provider){ }
-        @Override
-		public void onStatusChanged(String provider, int status,
-        Bundle extras){ }
-};
-    
+
     /*    
      * http://hi.baidu.com/foreverpains/blog/item/a84f681c4b477570f624e40b.html
      * 1、handler 可以使用 Message来传输数据，

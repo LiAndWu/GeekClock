@@ -15,9 +15,10 @@ import android.widget.TextView;
 
 
 public class TurntableActivity extends Activity {
-	private Button m_BackButton, m_ConfirmButton;
+	private Button backButton;
+	private Button confirmButton;
 	
-	private TextView m_ShowFrequencyTextView;
+	private TextView showFrequencyTextView;
 	// Time changed flag
 	private boolean timeChanged = false;
 	
@@ -33,17 +34,17 @@ public class TurntableActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.turntable);
 		
-		m_ShowFrequencyTextView = (TextView)findViewById(R.id.showFrequencyTextView);
-		m_ShowFrequencyTextView.setTextColor(Color.BLACK);
+		showFrequencyTextView = (TextView)findViewById(R.id.showFrequencyTextView);
+		showFrequencyTextView.setTextColor(Color.BLACK);
 		
 		SettingProvider sp = SettingProvider.getInstance();
 		int frequency = Integer.valueOf(sp.getSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS));
-		m_ShowFrequencyTextView.setText("现在的刷新频率是：每" + frequency/3600 + "小时" +
+		showFrequencyTextView.setText("现在的刷新频率是：每" + frequency/3600 + "小时" +
 				frequency%3600/60 + "分钟一次" );
 		
 		
-		m_BackButton = (Button)findViewById(R.id.backButton);
-		m_BackButton.setOnClickListener(new Button.OnClickListener() {
+		backButton = (Button)findViewById(R.id.backButton);
+		backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(TurntableActivity.this, ReadFrequencyActivity.class);
@@ -52,9 +53,9 @@ public class TurntableActivity extends Activity {
 			}
 		});
 		
-		m_ConfirmButton = (Button)findViewById(R.id.confirmButton);
-		m_ConfirmButton.setTextColor(Color.WHITE);
-		m_ConfirmButton.setOnClickListener(new Button.OnClickListener() {
+		confirmButton = (Button)findViewById(R.id.confirmButton);
+		confirmButton.setTextColor(Color.WHITE);
+		confirmButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				SettingProvider sp = SettingProvider.getInstance();
@@ -84,7 +85,7 @@ public class TurntableActivity extends Activity {
 					timeChanged = true;
 					frequencyHour = hours.getCurrentItem();
 					frequencyMinute = mins.getCurrentItem();
-					m_ShowFrequencyTextView.setText("现在的刷新频率是：每" + frequencyHour+ "小时" +
+					showFrequencyTextView.setText("现在的刷新频率是：每" + frequencyHour+ "小时" +
 							frequencyMinute + "分钟一次" );
 					timeChanged = false;
 				}
@@ -105,7 +106,7 @@ public class TurntableActivity extends Activity {
 				timeChanged = true;
 				frequencyHour = hours.getCurrentItem();
 				frequencyMinute = mins.getCurrentItem();
-				m_ShowFrequencyTextView.setText("现在的刷新频率是：每" + frequencyHour+ "小时" +
+				showFrequencyTextView.setText("现在的刷新频率是：每" + frequencyHour+ "小时" +
 						frequencyMinute + "分钟一次" );
 				timeChanged = false;
 			}

@@ -17,7 +17,6 @@ import android.view.Window;
 import android.widget.TextView;
 
 public class MoreActivity extends Activity {
-	
 	private static TextView showTimeZone;
 	private static TextView showLongitude;
 	private static TextView showLatitude;
@@ -45,18 +44,18 @@ public class MoreActivity extends Activity {
     @Override
     protected void onResume(){
         String timeZone, week, yearDay; 
-        
-        final SimpleDateFormat weekFormat = new SimpleDateFormat("E");
-        final SimpleDateFormat yearDayFormat = new SimpleDateFormat("今年第D天");
+        SimpleDateFormat weekFormat = new SimpleDateFormat("E");
+        SimpleDateFormat yearDayFormat = new SimpleDateFormat("今年第D天");
         
         int _timeZone = timeService.getTimeZone();
         timeZone = "UTC" + ((_timeZone > 0) ? "+" : "") + _timeZone;
 
-        week = weekFormat.format(new Date(timeService.getTimeSeconds() * 1000));
-        yearDay = yearDayFormat.format(new Date(timeService.getTimeSeconds() * 1000));
+        long timeSeconds = timeService.getTimeSeconds();
+        week = weekFormat.format(new Date(timeSeconds * 1000));
+        yearDay = yearDayFormat.format(new Date(timeSeconds * 1000));
         
         showTimeZone.setText(timeZone);
-        showCity.setText(TimeProvider.placeName);
+        showCity.setText(timeService.getPlaceName());
         showWeek.setText(week);
         showYearDay.setText(yearDay);
         showLongitude.setText(Double.toString(timeService.getLongitude()));

@@ -20,10 +20,11 @@ import android.util.Log;
 
 public class TimeService extends Service {
 	private boolean isSynchronized = false;
-	private double latitude;
-	private double longitude;
 	private String placeName;
 	private double utc;
+	private double latitude;
+	private double longitude;
+	private long timeOffset;
 	private final IBinder timeServiceBinder = new TimeServiceBinder();
 
 	@Override
@@ -39,6 +40,11 @@ public class TimeService extends Service {
 
 	@Override
 	public void onCreate() {
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId){
+		System.out.println("in service");
 		isSynchronized = false;
 		longitude = 120.33820867538452;
 		latitude = 30.31900699227783;
@@ -55,8 +61,14 @@ public class TimeService extends Service {
 		}
 
 		locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
+		
+		new Thread(new Runnable(){
+			public void run(){
+				syncTime();
+			}}).start();
+		
+		return 0;
 	}
-
 	private final LocationListener locationListener = new LocationListener() {
 		@Override
 		public void onLocationChanged(Location location) {
@@ -80,27 +92,34 @@ public class TimeService extends Service {
 	};
 
 	public double getLatitude() {
-		return 0;
+		return latitude;
 	}
 
 	public double getLongitude() {
-		return 0;
+		return longitude;
 	}
 
 	public void syncTime(){
 		try{
 	        DatagramSocket socket = new DatagramSocket();
 	        SettingProvider sp = SettingProvider.getInstance();
-	        InetAddress address = InetAddress.getByName(sp.getSetting(SettingProvider.CHOSEN_SREVER_ADDRESS));
+	        String name = sp.getSetting(SettingProvider.CHOSEN_SREVER_ADDRESS);
+	        System.out.println("name = " + name);
+	        InetAddress address = InetAddress.getByName(name);
 	        byte[] buf = new NtpMessage().toByteArray();
 	        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 123);
 	        socket.send(packet);
-	         
+	        System.out.println("sent");
 	        // Get response
 	        socket.receive(packet);
+	        System.out.println("received");
 			NtpMessage msg = new NtpMessage(packet.getData());
 	        
 			utc = msg.toUTC();
+			isSynchronized = true;
+			Date date = new Date();
+			long localTimezone = date.getTimezoneOffset()*60;
+			timeOffset = ((long) utc + localTimezone + (long) 8 * 60 * 60) - date.getTime() / 1000;
         }
         catch(Exception e){
         	Date date = new Date();
@@ -126,26 +145,17 @@ public class TimeService extends Service {
 	}
 
 	public String getPlaceName() {
-		return "";
+		return placeName;
 	}
 
 	public long getTimeSeconds() {
+		Date date = new Date();
+		long localTimezone = date.getTimezoneOffset()*60;
+		
 		if (isSynchronized) {
-			// TODO: modify these code to adapt to TimeService
-			/*
-			 * if(GetTimezone(latitude,longitude) == -1) TimezoneError = true;
-			 * else TimezoneError = false; if(GetUTC() == -1) UTCError = true;
-			 * else UTCError = false;
-			 * 
-			 * Synchronized = true; TimeOffset = ((long)UTC + LocalTimezone +
-			 * (long)CurrentTimezone*60*60) - date.getTime()/1000;
-			 * 
-			 * return date.getTime()/1000 + TimeOffset;
-			 */
-
-			return 0;
+			return date.getTime() / 1000 + timeOffset;
 		} else {
-			Date date = new Date();
+			
 			return date.getTime() / 1000;
 		}
 	}

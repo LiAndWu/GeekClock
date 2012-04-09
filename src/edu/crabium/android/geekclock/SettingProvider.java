@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class SettingProvider {
+	private static final String DATABASE_NAME = "/data/data/edu.crabium.android.geekclock/geekclock.sqlite3";
 	private static final String MISC_TABLE_NAME = "misc";
 	private static final String SERVER_TABLE_NAME = "server";
 	private static Context context;
@@ -31,11 +32,11 @@ public class SettingProvider {
 		SettingProvider.context = context;
 	}
 	public static SettingProvider getInstance(){
-		File database = new File("/data/data/edu.crabium.android.geekclock/geekclock.sqlite3");
+		File database = new File(DATABASE_NAME);
 		if(!database.exists()){
 			AssetManager assets = context.getAssets();
         	try{
-				FileOutputStream fileOutputStream = new FileOutputStream("/data/data/edu.crabium.android.geekclock/geekclock.sqlite3");
+				FileOutputStream fileOutputStream = new FileOutputStream(DATABASE_NAME);
 				InputStream fileInputStream = assets.open("geekclock.sqlite3");
 
 				byte[] buffer = new byte[1024];
@@ -56,7 +57,6 @@ public class SettingProvider {
 	}
 
 	private SQLiteDatabase openDatabase(){
-		final String DATABASE_NAME = "/data/data/edu.crabium.android.geekclock/geekclock.sqlite3";
 		return SQLiteDatabase.openOrCreateDatabase(DATABASE_NAME, null);
 	}
 	

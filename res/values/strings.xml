@@ -3,4 +3,5 @@
     <string name="hello">Hello World, TimeSynActivity!</string>
     <string name="app_name">Geek Clock</string>
     <string name="feedback_frequency">反馈频率</string>
+    <string name="time_synchronizing">正在同步中...</string>
 </resources>

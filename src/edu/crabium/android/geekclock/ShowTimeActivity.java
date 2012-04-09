@@ -1,17 +1,11 @@
 package edu.crabium.android.geekclock;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import org.geonames.WebService;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 
 import edu.crabium.android.geekclock.R;
 
@@ -28,11 +22,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ShowTimeActivity extends Activity { 
-    TextView m_ShowTime, m_ShowDate;
-    Calendar c; 
+    private TextView showTime;
+    private TextView showDate;
 	private static final int TimeMessageNum1 = 1; 
 
-	ImageView imageview = null;
+	ImageView imageView = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -41,23 +35,18 @@ public class ShowTimeActivity extends Activity {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.showclock);
         SettingProvider sp = SettingProvider.getInstance();
-		
-		TimeProvider.SetServerName(sp.getSetting(SettingProvider.CHOSEN_SERVER_NAME));
-	    TimeProvider.SetServerAddress(sp.getSetting(SettingProvider.CHOSEN_SREVER_ADDRESS));
-	    
-	    int freq = Integer.valueOf(sp.getSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS));
 	    
 	    WebService.setUserName(sp.getSetting(SettingProvider.GEONAMES_USER_NAME));
         
         //显示时钟
-        imageview = (ImageView) findViewById(R.id.imageView);
+        imageView = (ImageView) findViewById(R.id.imageView);
         
         //显示时间
-        m_ShowTime = (TextView) findViewById(R.id.showTime);   
+        showTime = (TextView) findViewById(R.id.showTime);   
         //启动一号线程
         new TimeThread().start();	
         //显示日期
-        m_ShowDate = (TextView) findViewById(R.id.showDate);    
+        showDate = (TextView) findViewById(R.id.showDate);    
 
         LocationManager locationManager;
         String serviceName = Context.LOCATION_SERVICE;
@@ -79,8 +68,8 @@ public class ShowTimeActivity extends Activity {
 		public void onLocationChanged(Location location) {
         	if(location != null){
             	TimeProvider.SetLocation(location.getLatitude(), location.getLongitude());
-            	//------------------------------------------------
 
+            	// Make it thread-safe!!!!
                 MoreActivity.m_ShowLongitude.setText(Double.toString(TimeProvider.GetLongitude()));
                 MoreActivity.m_ShowLatitude.setText(Double.toString(TimeProvider.GetLatitude()));
                 MoreActivity.m_ShowTimeZone.setText("UTC"+ (TimeProvider.GetTimezone() > 0?
@@ -137,11 +126,11 @@ public class ShowTimeActivity extends Activity {
     		case TimeMessageNum1:
     			sysTime = m_TimeFormat.format(new Date(timeprovider.GetTimeSeconds() * 1000));
     			sysDate = m_DateFormat.format(new Date(timeprovider.GetTimeSeconds() * 1000));
-    		    m_ShowTime.setText(sysTime);  
-    		    m_ShowDate.setText(sysDate);
+    		    showTime.setText(sysTime);  
+    		    showDate.setText(sysDate);
     		    	    
     		    ClockDrawer clockdrawer = new ClockDrawer(ShowTimeActivity.this);
-    		    clockdrawer.Draw(imageview, timeprovider.GetTimeSeconds());
+    		    clockdrawer.Draw(imageView, timeprovider.GetTimeSeconds());
     		    
     			break;
     		default:

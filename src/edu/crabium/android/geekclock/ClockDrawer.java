@@ -19,19 +19,18 @@ import android.widget.ImageView;
 public class ClockDrawer {
 	Context context;
 	
-	public ClockDrawer(Context _context){
-		this.context = _context;
+	public ClockDrawer(Context context){
+		this.context = context;
+	}
+	public ClockDrawer(Handler handler) {
 	}
 	
-	public ClockDrawer(Handler handler) {
-		// TODO Auto-generated constructor stub
-	}
-	public void Draw(ImageView imageview, long SecSinceEpoch){
+	public void Draw(ImageView imageView, long SecSinceEpoch){
 		
 		int HeightOffSet = 5;
 		
-		int width = imageview.getLayoutParams().width;
-		int height = imageview.getLayoutParams().height;
+		int width = imageView.getLayoutParams().width;
+		int height = imageView.getLayoutParams().height;
 		
 		Bitmap bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888 );   
 		Bitmap bitmapback = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
@@ -95,7 +94,7 @@ public class ClockDrawer {
         
         paint.setStrokeWidth(1);
         canvas.drawLine(CenterX, (float)CenterY + HeightOffSet,(float)(CenterX + secondx), (float)(CenterY - secondy) + HeightOffSet, paint);
-        imageview.setImageBitmap(bitmap);
+        imageView.setImageBitmap(bitmap);
         
 	}
 }

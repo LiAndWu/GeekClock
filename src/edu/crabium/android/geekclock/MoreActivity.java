@@ -21,8 +21,7 @@ public class MoreActivity extends Activity {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.more);
    
-        
-        final  String TimeZone, Week, YearDay; 
+        String TimeZone, Week, YearDay; 
         
         TimeProvider timeprovider = new TimeProvider();
         

@@ -47,7 +47,7 @@ public class MoreActivity extends Activity {
         SimpleDateFormat weekFormat = new SimpleDateFormat("E");
         SimpleDateFormat yearDayFormat = new SimpleDateFormat("今年第D天");
         
-        int _timeZone = timeService.getTimeZone();
+        int _timeZone = (int)timeService.getTimeZone();
         timeZone = "UTC" + ((_timeZone > 0) ? "+" : "") + _timeZone;
 
         long timeSeconds = timeService.getTimeSeconds();

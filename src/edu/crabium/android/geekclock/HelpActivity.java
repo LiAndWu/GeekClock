@@ -1,9 +1,7 @@
 package edu.crabium.android.geekclock;
 
-
 import edu.crabium.android.geekclock.R;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -14,23 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class HelpActivity extends Activity {
-	private TextView helpActivityText;
-	private Button backButton;
-	private LinearLayout layout;
-
-	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.help);
-		layout = (LinearLayout) findViewById(R.id.LinearLayout);
+		
+		LinearLayout layout = (LinearLayout) findViewById(R.id.LinearLayout);
 		layout.setBackgroundColor(Color.BLACK);
 		
-		helpActivityText = (TextView) findViewById(R.id.helpText);      
-		DisplayMetrics dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		if (dm.heightPixels > 600) {
+		TextView helpActivityText = (TextView) findViewById(R.id.helpText);      
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		if (displayMetrics.heightPixels > 600) {
 	        helpActivityText.setText(
 	   
 	        		  "\n\t应用说明：\n" +
@@ -47,7 +41,8 @@ public class HelpActivity extends Activity {
 	        		  "\t时间服务器提供商 :UTC查询服务\n" +
 	        		  "\tGoogle.com :\t\t各种资源\n\n"
 	      );   
-		} else {
+		}
+		else {
 	        helpActivityText.setText(
 	        		  "\n\t应用说明：\n" +
 	        		  "\t1)\t标准时间：显示UTC(世界标准时间), 与网\n\t\t络同步,再也不用担心手机时间不准了,亲.\n" +
@@ -65,12 +60,10 @@ public class HelpActivity extends Activity {
 	      );   	
 		}
         
-        backButton = (Button)findViewById(R.id.backButton);
+        Button backButton = (Button)findViewById(R.id.backButton);
         backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(HelpActivity.this, PreferencesActivity.class);
-				startActivity(intent);
 				HelpActivity.this.finish();
 			}
 		});

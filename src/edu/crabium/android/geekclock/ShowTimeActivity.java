@@ -21,7 +21,7 @@ import android.widget.Toast;
 public class ShowTimeActivity extends Activity { 
     private TextView timeTextView;
     private TextView dateTextView;
-	ImageView clockImageView = null;
+	private ImageView clockImageView = null;
 	private static TimeService timeService;
 	private static boolean timeServiceBound = false;
 	

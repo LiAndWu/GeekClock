@@ -16,7 +16,7 @@ public class PreferencesActivity extends Activity{
 		helpButton, thanksButton, aboutButton;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.set);
@@ -37,7 +37,6 @@ public class PreferencesActivity extends Activity{
 			public void onClick(View v) {
 				Intent intent = new Intent(PreferencesActivity.this, RefreshFrequencyActivity.class);
 				startActivity(intent);
-				PreferencesActivity.this.finish();
 			}
 		});
 
@@ -47,7 +46,6 @@ public class PreferencesActivity extends Activity{
 			public void onClick(View v) {
 				Intent intent = new Intent(PreferencesActivity.this, TimeServerListActivity.class);
 				startActivity(intent);
-				PreferencesActivity.this.finish();
 			}
 		});
 		
@@ -57,7 +55,6 @@ public class PreferencesActivity extends Activity{
 			public void onClick(View v) {
 				Intent intent = new Intent(PreferencesActivity.this, GeonamesRegisterActivity.class);
 				startActivity(intent);
-				PreferencesActivity.this.finish();
 			}
 		});
 		
@@ -68,7 +65,6 @@ public class PreferencesActivity extends Activity{
 			public void onClick(View v) {
 				Intent intent = new Intent(PreferencesActivity.this, HelpActivity.class);
 				startActivity(intent);
-				PreferencesActivity.this.finish();
 			}
 		});
 		
@@ -78,7 +74,6 @@ public class PreferencesActivity extends Activity{
 			public void onClick(View v) {
 				Intent intent = new Intent(PreferencesActivity.this, ThanksActivity.class);
 				startActivity(intent);
-				PreferencesActivity.this.finish();
 			}
 		});	
 
@@ -88,7 +83,6 @@ public class PreferencesActivity extends Activity{
 			public void onClick(View v) {
 				Intent intent = new Intent(PreferencesActivity.this, AboutActivity.class);
 				startActivity(intent);
-				PreferencesActivity.this.finish();
 			}
 		});	
 	}

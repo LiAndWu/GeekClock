@@ -2,7 +2,6 @@ package edu.crabium.android.geekclock;
 
 import edu.crabium.android.geekclock.R;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,8 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class AboutActivity extends Activity {
-
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about);
@@ -52,8 +50,6 @@ public class AboutActivity extends Activity {
 		Button backButton = (Button) findViewById(R.id.backButton);
 		backButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(AboutActivity.this,PreferencesActivity.class);
-				startActivity(intent);
 				AboutActivity.this.finish();
 			}
 		});

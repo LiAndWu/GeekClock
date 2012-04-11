@@ -14,10 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-
 public class MainActivity extends TabActivity {
     @Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
@@ -42,25 +41,25 @@ public class MainActivity extends TabActivity {
     }
     
     @Override
-    public void onDestroy(){
+    protected void onDestroy(){
     	super.onDestroy();
         Intent intent = new Intent(this, TimeService.class);
         stopService(intent);
     }
     
-    public View composeLayout(String s, int i){
+    private View composeLayout(String str, int id){
     	LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         
-        TextView tv = new TextView(this);
-        tv.setGravity(Gravity.CENTER);
-        tv.setSingleLine(true);
-        tv.setText(s);
-        layout.addView(tv, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        TextView textView = new TextView(this);
+        textView.setGravity(Gravity.CENTER);
+        textView.setSingleLine(true);
+        textView.setText(str);
+        layout.addView(textView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         
-        ImageView iv = new ImageView(this);
-        iv.setImageResource(i);
-        layout.addView(iv, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(id);
+        layout.addView(imageView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         return layout;
     }
     

@@ -5,7 +5,6 @@ import edu.crabium.android.geekclock.wheel.OnWheelChangedListener;
 import edu.crabium.android.geekclock.wheel.OnWheelScrollListener;
 import edu.crabium.android.geekclock.wheel.WheelView;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -13,18 +12,14 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 public class TurntableActivity extends Activity {
-	private Button backButton;
-	private Button confirmButton;
 	private TextView showFrequencyTextView;
-	private boolean timeChanged = false;
 	private boolean timeScrolled = false;
 	private int frequencyHour;
 	private int frequencyMinute;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) { 
+	protected void onCreate(Bundle savedInstanceState) { 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.turntable);
@@ -34,19 +29,18 @@ public class TurntableActivity extends Activity {
 		
 		SettingProvider sp = SettingProvider.getInstance();
 		int frequency = Integer.valueOf(sp.getSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS));
-		showFrequencyTextView.setText("现在的刷新频率是：每" + frequency/3600 + "小时" + frequency%3600/60 + "分钟一次" );
+
+		setFrequencyText(frequency);
 		
-		backButton = (Button)findViewById(R.id.backButton);
+		Button backButton = (Button)findViewById(R.id.backButton);
 		backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(TurntableActivity.this, RefreshFrequencyActivity.class);
-				startActivity(intent);
 				TurntableActivity.this.finish();
 			}
 		});
 		
-		confirmButton = (Button)findViewById(R.id.confirmButton);
+		Button confirmButton = (Button)findViewById(R.id.confirmButton);
 		confirmButton.setTextColor(Color.WHITE);
 		confirmButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
@@ -54,9 +48,6 @@ public class TurntableActivity extends Activity {
 				SettingProvider sp = SettingProvider.getInstance();
 				int seconds = frequencyHour*3600 + frequencyMinute * 60;
 				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(seconds));
-
-				Intent intent = new Intent(TurntableActivity.this, RefreshFrequencyActivity.class);
-				startActivity(intent);
 				TurntableActivity.this.finish();
 			}
 		});
@@ -75,11 +66,9 @@ public class TurntableActivity extends Activity {
 			@Override
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
 				if (!timeScrolled) {
-					timeChanged = true;
 					frequencyHour = hours.getCurrentItem();
 					frequencyMinute = minutes.getCurrentItem();
-					showFrequencyTextView.setText("现在的刷新频率是：每" + frequencyHour+ "小时" + frequencyMinute + "分钟一次" );
-					timeChanged = false;
+					setFrequencyText(frequencyHour * 3600 + frequencyMinute*60);
 				}
 			}
 		};
@@ -95,11 +84,9 @@ public class TurntableActivity extends Activity {
 			@Override
 			public void onScrollingFinished(WheelView wheel) {
 				timeScrolled = false;
-				timeChanged = true;
 				frequencyHour = hours.getCurrentItem();
 				frequencyMinute = minutes.getCurrentItem();
-				showFrequencyTextView.setText("现在的刷新频率是：每" + frequencyHour+ "小时" + frequencyMinute + "分钟一次" );
-				timeChanged = false;
+				setFrequencyText(frequencyHour * 3600 + frequencyMinute*60);
 			}
 		};
 		
@@ -107,4 +94,7 @@ public class TurntableActivity extends Activity {
 		minutes.addScrollingListener(scrollListener);	
 	}
 	
+	private void setFrequencyText(int frequencySecond){
+		showFrequencyTextView.setText("现在的刷新频率是：每" + frequencySecond/3600 + "小时"  + frequencySecond%3600/60 + "分钟一次");
+	}
 }

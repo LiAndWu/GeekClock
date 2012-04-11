@@ -18,12 +18,12 @@ import android.view.Window;
 import android.widget.TextView;
 
 public class MoreActivity extends Activity {
-	private static TextView showTimeZone;
-	private static TextView showLongitude;
-	private static TextView showLatitude;
-	private static TextView showCity;
-	private static TextView showWeek;
-	private static TextView showYearDay;
+	private TextView showTimeZone;
+	private TextView showLongitude;
+	private TextView showLatitude;
+	private TextView showCity;
+	private TextView showWeek;
+	private TextView showYearDay;
 	
 	private TimeService timeService;
 	private boolean timeServiceBound;
@@ -58,21 +58,16 @@ public class MoreActivity extends Activity {
     }
     
     private void showInfo(){
-        String timeZone, week, yearDay; 
-        SimpleDateFormat weekFormat = new SimpleDateFormat("E");
-        SimpleDateFormat yearDayFormat = new SimpleDateFormat("今年第D天");
-        
         int _timeZone = (int)timeService.getTimeZone();
-        timeZone = "UTC" + ((_timeZone > 0) ? "+" : "") + _timeZone;
+        String timeZone = "UTC" + ((_timeZone > 0) ? "+" : "") + _timeZone;
 
-        long timeSeconds = timeService.getTimeSeconds();
-        week = weekFormat.format(new Date(timeSeconds * 1000));
-        yearDay = yearDayFormat.format(new Date(timeSeconds * 1000));
+        String week = new SimpleDateFormat("E").format(new Date(timeService.getTimeSeconds() * 1000));
+        String dayInYear= new SimpleDateFormat("今年第D天").format(new Date(timeService.getTimeSeconds() * 1000));
         
         showTimeZone.setText(timeZone);
         showCity.setText(timeService.getPlaceName());
         showWeek.setText(week);
-        showYearDay.setText(yearDay);
+        showYearDay.setText(dayInYear);
         showLongitude.setText(Double.toString(timeService.getLongitude()));
         showLatitude.setText(Double.toString(timeService.getLatitude()));
     	

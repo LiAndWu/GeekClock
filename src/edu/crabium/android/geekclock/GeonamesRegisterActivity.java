@@ -16,26 +16,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class GeonamesRegisterActivity extends Activity {
-	private Button backButton;
-	private Button confirmButton;
 	private EditText usernameExitText;
 	private TextView showUsernameTextView;
-	private ImageView registerImageView;
 	private String inputRecord;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.geonames_register);
 		
-		backButton = (Button)findViewById(R.id.backButton);
+		Button backButton = (Button)findViewById(R.id.backButton);
 		backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setClass(GeonamesRegisterActivity.this, PreferencesActivity.class);
-				startActivity(intent);
 				GeonamesRegisterActivity.this.finish();
 			}
 		});
@@ -45,7 +39,8 @@ public class GeonamesRegisterActivity extends Activity {
 		String geoNamesUserName = sp.getSetting(SettingProvider.GEONAMES_USER_NAME);
 		if(geoNamesUserName == "tikiet") {
 			showUsernameTextView.setText("\t现在使用的账户是公用账户, 查询次数有限, 建议注册私人账号.");
-		} else {
+		}
+		else {
 			showUsernameTextView.setText("正在使用的账户是:\n" + geoNamesUserName);
 		}
 		
@@ -62,14 +57,15 @@ public class GeonamesRegisterActivity extends Activity {
 		});
 		
 		
-		confirmButton = (Button)findViewById(R.id.confirmButton);
+		Button confirmButton = (Button)findViewById(R.id.confirmButton);
 		confirmButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				inputRecord = usernameExitText.getText().toString();
 				if (inputRecord == null || inputRecord.trim().equals("")) {
 					DisplayToast("骚年，请正确输入！！");
-				} else {			
+				}
+				else {			
 					DisplayToast("输入成功！！");
 					showUsernameTextView.setText("正在使用的账户是:：\n" + inputRecord);
 					usernameExitText.setFocusable(false);
@@ -81,7 +77,7 @@ public class GeonamesRegisterActivity extends Activity {
 			}
 		});
 		
-		registerImageView = (ImageView)findViewById(R.id.registerImageView);
+		ImageView registerImageView = (ImageView)findViewById(R.id.registerImageView);
 		registerImageView.setOnClickListener(new View.OnClickListener(){
 	           @Override
 			public void onClick(View v){
@@ -94,7 +90,7 @@ public class GeonamesRegisterActivity extends Activity {
 	       });  
 	}
 	
-	public void DisplayToast(String str) {
+	private void DisplayToast(String str) {
 		Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
 	}
 }

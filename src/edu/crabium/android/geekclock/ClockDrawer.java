@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Bitmap.Config;
-import android.os.Handler;
 import android.widget.ImageView;
 
 public class ClockDrawer {
@@ -22,10 +21,7 @@ public class ClockDrawer {
 	public ClockDrawer(Context context){
 		this.context = context;
 	}
-	public ClockDrawer(Handler handler) {
-	}
-	
-	public void Draw(ImageView imageView, long SecSinceEpoch){
+	public void Draw(ImageView imageView, long secondsSinceEpoch){
 		int HeightOffSet = 5;
 		
 		int width = imageView.getLayoutParams().width;
@@ -45,11 +41,11 @@ public class ClockDrawer {
         int Radius = width>height?height/2:width/2;
         
         SimpleDateFormat dateformat = new SimpleDateFormat("hh");
-        String _hour = dateformat.format(new Date(SecSinceEpoch*1000));
+        String _hour = dateformat.format(new Date(secondsSinceEpoch*1000));
         dateformat = new SimpleDateFormat("mm");
-        String _minute = dateformat.format(new Date(SecSinceEpoch*1000));
+        String _minute = dateformat.format(new Date(secondsSinceEpoch*1000));
         dateformat = new SimpleDateFormat("ss");
-        String _second = dateformat.format(new Date(SecSinceEpoch*1000));
+        String _second = dateformat.format(new Date(secondsSinceEpoch*1000));
         
         double hour = Double.parseDouble(_hour);
         double minute = Double.parseDouble(_minute);

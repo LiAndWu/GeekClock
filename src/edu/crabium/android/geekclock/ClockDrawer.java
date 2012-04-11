@@ -21,14 +21,15 @@ public class ClockDrawer {
 	public ClockDrawer(Context context){
 		this.context = context;
 	}
+	
 	public void Draw(ImageView imageView, long secondsSinceEpoch){
-		int HeightOffSet = 5;
+		int heightOffSet = 5;
 		
 		int width = imageView.getLayoutParams().width;
 		int height = imageView.getLayoutParams().height;
 		
 		Bitmap bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888 );   
-		Bitmap bitmapback = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
+		Bitmap bitmapBackground = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
 		
         Canvas canvas = new Canvas(bitmap);    
         canvas.drawColor(Color.TRANSPARENT);    
@@ -36,59 +37,41 @@ public class ClockDrawer {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.BLACK);
-        int CenterX = width/2;
-        int CenterY = height/2;
-        int Radius = width>height?height/2:width/2;
+        int centerX = width/2;
+        int centerY = height/2;
+        int radius = width>height ? height/2 : width/2;
+
+        double hour = Double.parseDouble(new SimpleDateFormat("hh").format(new Date(secondsSinceEpoch*1000)));
+        double minute = Double.parseDouble(new SimpleDateFormat("mm").format(new Date(secondsSinceEpoch*1000)));
+        double second = Double.parseDouble(new SimpleDateFormat("ss").format(new Date(secondsSinceEpoch*1000)));
+    
+        double degreeHour = Math.toRadians((90 - hour*30));
+        double degreeMinute = Math.toRadians((90 - minute*6));
+        double degreeSecond = Math.toRadians((90 - second*6));
         
-        SimpleDateFormat dateformat = new SimpleDateFormat("hh");
-        String _hour = dateformat.format(new Date(secondsSinceEpoch*1000));
-        dateformat = new SimpleDateFormat("mm");
-        String _minute = dateformat.format(new Date(secondsSinceEpoch*1000));
-        dateformat = new SimpleDateFormat("ss");
-        String _second = dateformat.format(new Date(secondsSinceEpoch*1000));
-        
-        double hour = Double.parseDouble(_hour);
-        double minute = Double.parseDouble(_minute);
-        double second = Double.parseDouble(_second);
-        
-        double hour_degree = (90 - hour*30);
-        double minute_degree = (90 - minute*6);
-        double second_degree = (90 - second*6);
-        
-        hour_degree = Math.toRadians(hour_degree);
-        minute_degree =Math.toRadians(minute_degree);
-        second_degree =Math.toRadians(second_degree);
-        
-        double hourx = Math.cos(hour_degree)*Radius*0.4;
-        double houry = Math.sin(hour_degree)*Radius*0.4;
-        
-        double minutex = Math.cos(minute_degree) * Radius*0.6;
-        double minutey = Math.sin(minute_degree) * Radius*0.6;
-        
-        double secondx = Math.cos(second_degree)* Radius*0.8;
-        double secondy = Math.sin(second_degree)* Radius*0.8;
-        
-        int _bgHeight  = bitmapback.getHeight();
-        int _bgWidth = bitmapback.getWidth();
-        int bgHeight = 2*Radius;
-        int bgWidth = 2*Radius;
-        float scaleWidth = ((float) bgWidth) / _bgWidth;
-        float scaleHeight = ((float) bgHeight) / _bgHeight;
+        float scaleWidth = ((float) 2*radius) / bitmapBackground.getWidth();
+        float scaleHeight = ((float) 2*radius) / bitmapBackground.getHeight();
 
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap background = Bitmap.createBitmap(bitmapback, 0, 0, _bgWidth, _bgHeight, matrix, true);
+        Bitmap background = Bitmap.createBitmap(bitmapBackground, 0, 0,  bitmapBackground.getWidth(), bitmapBackground.getHeight(), matrix, true);
         
-        canvas.drawBitmap(background,(float)(CenterX - 0.5*background.getHeight()), (float)(CenterY - 0.5*background.getWidth()) + HeightOffSet , paint);
-        
+        canvas.drawBitmap(background,(float)(centerX - 0.5*background.getHeight()), (float)(centerY - 0.5*background.getWidth()) + heightOffSet , paint);
+
+        double hourX = Math.cos(degreeHour)*radius*0.4;
+        double hourY = Math.sin(degreeHour)*radius*0.4;
         paint.setStrokeWidth(4);
-        canvas.drawLine(CenterX, (float)CenterY + HeightOffSet,(float)(CenterX + hourx), (float)(CenterY - houry) + HeightOffSet, paint);
-        
+        canvas.drawLine(centerX, (float)centerY + heightOffSet,(float)(centerX + hourX), (float)(centerY - hourY) + heightOffSet, paint);
+
+        double minuteX = Math.cos(degreeMinute) * radius*0.6;
+        double minuteY = Math.sin(degreeMinute) * radius*0.6;
         paint.setStrokeWidth(2);
-        canvas.drawLine(CenterX, (float)CenterY + HeightOffSet,(float)(CenterX + minutex), (float)(CenterY - minutey) + HeightOffSet, paint);
-        
+        canvas.drawLine(centerX, (float)centerY + heightOffSet,(float)(centerX + minuteX), (float)(centerY - minuteY) + heightOffSet, paint);
+
+        double secondX = Math.cos(degreeSecond)* radius*0.8;
+        double secondy = Math.sin(degreeSecond)* radius*0.8;
         paint.setStrokeWidth(1);
-        canvas.drawLine(CenterX, (float)CenterY + HeightOffSet,(float)(CenterX + secondx), (float)(CenterY - secondy) + HeightOffSet, paint);
+        canvas.drawLine(centerX, (float)centerY + heightOffSet,(float)(centerX + secondX), (float)(centerY - secondy) + heightOffSet, paint);
         imageView.setImageBitmap(bitmap);
         
 	}

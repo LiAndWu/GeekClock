@@ -13,18 +13,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class AboutActivity extends Activity {
-	private TextView aboutActivityText;
-	private Button backButton;
-	private LinearLayout layout;
 
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about);
-		layout = (LinearLayout) findViewById(R.id.LinearLayout);
+		
+		LinearLayout layout = (LinearLayout) findViewById(R.id.LinearLayout);
 		layout.setBackgroundColor(Color.BLACK);
 
-		aboutActivityText = (TextView) findViewById(R.id.aboutText);
+		TextView aboutActivityText = (TextView) findViewById(R.id.aboutText);
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		if (dm.heightPixels > 600) {
@@ -51,7 +49,7 @@ public class AboutActivity extends Activity {
 							+ "\t\t\tCrabium & Mabbage Workshop\n\t\t\t\t  LiWei and WuXudong\n\t\t\t\t\t\tCopyleft 2011.");
 		}
 
-		backButton = (Button) findViewById(R.id.backButton);
+		Button backButton = (Button) findViewById(R.id.backButton);
 		backButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(AboutActivity.this,PreferencesActivity.class);

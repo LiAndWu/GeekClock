@@ -1,6 +1,5 @@
 package edu.crabium.android.geekclock;
 
-
 import edu.crabium.android.geekclock.R;
 
 import android.app.Activity;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
 
 public class RefreshFrequencyActivity extends Activity{
 	private Button backButton;
@@ -83,18 +81,21 @@ public class RefreshFrequencyActivity extends Activity{
 	@Override
 	protected void onResume(){
 		super.onResume();
+		setFrequencyText();
+	}
+	
+	private void writeFrequencyAndSetText(int minute){
+		SettingProvider sp = SettingProvider.getInstance();
+		sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(minute*60));
+		setFrequencyText();
+	}
+	
+	private void setFrequencyText(){
 		readFrequencyTextView.setTextSize(17);
 		SettingProvider sp = SettingProvider.getInstance();
 		int frequency = Integer.valueOf(sp.getSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS));
 		
 		readFrequencyTextView.setText("现在的刷新频率是：\n每" + frequency/3600 + "小时"  + frequency%3600/60 + "分钟一次");
-		
-	}
-	
-	private void writeFrequencyAndSetText(int minute){
-		readFrequencyTextView.setText("现在的刷新频率是：\n每" + minute + "分钟一次");	
-		SettingProvider sp = SettingProvider.getInstance();
-		sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(minute*60));
 	}
 }
 		

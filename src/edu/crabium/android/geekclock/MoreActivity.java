@@ -13,7 +13,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ public class MoreActivity extends Activity {
 	
 	private TimeService timeService;
 	private boolean timeServiceBound;
+	private boolean activityShown;
 	
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,69 +37,79 @@ public class MoreActivity extends Activity {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.more);
 
-        showTimeZone = (TextView) findViewById(R.id.showTimeZone);
-        showCity = (TextView) findViewById(R.id.showCity);
-        showWeek = (TextView) findViewById(R.id.showWeek);
-        showYearDay = (TextView) findViewById(R.id.ShowYearDay);
-        showLongitude = (TextView) findViewById(R.id.showLongitude);  
-        showLatitude = (TextView) findViewById(R.id.showLatitude);
+        showTimeZone = 	(TextView) findViewById(R.id.showTimeZone);
+        showCity = 	(TextView) findViewById(R.id.showCity);
+        showWeek = 	(TextView) findViewById(R.id.showWeek);
+        showYearDay = 	(TextView) findViewById(R.id.ShowYearDay);
+        showLongitude = 	(TextView) findViewById(R.id.showLongitude);  
+        showLatitude = 	(TextView) findViewById(R.id.showLatitude);
     }
 
     @Override
     protected void onResume(){
     	super.onResume();
-    	if(timeServiceBound){
-    		showInfo();
-    	}else{
-    		showTimeZone.setText(R.string.time_synchronizing);
-            showCity.setText(R.string.time_synchronizing);
-            showWeek.setText(R.string.time_synchronizing);
-            showYearDay.setText(R.string.time_synchronizing);
-            showLongitude.setText(R.string.time_synchronizing);
-            showLatitude.setText(R.string.time_synchronizing);
-    	}
-    }
-    
-    private void showInfo(){
-        int _timeZone = (int)timeService.getTimeZone();
-        String timeZone = "UTC" + ((_timeZone > 0) ? "+" : "") + _timeZone;
-
-        String week = new SimpleDateFormat("E").format(new Date(timeService.getTimeSeconds() * 1000));
-        String dayInYear= new SimpleDateFormat("今年第D天").format(new Date(timeService.getTimeSeconds() * 1000));
-        
-        showTimeZone.setText(timeZone);
-        showCity.setText(timeService.getPlaceName());
-        showWeek.setText(week);
-        showYearDay.setText(dayInYear);
-        showLongitude.setText(Double.toString(timeService.getLongitude()));
-        showLatitude.setText(Double.toString(timeService.getLatitude()));
     	
+    	new Thread(new informationUpdate()).start();
     }
+
+    private int timeSynchronized = 1;
+    private int timeNotSynchronized = 2;
+    
+    private class informationUpdate implements Runnable{
+    	public void run(){
+			while(true)
+				if(timeServiceBound && timeService.timeSynchronized()){
+					Message message = new Message();
+					message.what = timeSynchronized;
+					informationUpdateHandler.sendMessage(message);
+					try {
+						TimeUnit.MILLISECONDS.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				else{
+					Message message = new Message();
+					message.what = timeNotSynchronized;
+					informationUpdateHandler.sendMessage(message);
+				}
+		}
+    }
+
+    private Handler informationUpdateHandler = new Handler(){
+    	public void handleMessage(Message message){
+    		super.handleMessage(message);
+    		
+    		if(message.what == timeSynchronized){
+	            int _timeZone = (int)timeService.getTimeZone();
+	            String timeZone = "UTC" + ((_timeZone > 0) ? "+" : "") + _timeZone;
+	
+	            String week = new SimpleDateFormat("E").format(new Date(timeService.getTimeSeconds() * 1000));
+	            String dayInYear= new SimpleDateFormat("今年第D天").format(new Date(timeService.getTimeSeconds() * 1000));
+	            
+	            showTimeZone.setText(timeZone);
+	            showCity.setText(timeService.getPlaceName());
+	            showWeek.setText(week);
+	            showYearDay.setText(dayInYear);
+	            showLongitude.setText(Double.toString(timeService.getLongitude()));
+	            showLatitude.setText(Double.toString(timeService.getLatitude()));
+	    	}
+	    	else{
+	    		showTimeZone.setText(R.string.time_synchronizing);
+	            showCity.setText(R.string.time_synchronizing);
+	            showWeek.setText(R.string.time_synchronizing);
+	            showYearDay.setText(R.string.time_synchronizing);
+	            showLongitude.setText(R.string.time_synchronizing);
+	            showLatitude.setText(R.string.time_synchronizing);
+	    	}
+    	}
+    };
+    	
     @Override
     protected void onStart(){
     	super.onStart();
     	Intent intent = new Intent(this, TimeService.class);
     	this.getApplicationContext().bindService(intent, timeServiceConnection, Context.BIND_AUTO_CREATE);
-    	
-    	new Thread(new Runnable(){
-			public void run(){
-				int times = 10;
-				while(times -- > 0)
-					if(!timeServiceBound)
-						try {
-							TimeUnit.MILLISECONDS.sleep(200);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					else{
-						runOnUiThread(new Runnable(){
-							public void run(){
-    							showInfo();
-							}
-						});
-						return;
-					}
-			}}).start();
     }
     
     @Override

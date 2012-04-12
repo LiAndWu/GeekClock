@@ -17,7 +17,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 public class TimeService extends Service {
@@ -32,7 +35,7 @@ public class TimeService extends Service {
 	private double timeZone;
 	private double utc;
 	private final IBinder timeServiceBinder = new TimeServiceBinder();
-
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return timeServiceBinder;
@@ -46,8 +49,7 @@ public class TimeService extends Service {
 	
 	private class UTCTimeSynchronizationStatusListener implements Runnable{
 		public void run(){
-			int times = 10;
-			while(times -- > 0){
+			while(true){
 				synchronizeTime();
 				if(utcTimeSynchronized)
 					break;
@@ -63,8 +65,7 @@ public class TimeService extends Service {
 	
 	private class LocalTimezoneSynchronizationStatusListener implements Runnable{
 		public void run(){
-			int times = 10;
-			while(times -- > 0){
+			while(true){
 				synchronizeTimeZone();
 				if(localTimeZoneSynchronized)
 					break;
@@ -80,9 +81,10 @@ public class TimeService extends Service {
 	
 	private class TimeSynchronizationStatusListener implements Runnable{
 		public void run(){
-			int times = 20;
-			while(times-- > 0)
-				if(localTimeZoneSynchronized && utcTimeSynchronized){
+			while(true)
+			{
+				System.out.println(locationDetected + " " + localTimeZoneSynchronized + " " + utcTimeSynchronized);
+				if(locationDetected && localTimeZoneSynchronized && utcTimeSynchronized){
 					Date date = new Date();
 					long currentTimezone = date.getTimezoneOffset()*60;
 					
@@ -97,18 +99,66 @@ public class TimeService extends Service {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+			}
 		}
 	}
 	
+	int installLocationListener  = 1;
+	int removeLocationListener = 2;
+	Handler locationStatusHandler = new Handler(){
+		String gpsProvider = LocationManager.GPS_PROVIDER;
+		String networkProvider = LocationManager.NETWORK_PROVIDER;
+		LocationManager locationManager;
+		@Override
+		public void handleMessage(Message message){
+			super.handleMessage(message);
+			locationManager = (LocationManager)message.obj;
+			
+			if(message.what == installLocationListener){
+				locationManager.requestLocationUpdates(gpsProvider, 0, 0, locationListener);
+				locationManager.requestLocationUpdates(networkProvider, 0, 0, locationListener);
+			}
+			else{
+				locationManager.removeUpdates(locationListener);
+			}
+		}
+	};
+	
+
+	private final LocationListener locationListener = new LocationListener() {
+		@Override
+		public void onLocationChanged(Location location) {
+			if (location != null) {
+				latitude = location.getLatitude();
+				longitude = location.getLongitude();
+				locationDetected = true;
+				//firstRun = false;
+				//locationIsSynchronized = true;
+			}
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+		}
+
+		@Override
+		public void onProviderEnabled(String provider) {
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+		}
+	};
+	
 	private class LocationDetectionStatusListener implements Runnable{
 		boolean firstRun = true;
-		boolean locationIsSynchronized = false;
+		private boolean locationIsSynchronized = false;
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		String gpsProvider = LocationManager.GPS_PROVIDER;
 		String networkProvider = LocationManager.NETWORK_PROVIDER;
-		
 		public void run(){
 			while(true){
+				System.out.println("Start locating");
 				if(firstRun){
 					Location gpsLocation = locationManager.getLastKnownLocation(gpsProvider);
 					Location networkLocation = locationManager.getLastKnownLocation(gpsProvider);
@@ -118,19 +168,31 @@ public class TimeService extends Service {
 						location = gpsLocation;
 					else if(networkLocation != null)
 						location = networkLocation;
-					
+
+					System.out.println("first run");
 					if (location != null){
 						latitude = location.getLatitude();
 						longitude = location.getLongitude();
 						locationDetected = true;
+						System.out.println("location not null");
 					}
-					
+					firstRun = false;
 				}
 				else{
 					locationIsSynchronized = false;
+					Message message = new Message();
+					message.what = installLocationListener;
+					message.obj = locationManager;
+					locationStatusHandler.sendMessage(message);
 					new Thread(new LocationUpdatesStatusListener()).start();
-					locationManager.requestLocationUpdates(gpsProvider, 0, 0, locationListener);
-					locationManager.requestLocationUpdates(networkProvider, 0, 0, locationListener);
+				};
+				System.out.println("listener installed");
+
+				System.out.println("Start locating");
+				try {
+					TimeUnit.SECONDS.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -140,7 +202,9 @@ public class TimeService extends Service {
 			public void run(){
 				while(true){
 					if(locationIsSynchronized){
-						locationManager.removeUpdates(locationListener);
+						Message message = new Message();
+						message.what = removeLocationListener;
+						locationStatusHandler.sendMessage(message);
 						break;
 					}
 					else{
@@ -153,31 +217,6 @@ public class TimeService extends Service {
 				}
 			}
 		}
-		
-		private final LocationListener locationListener = new LocationListener() {
-			@Override
-			public void onLocationChanged(Location location) {
-				if (location != null) {
-					latitude = location.getLatitude();
-					longitude = location.getLongitude();
-					locationDetected = true;
-					firstRun = false;
-					locationIsSynchronized = true;
-				}
-			}
-
-			@Override
-			public void onProviderDisabled(String provider) {
-			}
-
-			@Override
-			public void onProviderEnabled(String provider) {
-			}
-
-			@Override
-			public void onStatusChanged(String provider, int status, Bundle extras) {
-			}
-		};
 	}
 	
 	@Override
@@ -190,8 +229,6 @@ public class TimeService extends Service {
 		return 0;
 	}
 	
-
-
 	public double getLatitude() {
 		return latitude;
 	}
@@ -228,18 +265,25 @@ public class TimeService extends Service {
         }        
 	}
 	@SuppressWarnings("deprecation")
-	public void synchronizeTimeZone() {
+	/**
+	 * private, it will suspend if location isn't detected
+	 */
+	private void synchronizeTimeZone() {
 		try {
 			SettingProvider sp = SettingProvider.getInstance();
 			
 			WebService.setUserName(sp.getSetting(SettingProvider.GEONAMES_USER_NAME));
 			//TODO: move this limit to database;
-			WebService.setConnectTimeOut(5*1000);
+			WebService.setConnectTimeOut(10*1000);
 			//TODO: change timezone to java.util.TimeZone
 
+			while(!locationDetected){
+				TimeUnit.MILLISECONDS.sleep(1000);
+			}
+			
 	        Log.d("GeekClock", "GeoNames timezone request sent");
 			Timezone tmz = WebService.timezone(latitude, longitude);
-			placeName = WebService.findNearbyPlaceName(latitude, longitude).iterator().next().getName();
+			placeName = "";// WebService.findNearbyPlaceName(latitude, longitude).iterator().next().getName();
 	        Log.d("GeekClock", "GeoNames timezone answer received");
 			timeZone =  tmz.getGmtOffset();
 	        Log.d("GeekClock", "Timezone set to " + timeZone);

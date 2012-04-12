@@ -183,8 +183,10 @@ public class TimeService extends Service {
 					locationStatusHandler.sendMessage(message);
 					new Thread(new LocationUpdatesStatusListener()).start();
 				};
+				
 				try {
-					TimeUnit.SECONDS.sleep(10);
+					SettingProvider sp = SettingProvider.getInstance();
+					TimeUnit.SECONDS.sleep(Integer.valueOf(sp.getSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS)));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

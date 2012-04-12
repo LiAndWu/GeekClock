@@ -24,6 +24,7 @@ public class TimeService extends Service {
 	private boolean utcTimeSynchronized = false;
 	private boolean localTimeZoneSynchronized = false;
 	private boolean timeSynchronized = false;
+	private boolean locationDetected = false;
 	private String placeName;
 	private double latitude;
 	private double longitude;
@@ -43,105 +44,153 @@ public class TimeService extends Service {
 		}
 	}
 	
+	private class UTCTimeSynchronizationStatusListener implements Runnable{
+		public void run(){
+			int times = 10;
+			while(times -- > 0){
+				synchronizeTime();
+				if(utcTimeSynchronized)
+					break;
+				else
+					try {
+						TimeUnit.MILLISECONDS.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+			}
+		}
+	}
+	
+	private class LocalTimezoneSynchronizationStatusListener implements Runnable{
+		public void run(){
+			int times = 10;
+			while(times -- > 0){
+				synchronizeTimeZone();
+				if(localTimeZoneSynchronized)
+					break;
+				else
+					try{
+						TimeUnit.MILLISECONDS.sleep(1000);
+					}catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+			}
+		}
+	}
+	
+	private class TimeSynchronizationStatusListener implements Runnable{
+		public void run(){
+			int times = 20;
+			while(times-- > 0)
+				if(localTimeZoneSynchronized && utcTimeSynchronized){
+					Date date = new Date();
+					long currentTimezone = date.getTimezoneOffset()*60;
+					
+					//TODO: weird!!! 
+					timeOffset = ((long) utc + currentTimezone +  (long) timeZone * 60 * 60) - (date.getTime() / 1000);
+					timeSynchronized  = true;
+					break;
+				}
+				else
+					try {
+						TimeUnit.MILLISECONDS.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+		}
+	}
+	
+	private class LocationDetectionStatusListener implements Runnable{
+		boolean firstRun = true;
+		boolean locationIsSynchronized = false;
+		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		String gpsProvider = LocationManager.GPS_PROVIDER;
+		String networkProvider = LocationManager.NETWORK_PROVIDER;
+		
+		public void run(){
+			while(true){
+				if(firstRun){
+					Location gpsLocation = locationManager.getLastKnownLocation(gpsProvider);
+					Location networkLocation = locationManager.getLastKnownLocation(gpsProvider);
+					
+					Location location = null;
+					if(gpsLocation != null)
+						location = gpsLocation;
+					else if(networkLocation != null)
+						location = networkLocation;
+					
+					if (location != null){
+						latitude = location.getLatitude();
+						longitude = location.getLongitude();
+						locationDetected = true;
+					}
+					
+				}
+				else{
+					locationIsSynchronized = false;
+					new Thread(new LocationUpdatesStatusListener()).start();
+					locationManager.requestLocationUpdates(gpsProvider, 0, 0, locationListener);
+					locationManager.requestLocationUpdates(networkProvider, 0, 0, locationListener);
+				}
+			}
+		}
+		
+		private class LocationUpdatesStatusListener implements Runnable{
+			@Override
+			public void run(){
+				while(true){
+					if(locationIsSynchronized){
+						locationManager.removeUpdates(locationListener);
+						break;
+					}
+					else{
+						try {
+							TimeUnit.MILLISECONDS.sleep(5000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		
+		private final LocationListener locationListener = new LocationListener() {
+			@Override
+			public void onLocationChanged(Location location) {
+				if (location != null) {
+					latitude = location.getLatitude();
+					longitude = location.getLongitude();
+					locationDetected = true;
+					firstRun = false;
+					locationIsSynchronized = true;
+				}
+			}
+
+			@Override
+			public void onProviderDisabled(String provider) {
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+			}
+
+			@Override
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+			}
+		};
+	}
+	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		Log.d("GeekClock", "Service stared");
-		utcTimeSynchronized = false;
-		longitude = 120.33820867538452;
-		latitude = 30.31900699227783;
-		timeOffset = 0;
-		
-		LocationManager locationManager;
-		String serviceName = Context.LOCATION_SERVICE;
-		locationManager = (LocationManager) getSystemService(serviceName);
-		String provider = LocationManager.GPS_PROVIDER;
-
-		Location location = locationManager.getLastKnownLocation(provider);
-		if (location != null){
-			latitude = location.getLatitude();
-			longitude = location.getLongitude();
-		}
-
-		locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
-		
-		new Thread(new Runnable(){
-			public void run(){
-				int times = 10;
-				while(times -- > 0){
-					synchronizeTime();
-					if(utcTimeSynchronized)
-						break;
-					else
-						try {
-							TimeUnit.MILLISECONDS.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-				}
-			}}).start();
-		
-		new Thread(new Runnable(){
-			public void run(){
-				int times = 10;
-				while(times -- > 0){
-					synchronizeTimeZone();
-					if(localTimeZoneSynchronized)
-						break;
-					else
-						try{
-							TimeUnit.MILLISECONDS.sleep(1000);
-						}catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-				}
-			}}).start();
-		
-		new Thread(new Runnable(){
-			public void run(){
-				int times = 20;
-				while(times-- > 0)
-					if(localTimeZoneSynchronized && utcTimeSynchronized){
-						Date date = new Date();
-						long currentTimezone = date.getTimezoneOffset()*60;
-						
-						//TODO: weird!!! 
-						timeOffset = ((long) utc + currentTimezone +  (long) timeZone * 60 * 60) - (date.getTime() / 1000);
-						timeSynchronized  = true;
-						break;
-					}
-					else
-						try {
-							TimeUnit.MILLISECONDS.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-			}}).start();
-		
+		new Thread(new UTCTimeSynchronizationStatusListener()).start();
+		new Thread(new LocalTimezoneSynchronizationStatusListener()).start();
+		new Thread(new TimeSynchronizationStatusListener()).start();
+		new Thread(new LocationDetectionStatusListener()).start();
 		return 0;
 	}
-	private final LocationListener locationListener = new LocationListener() {
-		@Override
-		public void onLocationChanged(Location location) {
-			if (location != null) {
-				latitude = location.getLatitude();
-				longitude = location.getLongitude();
-			}
-		}
+	
 
-		@Override
-		public void onProviderEnabled(String provider) {
-		}
-
-		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-		}
-
-		@Override
-		public void onProviderDisabled(String provider) {
-			// TODO Auto-generated method stub
-			
-		}
-	};
 
 	public double getLatitude() {
 		return latitude;

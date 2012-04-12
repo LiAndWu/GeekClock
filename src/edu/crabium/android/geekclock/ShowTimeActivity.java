@@ -38,7 +38,6 @@ public class ShowTimeActivity extends Activity {
         new ClockRepaintThread().start();	 
     }
     
-    
     @Override
     protected void onStart(){
     	super.onStart();

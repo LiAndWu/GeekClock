@@ -19,7 +19,6 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -28,6 +27,11 @@ public class TimeService extends Service {
 	private boolean localTimeZoneSynchronized = false;
 	private boolean timeSynchronized = false;
 	private boolean locationDetected = false;
+	private boolean locationIsSynchronized = false;
+
+	private int installLocationListener  = 1;
+	private int removeLocationListener = 2;
+	
 	private String placeName;
 	private double latitude;
 	private double longitude;
@@ -35,6 +39,8 @@ public class TimeService extends Service {
 	private double timeZone;
 	private double utc;
 	private final IBinder timeServiceBinder = new TimeServiceBinder();
+
+	LocationManager locationManager;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -103,20 +109,17 @@ public class TimeService extends Service {
 		}
 	}
 	
-	int installLocationListener  = 1;
-	int removeLocationListener = 2;
 	Handler locationStatusHandler = new Handler(){
-		String gpsProvider = LocationManager.GPS_PROVIDER;
-		String networkProvider = LocationManager.NETWORK_PROVIDER;
-		LocationManager locationManager;
 		@Override
 		public void handleMessage(Message message){
 			super.handleMessage(message);
-			locationManager = (LocationManager)message.obj;
-			
+			LocationManager locationManager = (LocationManager)message.obj;
 			if(message.what == installLocationListener){
-				locationManager.requestLocationUpdates(gpsProvider, 0, 0, locationListener);
-				locationManager.requestLocationUpdates(networkProvider, 0, 0, locationListener);
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+				new Thread(new UTCTimeSynchronizationStatusListener()).start();
+				new Thread(new LocalTimezoneSynchronizationStatusListener()).start();
+				new Thread(new TimeSynchronizationStatusListener()).start();
 			}
 			else{
 				locationManager.removeUpdates(locationListener);
@@ -132,8 +135,7 @@ public class TimeService extends Service {
 				latitude = location.getLatitude();
 				longitude = location.getLongitude();
 				locationDetected = true;
-				//firstRun = false;
-				//locationIsSynchronized = true;
+				locationIsSynchronized = true;
 			}
 		}
 
@@ -152,16 +154,13 @@ public class TimeService extends Service {
 	
 	private class LocationDetectionStatusListener implements Runnable{
 		boolean firstRun = true;
-		private boolean locationIsSynchronized = false;
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		String gpsProvider = LocationManager.GPS_PROVIDER;
-		String networkProvider = LocationManager.NETWORK_PROVIDER;
 		public void run(){
+			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			while(true){
 				System.out.println("Start locating");
 				if(firstRun){
-					Location gpsLocation = locationManager.getLastKnownLocation(gpsProvider);
-					Location networkLocation = locationManager.getLastKnownLocation(gpsProvider);
+					Location gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+					Location networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 					
 					Location location = null;
 					if(gpsLocation != null)
@@ -169,12 +168,10 @@ public class TimeService extends Service {
 					else if(networkLocation != null)
 						location = networkLocation;
 
-					System.out.println("first run");
 					if (location != null){
 						latitude = location.getLatitude();
 						longitude = location.getLongitude();
 						locationDetected = true;
-						System.out.println("location not null");
 					}
 					firstRun = false;
 				}
@@ -186,9 +183,6 @@ public class TimeService extends Service {
 					locationStatusHandler.sendMessage(message);
 					new Thread(new LocationUpdatesStatusListener()).start();
 				};
-				System.out.println("listener installed");
-
-				System.out.println("Start locating");
 				try {
 					TimeUnit.SECONDS.sleep(10);
 				} catch (InterruptedException e) {
@@ -204,12 +198,13 @@ public class TimeService extends Service {
 					if(locationIsSynchronized){
 						Message message = new Message();
 						message.what = removeLocationListener;
+						message.obj = locationManager;
 						locationStatusHandler.sendMessage(message);
 						break;
 					}
 					else{
 						try {
-							TimeUnit.MILLISECONDS.sleep(5000);
+							TimeUnit.MILLISECONDS.sleep(1000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}

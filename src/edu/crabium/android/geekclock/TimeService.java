@@ -6,7 +6,6 @@ import java.net.InetAddress;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import org.geonames.Timezone;
 import org.geonames.WebService;
 
 import android.app.Service;
@@ -89,13 +88,8 @@ public class TimeService extends Service {
 		public void run(){
 			while(true)
 			{
-				System.out.println(locationDetected + " " + localTimeZoneSynchronized + " " + utcTimeSynchronized);
 				if(locationDetected && localTimeZoneSynchronized && utcTimeSynchronized){
-					Date date = new Date();
-					long currentTimezone = date.getTimezoneOffset()*60;
-					
-					//TODO: weird!!! 
-					timeOffset = ((long) utc + currentTimezone +  (long) timeZone * 60 * 60) - (date.getTime() / 1000);
+					calculateTimeOffset();
 					timeSynchronized  = true;
 					break;
 				}
@@ -107,19 +101,33 @@ public class TimeService extends Service {
 					}
 			}
 		}
+
+		private void calculateTimeOffset() {
+			Date date = new Date();
+			
+			//TODO: weird!!! 
+			timeOffset = ((long) utc + getCurrentTimezone() +  (long) timeZone * 60 * 60) - (date.getTime() / 1000);
+		}
+		
+		private long getCurrentTimezone(){
+			Date date = new Date();
+			return date.getTimezoneOffset()*60;
+		}
 	}
 	
 	Handler locationStatusHandler = new Handler(){
 		@Override
 		public void handleMessage(Message message){
 			super.handleMessage(message);
+			toggleUpdateStatus(message);
+		}
+
+		private void toggleUpdateStatus(Message message) {
 			LocationManager locationManager = (LocationManager)message.obj;
 			if(message.what == installLocationListener){
 				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-				new Thread(new UTCTimeSynchronizationStatusListener()).start();
-				new Thread(new LocalTimezoneSynchronizationStatusListener()).start();
-				new Thread(new TimeSynchronizationStatusListener()).start();
+				startSynchronizing();
 			}
 			else{
 				locationManager.removeUpdates(locationListener);
@@ -127,7 +135,12 @@ public class TimeService extends Service {
 		}
 	};
 	
-
+	private void startSynchronizing(){
+		new Thread(new UTCTimeSynchronizationStatusListener()).start();
+		new Thread(new LocalTimezoneSynchronizationStatusListener()).start();
+		new Thread(new TimeSynchronizationStatusListener()).start();
+	}
+	
 	private final LocationListener locationListener = new LocationListener() {
 		@Override
 		public void onLocationChanged(Location location) {
@@ -219,9 +232,7 @@ public class TimeService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		Log.d("GeekClock", "Service stared");
-		new Thread(new UTCTimeSynchronizationStatusListener()).start();
-		new Thread(new LocalTimezoneSynchronizationStatusListener()).start();
-		new Thread(new TimeSynchronizationStatusListener()).start();
+		startSynchronizing();
 		new Thread(new LocationDetectionStatusListener()).start();
 		return 0;
 	}
@@ -240,9 +251,8 @@ public class TimeService extends Service {
 	        SettingProvider sp = SettingProvider.getInstance();
 	        String ntpServerName = sp.getSetting(SettingProvider.CHOSEN_SREVER_ADDRESS);
 	        Log.d("GeekClock", "NTP server: " + ntpServerName);
-	        InetAddress address = InetAddress.getByName(ntpServerName);
 	        byte[] buf = new NtpMessage().toByteArray();
-	        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 123);
+	        DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(ntpServerName), 123);
 	        //TODO: move this hard-coded timeout limit to database
 	        socket.setSoTimeout(4*1000);
 	        socket.send(packet);
@@ -253,14 +263,13 @@ public class TimeService extends Service {
 	        socket.receive(packet);
 			
 	        Log.d("GeekClock", "NTP answer received.");
-			NtpMessage msg = new NtpMessage(packet.getData());
-	        utc = msg.transmitTimestamp - 2208988800.0;
+	        utc = new NtpMessage(packet.getData()).transmitTimestamp - 2208988800.0;
 			utcTimeSynchronized = true;
         }
         catch(Exception e){
-        	timeOffset = 0;
         }        
 	}
+	
 	@SuppressWarnings("deprecation")
 	/**
 	 * private, it will suspend if location isn't detected
@@ -279,10 +288,9 @@ public class TimeService extends Service {
 			}
 			
 	        Log.d("GeekClock", "GeoNames timezone request sent");
-			Timezone tmz = WebService.timezone(latitude, longitude);
-			placeName = "";// WebService.findNearbyPlaceName(latitude, longitude).iterator().next().getName();
+			placeName = WebService.findNearbyPlaceName(latitude, longitude).iterator().next().getName();
 	        Log.d("GeekClock", "GeoNames timezone answer received");
-			timeZone =  tmz.getGmtOffset();
+			timeZone =  WebService.timezone(latitude, longitude).getGmtOffset();
 	        Log.d("GeekClock", "Timezone set to " + timeZone);
 	        
 			localTimeZoneSynchronized = true;
@@ -290,7 +298,6 @@ public class TimeService extends Service {
 		catch (Exception e) {
 			Log.d("GeekClock", "Error: unexpected exception");
 			e.printStackTrace();
-			timeZone =  0;
 		}
 	}
 

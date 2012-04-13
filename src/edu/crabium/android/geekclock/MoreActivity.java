@@ -29,7 +29,6 @@ public class MoreActivity extends Activity {
 	
 	private TimeService timeService;
 	private boolean timeServiceBound;
-	private boolean activityShown;
 	
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,22 +56,23 @@ public class MoreActivity extends Activity {
     
     private class informationUpdate implements Runnable{
     	public void run(){
-			while(true)
+			while(true){
 				if(timeServiceBound && timeService.timeSynchronized()){
 					Message message = new Message();
 					message.what = timeSynchronized;
 					informationUpdateHandler.sendMessage(message);
-					try {
-						TimeUnit.MILLISECONDS.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
 				}
 				else{
 					Message message = new Message();
 					message.what = timeNotSynchronized;
 					informationUpdateHandler.sendMessage(message);
 				}
+				try {
+					TimeUnit.MILLISECONDS.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
     }
 
@@ -81,16 +81,13 @@ public class MoreActivity extends Activity {
     		super.handleMessage(message);
     		
     		if(message.what == timeSynchronized){
-	            int _timeZone = (int)timeService.getTimeZone();
+	            int _timeZone = timeService.getTimeZone();
 	            String timeZone = "UTC" + ((_timeZone > 0) ? "+" : "") + _timeZone;
-	
-	            String week = new SimpleDateFormat("E").format(new Date(timeService.getTimeSeconds() * 1000));
-	            String dayInYear= new SimpleDateFormat("今年第D天").format(new Date(timeService.getTimeSeconds() * 1000));
 	            
 	            showTimeZone.setText(timeZone);
 	            showCity.setText(timeService.getPlaceName());
-	            showWeek.setText(week);
-	            showYearDay.setText(dayInYear);
+	            showWeek.setText(new SimpleDateFormat("E").format(new Date(timeService.getTimeSeconds() * 1000)));
+	            showYearDay.setText(new SimpleDateFormat("今年第D天").format(new Date(timeService.getTimeSeconds() * 1000)));
 	            showLongitude.setText(Double.toString(timeService.getLongitude()));
 	            showLatitude.setText(Double.toString(timeService.getLatitude()));
 	    	}

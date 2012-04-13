@@ -33,7 +33,6 @@ public class RefreshFrequencyActivity extends Activity{
 		customButton = (Button)findViewById(R.id.customButton);
 		readFrequencyTextView = (TextView)findViewById(R.id.readFrequencytextView);
 		
-		backButton = (Button)findViewById(R.id.backButton);
 		backButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {

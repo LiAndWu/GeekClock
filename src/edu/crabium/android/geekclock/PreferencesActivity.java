@@ -12,8 +12,12 @@ import android.widget.LinearLayout;
 
 public class PreferencesActivity extends Activity{
 	private Button homepageButton;
-	private LinearLayout  readFrequencyButton, timeServerButton, registerButton, 
-		helpButton, thanksButton, aboutButton;
+	private LinearLayout readFrequencyButton;
+	private LinearLayout timeServerButton;
+	private LinearLayout registerButton;
+	private LinearLayout helpButton;
+	private LinearLayout thanksButton;
+	private LinearLayout aboutButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

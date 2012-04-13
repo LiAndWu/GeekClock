@@ -46,8 +46,7 @@ public class TurntableActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				SettingProvider sp = SettingProvider.getInstance();
-				int seconds = frequencyHour*3600 + frequencyMinute * 60;
-				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf(seconds));
+				sp.addSetting(SettingProvider.REFRESH_FREQUENCY_SECONDS, String.valueOf( frequencyHour*3600 + frequencyMinute * 60));
 				TurntableActivity.this.finish();
 			}
 		});
